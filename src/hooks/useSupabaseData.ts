@@ -56,7 +56,7 @@ export function useServices() {
   const [data, setData] = useState<ServiceRow[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    supabase.from('services').select('*').order('sort_order')
+    supabase.from('services').select('*').is('deleted_at', null).order('sort_order')
       .then(({ data }) => { setData((data as ServiceRow[]) || []); setLoading(false); });
   }, []);
   return { data, loading };
@@ -78,7 +78,7 @@ export function useTestimonials() {
   const [data, setData] = useState<TestimonialRow[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    supabase.from('testimonials').select('*').order('sort_order')
+    supabase.from('testimonials').select('*').is('deleted_at', null).order('sort_order')
       .then(({ data }) => { setData((data as TestimonialRow[]) || []); setLoading(false); });
   }, []);
   return { data, loading };
@@ -143,7 +143,7 @@ export function usePricingPlans() {
   const [data, setData] = useState<PricingPlanRow[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    supabase.from('pricing_plans').select('*').order('sort_order')
+    supabase.from('pricing_plans').select('*').is('deleted_at', null).order('sort_order')
       .then(({ data }) => { setData((data as PricingPlanRow[]) || []); setLoading(false); });
   }, []);
   return { data, loading };
@@ -189,7 +189,7 @@ export function usePortfolioProjects() {
   const [data, setData] = useState<PortfolioProjectRow[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    supabase.from('portfolio_projects').select('*').order('sort_order')
+    supabase.from('portfolio_projects').select('*').is('deleted_at', null).order('sort_order')
       .then(({ data }) => { setData((data as PortfolioProjectRow[]) || []); setLoading(false); });
   }, []);
   return { data, loading };

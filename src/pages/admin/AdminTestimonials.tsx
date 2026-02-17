@@ -50,9 +50,9 @@ const AdminTestimonials = () => {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Sigur?')) return;
-    await supabase.from('testimonials').delete().eq('id', id);
-    toast.success('Șters!');
+    if (!confirm('Mută în Coș Reciclare? Poți restaura oricând din Admin → Coș Reciclare.')) return;
+    await supabase.from('testimonials').update({ deleted_at: new Date().toISOString() }).eq('id', id);
+    toast.success('Mutat în Coș Reciclare!');
     fetchData();
   }
 

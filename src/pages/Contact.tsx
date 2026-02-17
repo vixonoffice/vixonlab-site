@@ -115,6 +115,7 @@ const Contact = () => {
                     />
                   </div>
                   <div>
+                    <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.phone')}</label>
                     <input className={inputClass} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

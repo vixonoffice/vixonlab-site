@@ -29,6 +29,7 @@ import AdminProcess from "./pages/admin/AdminProcess";
 import AdminTech from "./pages/admin/AdminTech";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminMessages from "./pages/admin/AdminMessages";
+import AdminTrash from "./pages/admin/AdminTrash";
 import ResetPassword from "./pages/ResetPassword";
 
 const queryClient = new QueryClient();
@@ -66,6 +67,7 @@ const App = () => (
             <Route path="/admin/tech" element={<ProtectedRoute><AdminLayout><AdminTech /></AdminLayout></ProtectedRoute>} />
             <Route path="/admin/users" element={<ProtectedRoute><AdminLayout><AdminUsers /></AdminLayout></ProtectedRoute>} />
             <Route path="/admin/messages" element={<ProtectedRoute><AdminLayout><AdminMessages /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/trash" element={<ProtectedRoute><AdminLayout><AdminTrash /></AdminLayout></ProtectedRoute>} />
 
             <Route path="*" element={<Layout><NotFound /></Layout>} />
           </Routes>

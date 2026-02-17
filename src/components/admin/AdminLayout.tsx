@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import {
   LayoutDashboard, FileText, Briefcase, FolderOpen, MessageSquare,
-  DollarSign, BarChart3, Footprints, Code, Users, LogOut, Inbox, Menu, X
+  DollarSign, BarChart3, Footprints, Code, Users, LogOut, Inbox, Menu, X, Trash2
 } from 'lucide-react';
 
 const navItems = [
@@ -19,6 +19,7 @@ const navItems = [
   { label: 'Tech Stack', path: '/admin/tech', icon: Code },
   { label: 'Utilizatori', path: '/admin/users', icon: Users },
   { label: 'Mesaje', path: '/admin/messages', icon: Inbox },
+  { label: 'Coș Reciclare', path: '/admin/trash', icon: Trash2 },
 ];
 
 export function AdminLayout({ children }: { children: ReactNode }) {

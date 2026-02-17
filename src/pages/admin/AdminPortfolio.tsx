@@ -97,10 +97,10 @@ const AdminPortfolio = () => {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Sigur vrei sa stergi acest proiect?')) return;
-    const { error } = await supabase.from('portfolio_projects').delete().eq('id', id);
+    if (!confirm('Mută în Coș Reciclare? Poți restaura oricând din Admin → Coș Reciclare.')) return;
+    const { error } = await supabase.from('portfolio_projects').update({ deleted_at: new Date().toISOString() }).eq('id', id);
     if (error) { toast.error(getUserFriendlyError(error)); return; }
-    toast.success('Proiect sters!');
+    toast.success('Proiect mutat în Coș Reciclare. Îl poți restaura din Admin → Coș Reciclare.');
     fetchProjects();
   }
 
