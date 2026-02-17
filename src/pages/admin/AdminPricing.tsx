@@ -35,7 +35,7 @@ const AdminPricing = () => {
   useEffect(() => { fetchData(); }, [location.key]);
 
   async function fetchData() {
-    const { data } = await supabase.from('pricing_plans').select('*').order('sort_order');
+    const { data } = await supabase.from('pricing_plans').select('*').is('deleted_at', null).order('sort_order');
     setItems((data as any[]) || []);
     setLoading(false);
   }

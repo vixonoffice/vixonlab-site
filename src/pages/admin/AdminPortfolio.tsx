@@ -63,6 +63,7 @@ const AdminPortfolio = () => {
     const { data } = await supabase
       .from('portfolio_projects')
       .select('*')
+      .is('deleted_at', null)
       .order('sort_order');
     setProjects((data as any[]) || []);
     setLoading(false);

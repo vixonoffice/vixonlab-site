@@ -55,6 +55,7 @@ export type Database = {
           case_study: Json | null
           category: string
           created_at: string
+          deleted_at: string | null
           description_en: string
           description_ro: string
           id: string
@@ -72,6 +73,7 @@ export type Database = {
           case_study?: Json | null
           category?: string
           created_at?: string
+          deleted_at?: string | null
           description_en?: string
           description_ro?: string
           id?: string
@@ -89,6 +91,7 @@ export type Database = {
           case_study?: Json | null
           category?: string
           created_at?: string
+          deleted_at?: string | null
           description_en?: string
           description_ro?: string
           id?: string
@@ -109,6 +112,7 @@ export type Database = {
           created_at: string
           cta_label_en: string
           cta_label_ro: string
+          deleted_at: string | null
           description_en: string
           description_ro: string
           features_en: string[]
@@ -126,6 +130,7 @@ export type Database = {
           created_at?: string
           cta_label_en?: string
           cta_label_ro?: string
+          deleted_at?: string | null
           description_en?: string
           description_ro?: string
           features_en?: string[]
@@ -143,6 +148,7 @@ export type Database = {
           created_at?: string
           cta_label_en?: string
           cta_label_ro?: string
+          deleted_at?: string | null
           description_en?: string
           description_ro?: string
           features_en?: string[]
@@ -222,6 +228,7 @@ export type Database = {
         Row: {
           anchor: string | null
           created_at: string
+          deleted_at: string | null
           description_en: string
           description_ro: string
           features_en: string[]
@@ -239,6 +246,7 @@ export type Database = {
         Insert: {
           anchor?: string | null
           created_at?: string
+          deleted_at?: string | null
           description_en?: string
           description_ro?: string
           features_en?: string[]
@@ -256,6 +264,7 @@ export type Database = {
         Update: {
           anchor?: string | null
           created_at?: string
+          deleted_at?: string | null
           description_en?: string
           description_ro?: string
           features_en?: string[]
@@ -360,6 +369,7 @@ export type Database = {
           author_role: string
           avatar_gradient: string
           created_at: string
+          deleted_at: string | null
           id: string
           quote_en: string
           quote_ro: string
@@ -372,6 +382,7 @@ export type Database = {
           author_role?: string
           avatar_gradient?: string
           created_at?: string
+          deleted_at?: string | null
           id?: string
           quote_en?: string
           quote_ro?: string
@@ -384,6 +395,7 @@ export type Database = {
           author_role?: string
           avatar_gradient?: string
           created_at?: string
+          deleted_at?: string | null
           id?: string
           quote_en?: string
           quote_ro?: string

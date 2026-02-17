@@ -34,7 +34,7 @@ const AdminServices = () => {
   useEffect(() => { fetch(); }, [location.key]);
 
   async function fetch() {
-    const { data } = await supabase.from('services').select('*').order('sort_order');
+    const { data } = await supabase.from('services').select('*').is('deleted_at', null).order('sort_order');
     setItems((data as any[]) || []);
     setLoading(false);
   }
