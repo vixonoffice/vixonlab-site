@@ -21,6 +21,7 @@ interface PortfolioProject {
   description_en: string;
   tags: string[];
   image_url: string | null;
+  live_url: string | null;
   slug: string | null;
   case_study: CaseStudyData | null;
 }
@@ -131,6 +132,7 @@ const AdminPortfolio = () => {
       description_en: '',
       tags: [],
       image_url: null,
+      live_url: null,
       slug: null,
       case_study: null,
     };
@@ -201,6 +203,17 @@ const AdminPortfolio = () => {
               <Label>Ordine sortare</Label>
               <Input type="number" value={editing.sort_order} onChange={(e) => setEditing({ ...editing, sort_order: parseInt(e.target.value) || 0 })} className="bg-white/5 border-white/10 w-24" />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label>URL Site Live</Label>
+            <Input
+              value={editing.live_url || ''}
+              onChange={(e) => setEditing({ ...editing, live_url: e.target.value || null })}
+              placeholder="https://exemplu.vercel.app"
+              className="bg-white/5 border-white/10"
+            />
+            <p className="text-xs text-muted-foreground">Link catre site-ul live (apare ca buton pe card si case study)</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -59,6 +59,7 @@ export type Database = {
           description_ro: string
           id: string
           image_url: string | null
+          live_url: string | null
           slug: string | null
           sort_order: number
           subtitle_en: string
@@ -75,6 +76,7 @@ export type Database = {
           description_ro?: string
           id?: string
           image_url?: string | null
+          live_url?: string | null
           slug?: string | null
           sort_order?: number
           subtitle_en?: string
@@ -91,6 +93,7 @@ export type Database = {
           description_ro?: string
           id?: string
           image_url?: string | null
+          live_url?: string | null
           slug?: string | null
           sort_order?: number
           subtitle_en?: string

@@ -4,7 +4,7 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { ArrowLeft, Check, Clock, Calendar, Quote } from 'lucide-react';
+import { ArrowLeft, Check, Clock, Calendar, Quote, ExternalLink } from 'lucide-react';
 import { usePortfolioProjects } from '@/hooks/useSupabaseData';
 
 const CaseStudy = () => {
@@ -84,6 +84,18 @@ const CaseStudy = () => {
               </span>
             ))}
           </div>
+
+          {project.live_url && (
+            <a
+              href={project.live_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-6 gradient-primary text-white font-medium px-6 py-3 rounded-2xl hover:opacity-90 transition-opacity"
+            >
+              <ExternalLink className="w-4 h-4" />
+              {isEn ? 'Visit Live Site' : 'Vezi Site-ul Live'}
+            </a>
+          )}
         </div>
       </section>
 

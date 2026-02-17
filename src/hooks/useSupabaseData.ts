@@ -180,6 +180,7 @@ export interface PortfolioProjectRow {
   description_en: string;
   tags: string[];
   image_url: string | null;
+  live_url: string | null;
   slug: string | null;
   case_study: CaseStudyData | null;
 }

@@ -5,6 +5,7 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
+import { ExternalLink } from 'lucide-react';
 import { usePortfolioProjects, type PortfolioProjectRow } from '@/hooks/useSupabaseData';
 
 type Category = 'all' | 'webdev' | 'ecommerce' | 'design';
@@ -93,6 +94,18 @@ function ProjectCard({ project, language }: { project: PortfolioProjectRow; lang
         <div className="relative aspect-[16/10] overflow-hidden">
           <img src={project.image_url} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+          {project.live_url && (
+            <a
+              href={project.live_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/90 backdrop-blur-sm text-white text-xs font-medium hover:bg-primary transition-colors z-10"
+            >
+              <ExternalLink className="w-3 h-3" />
+              {language === 'en' ? 'View Live' : 'Vezi Live'}
+            </a>
+          )}
         </div>
       )}
       <div className="p-5">
