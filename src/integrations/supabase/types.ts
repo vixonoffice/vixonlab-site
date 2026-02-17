@@ -52,12 +52,14 @@ export type Database = {
       }
       portfolio_projects: {
         Row: {
+          case_study: Json | null
           category: string
           created_at: string
           description_en: string
           description_ro: string
           id: string
           image_url: string | null
+          slug: string | null
           sort_order: number
           subtitle_en: string
           subtitle_ro: string
@@ -66,12 +68,14 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          case_study?: Json | null
           category?: string
           created_at?: string
           description_en?: string
           description_ro?: string
           id?: string
           image_url?: string | null
+          slug?: string | null
           sort_order?: number
           subtitle_en?: string
           subtitle_ro?: string
@@ -80,12 +84,14 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          case_study?: Json | null
           category?: string
           created_at?: string
           description_en?: string
           description_ro?: string
           id?: string
           image_url?: string | null
+          slug?: string | null
           sort_order?: number
           subtitle_en?: string
           subtitle_ro?: string

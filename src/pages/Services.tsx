@@ -4,20 +4,15 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { Code, ShoppingCart, Palette, BarChart3, Check } from 'lucide-react';
-
-const servicesData = [
-  { id: 'web-development', icon: Code, priceKey: '1.500 RON', priceKeyEn: '1,500 RON', featuresKey: 'servicesPage.web.features' as const, titleKey: 'services.web.title' as const, descKey: 'services.web.desc' as const, gradient: 'from-purple-600 to-violet-500' },
-  { id: 'ecommerce', icon: ShoppingCart, priceKey: '3.500 RON', priceKeyEn: '3,500 RON', featuresKey: 'servicesPage.ecommerce.features' as const, titleKey: 'services.ecommerce.title' as const, descKey: 'services.ecommerce.desc' as const, gradient: 'from-pink-600 to-rose-500' },
-  { id: 'design', icon: Palette, priceKey: '500 RON', priceKeyEn: '500 RON', featuresKey: 'servicesPage.design.features' as const, titleKey: 'services.design.title' as const, descKey: 'services.design.desc' as const, gradient: 'from-blue-600 to-cyan-500' },
-  { id: 'marketing', icon: BarChart3, priceKey: '800 RON', priceKeyEn: '800 RON', featuresKey: 'servicesPage.marketing.features' as const, titleKey: 'services.marketing.title' as const, descKey: 'services.marketing.desc' as const, gradient: 'from-amber-600 to-orange-500' },
-];
-
-const techStack = ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Figma', 'Vercel'];
+import { Check } from 'lucide-react';
+import { useServices, useTechStack, resolveIcon } from '@/hooks/useSupabaseData';
 
 const Services = () => {
   const { t, language } = useLanguage();
   usePageSEO({ title: t('servicesPage.badge'), description: t('servicesPage.subtitle') });
+
+  const { data: services } = useServices();
+  const { data: techStack } = useTechStack();
 
   return (
     <PageTransition>
@@ -33,43 +28,55 @@ const Services = () => {
       </section>
 
       {/* Service sections */}
-      {servicesData.map((service, index) => (
-        <SectionWrapper key={service.id} id={service.id} className={index % 2 === 1 ? 'bg-background-secondary/30' : ''}>
-          <ScrollReveal>
-            <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-start ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
-              <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-6`}>
-                  <service.icon className="w-7 h-7 text-white" />
+      {services.map((service, index) => {
+        const Icon = resolveIcon(service.icon);
+        const features = language === 'en' ? service.features_en : service.features_ro;
+        return (
+          <SectionWrapper key={service.id} id={service.anchor || service.id} className={index % 2 === 1 ? 'bg-background-secondary/30' : ''}>
+            <ScrollReveal>
+              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-start ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+                <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
+                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.icon_gradient} flex items-center justify-center mb-6`}>
+                    <Icon className="w-7 h-7 text-white" />
+                  </div>
+                  <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-4">
+                    {language === 'en' ? service.title_en : service.title_ro}
+                  </h2>
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    {language === 'en' ? service.description_en : service.description_ro}
+                  </p>
+                  {service.price_label_ro && (
+                    <>
+                      <p className="text-sm text-muted-foreground mb-1">{t('servicesPage.from')}</p>
+                      <p className="font-heading font-bold text-2xl gradient-text mb-6">
+                        {language === 'en' ? service.price_label_en : service.price_label_ro}
+                      </p>
+                    </>
+                  )}
+                  <Link to="/contact" className="gradient-primary text-white font-medium px-6 py-3 rounded-2xl inline-block hover:opacity-90 transition-opacity">
+                    {t('servicesPage.requestQuote')}
+                  </Link>
                 </div>
-                <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-4">{t(service.titleKey)}</h2>
-                <p className="text-muted-foreground leading-relaxed mb-6">{t(service.descKey)}</p>
-                <p className="text-sm text-muted-foreground mb-1">{t('servicesPage.from')}</p>
-                <p className="font-heading font-bold text-2xl gradient-text mb-6">
-                  {language === 'ro' ? service.priceKey : service.priceKeyEn}
-                </p>
-                <Link to="/contact" className="gradient-primary text-white font-medium px-6 py-3 rounded-2xl inline-block hover:opacity-90 transition-opacity">
-                  {t('servicesPage.requestQuote')}
-                </Link>
-              </div>
 
-              <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
-                <div className="glass-card p-6">
-                  <div className="space-y-3">
-                    {t(service.featuresKey).split('|').map((feature) => (
-                      <div key={feature} className="flex items-center gap-3">
-                        <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                          <Check className="w-3 h-3 text-primary-light" />
+                <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
+                  <div className="glass-card p-6">
+                    <div className="space-y-3">
+                      {features.map((feature) => (
+                        <div key={feature} className="flex items-center gap-3">
+                          <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                            <Check className="w-3 h-3 text-primary-light" />
+                          </div>
+                          <span className="text-sm text-foreground">{feature}</span>
                         </div>
-                        <span className="text-sm text-foreground">{feature}</span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </ScrollReveal>
-        </SectionWrapper>
-      ))}
+            </ScrollReveal>
+          </SectionWrapper>
+        );
+      })}
 
       {/* Tech Stack */}
       <SectionWrapper>
@@ -78,7 +85,7 @@ const Services = () => {
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-10">{t('servicesPage.techTitle')}</h2>
           <div className="flex flex-wrap gap-3">
             {techStack.map((tech) => (
-              <span key={tech} className="glass-card px-5 py-2.5 text-sm font-medium text-foreground">{tech}</span>
+              <span key={tech.id} className="glass-card px-5 py-2.5 text-sm font-medium text-foreground">{tech.name}</span>
             ))}
           </div>
         </ScrollReveal>

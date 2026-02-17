@@ -5,19 +5,14 @@ import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { Ban, DollarSign, Cpu, HeadphonesIcon } from 'lucide-react';
-
-const techStack = ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Figma', 'Vercel'];
+import { useStats, useTechStack } from '@/hooks/useSupabaseData';
 
 const About = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   usePageSEO({ title: t('about.badge'), description: t('about.subtitle') });
 
-  const stats = [
-    { value: '50+', label: t('stats.projects') },
-    { value: '99%', label: t('stats.clients') },
-    { value: '3+', label: t('stats.years') },
-    { value: '24h', label: t('stats.response') },
-  ];
+  const { data: stats } = useStats();
+  const { data: techStack } = useTechStack();
 
   const principles = [
     { icon: Ban, title: t('about.p1.title'), desc: t('about.p1.desc') },
@@ -54,9 +49,9 @@ const About = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5" />
               <div className="grid grid-cols-2 gap-6 relative z-10">
                 {stats.map((stat) => (
-                  <div key={stat.label} className="text-center">
+                  <div key={stat.id} className="text-center">
                     <div className="font-heading font-bold text-3xl gradient-text mb-1">{stat.value}</div>
-                    <div className="text-xs text-muted-foreground">{stat.label}</div>
+                    <div className="text-xs text-muted-foreground">{language === 'en' ? stat.label_en : stat.label_ro}</div>
                   </div>
                 ))}
               </div>
@@ -96,7 +91,7 @@ const About = () => {
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-10">{t('servicesPage.techTitle')}</h2>
           <div className="flex flex-wrap gap-3">
             {techStack.map((tech) => (
-              <span key={tech} className="glass-card px-5 py-2.5 text-sm font-medium text-foreground">{tech}</span>
+              <span key={tech.id} className="glass-card px-5 py-2.5 text-sm font-medium text-foreground">{tech.name}</span>
             ))}
           </div>
         </ScrollReveal>

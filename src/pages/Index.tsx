@@ -4,11 +4,17 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { Code, ShoppingCart, Palette, BarChart3, Zap, Star, Shield, ChevronDown } from 'lucide-react';
+import { Zap, Star, Shield, ChevronDown } from 'lucide-react';
+import { useStats, useServices, useProcessSteps, useTestimonials, resolveIcon } from '@/hooks/useSupabaseData';
 
 const Index = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   usePageSEO({ title: t('nav.home'), description: t('hero.subtitle') });
+
+  const { data: stats } = useStats();
+  const { data: services } = useServices();
+  const { data: steps } = useProcessSteps();
+  const { data: testimonials } = useTestimonials();
 
   return (
     <PageTransition>
@@ -59,15 +65,10 @@ const Index = () => {
       <section className="border-y border-white/5 bg-background-secondary/50 section-padding py-16">
         <div className="mx-auto max-w-content">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
-            {[
-              { value: '50+', label: t('stats.projects') },
-              { value: '99%', label: t('stats.clients') },
-              { value: '3+', label: t('stats.years') },
-              { value: '24h', label: t('stats.response') },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
+            {stats.map((stat) => (
+              <div key={stat.id} className="text-center">
                 <div className="font-heading font-bold text-3xl md:text-4xl gradient-text mb-1">{stat.value}</div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
+                <div className="text-sm text-muted-foreground">{language === 'en' ? stat.label_en : stat.label_ro}</div>
               </div>
             ))}
           </div>
@@ -82,25 +83,27 @@ const Index = () => {
         </ScrollReveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { icon: Code, title: t('services.web.title'), desc: t('services.web.desc'), hash: 'web-development', gradient: 'from-purple-600 to-violet-500' },
-            { icon: ShoppingCart, title: t('services.ecommerce.title'), desc: t('services.ecommerce.desc'), hash: 'ecommerce', gradient: 'from-pink-600 to-rose-500' },
-            { icon: Palette, title: t('services.design.title'), desc: t('services.design.desc'), hash: 'design', gradient: 'from-blue-600 to-cyan-500' },
-            { icon: BarChart3, title: t('services.marketing.title'), desc: t('services.marketing.desc'), hash: 'marketing', gradient: 'from-amber-600 to-orange-500' },
-          ].map((service) => (
-            <ScrollReveal key={service.hash}>
-              <Link to={`/services#${service.hash}`} className="glass-card p-6 block h-full group">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-5`}>
-                  <service.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="font-heading font-semibold text-lg text-foreground mb-3">{service.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{service.desc}</p>
-                <span className="text-sm text-primary-light opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  {t('services.learnMore')}
-                </span>
-              </Link>
-            </ScrollReveal>
-          ))}
+          {services.map((service) => {
+            const Icon = resolveIcon(service.icon);
+            return (
+              <ScrollReveal key={service.id}>
+                <Link to={`/services#${service.anchor || service.id}`} className="glass-card p-6 block h-full group">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.icon_gradient} flex items-center justify-center mb-5`}>
+                    <Icon className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-heading font-semibold text-lg text-foreground mb-3">
+                    {language === 'en' ? service.title_en : service.title_ro}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                    {language === 'en' ? service.description_en : service.description_ro}
+                  </p>
+                  <span className="text-sm text-primary-light opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {t('services.learnMore')}
+                  </span>
+                </Link>
+              </ScrollReveal>
+            );
+          })}
         </div>
       </SectionWrapper>
 
@@ -142,19 +145,18 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
           <div className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-primary/40 via-accent/40 to-primary/40" />
 
-          {[
-            { step: '01', title: t('process.1.title'), desc: t('process.1.desc') },
-            { step: '02', title: t('process.2.title'), desc: t('process.2.desc') },
-            { step: '03', title: t('process.3.title'), desc: t('process.3.desc') },
-            { step: '04', title: t('process.4.title'), desc: t('process.4.desc') },
-          ].map((item) => (
-            <ScrollReveal key={item.step}>
+          {steps.map((item) => (
+            <ScrollReveal key={item.id}>
               <div className="glass-card p-6 relative">
                 <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-white font-heading font-bold text-sm mb-4">
-                  {item.step}
+                  {item.step_number}
                 </div>
-                <h3 className="font-heading font-semibold text-lg text-foreground mb-2">{item.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                <h3 className="font-heading font-semibold text-lg text-foreground mb-2">
+                  {language === 'en' ? item.title_en : item.title_ro}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {language === 'en' ? item.description_en : item.description_ro}
+                </p>
               </div>
             </ScrollReveal>
           ))}
@@ -170,21 +172,19 @@ const Index = () => {
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { text: t('testimonials.1.text'), name: t('testimonials.1.name'), company: t('testimonials.1.company'), initial: 'M', gradient: 'from-purple-600 to-violet-500' },
-              { text: t('testimonials.2.text'), name: t('testimonials.2.name'), company: t('testimonials.2.company'), initial: 'A', gradient: 'from-pink-600 to-rose-500' },
-              { text: t('testimonials.3.text'), name: t('testimonials.3.name'), company: t('testimonials.3.company'), initial: 'E', gradient: 'from-blue-600 to-cyan-500' },
-            ].map((item) => (
-              <ScrollReveal key={item.name}>
+            {testimonials.map((item) => (
+              <ScrollReveal key={item.id}>
                 <div className="glass-card p-6 border-l-4 border-l-primary">
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-6 italic">"{item.text}"</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-6 italic">
+                    "{language === 'en' ? item.quote_en : item.quote_ro}"
+                  </p>
                   <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${item.gradient} flex items-center justify-center text-white font-heading font-bold text-sm`}>
-                      {item.initial}
+                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${item.avatar_gradient} flex items-center justify-center text-white font-heading font-bold text-sm`}>
+                      {item.author_initial}
                     </div>
                     <div>
-                      <div className="text-sm font-medium text-foreground">{item.name}</div>
-                      <div className="text-xs text-muted-foreground">{item.company}</div>
+                      <div className="text-sm font-medium text-foreground">{item.author_name}</div>
+                      <div className="text-xs text-muted-foreground">{item.author_role}</div>
                     </div>
                   </div>
                 </div>
