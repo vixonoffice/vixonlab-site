@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { getUserFriendlyError } from '@/lib/errorUtils';
-import { Plus, Trash2, Save } from 'lucide-react';
+import { Plus, Trash2, Save, ChevronUp, ChevronDown } from 'lucide-react';
 import type { CaseStudyData } from '@/hooks/useSupabaseData';
 
 interface PortfolioProject {
@@ -95,6 +95,28 @@ const AdminPortfolio = () => {
     toast.success('Proiect salvat!');
     setEditing(null);
     fetchProjects();
+  }
+
+  async function moveProject(id: string, direction: 'up' | 'down') {
+    const idx = projects.findIndex((p) => p.id === id);
+    const swapIdx = direction === 'up' ? idx - 1 : idx + 1;
+    if (swapIdx < 0 || swapIdx >= projects.length) return;
+
+    const a = projects[idx];
+    const b = projects[swapIdx];
+
+    // Swap sort_order values
+    await Promise.all([
+      supabase.from('portfolio_projects').update({ sort_order: b.sort_order }).eq('id', a.id),
+      supabase.from('portfolio_projects').update({ sort_order: a.sort_order }).eq('id', b.id),
+    ]);
+
+    // Update local state immediately (no refetch flicker)
+    const updated = [...projects];
+    updated[idx] = { ...a, sort_order: b.sort_order };
+    updated[swapIdx] = { ...b, sort_order: a.sort_order };
+    updated.sort((x, y) => x.sort_order - y.sort_order);
+    setProjects(updated);
   }
 
   async function handleDelete(id: string) {
@@ -479,9 +501,29 @@ const AdminPortfolio = () => {
       </div>
 
       <div className="space-y-3">
-        {projects.map((p) => (
+        {projects.map((p, idx) => (
           <div key={p.id} className="glass-card p-3 sm:p-4" style={{ transform: 'none' }}>
-            <div className="flex items-start gap-3">
+            <div className="flex items-center gap-3">
+              {/* Order buttons */}
+              <div className="flex flex-col shrink-0">
+                <button
+                  onClick={() => moveProject(p.id, 'up')}
+                  disabled={idx === 0}
+                  className="p-0.5 rounded hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                  title="Mută sus"
+                >
+                  <ChevronUp className="w-4 h-4 text-muted-foreground" />
+                </button>
+                <button
+                  onClick={() => moveProject(p.id, 'down')}
+                  disabled={idx === projects.length - 1}
+                  className="p-0.5 rounded hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                  title="Mută jos"
+                >
+                  <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                </button>
+              </div>
+
               {p.image_url && <img src={p.image_url} alt="" className="w-12 h-8 sm:w-16 sm:h-10 object-cover rounded shrink-0" />}
               <div className="flex-1 min-w-0">
                 <h3 className="font-heading font-semibold text-foreground text-sm truncate">
