@@ -9,7 +9,18 @@ export const translations = {
     'nav.services': 'Servicii & Prețuri',
     'nav.portfolio': 'Portofoliu',
     'nav.about': 'Despre',
+    'nav.blog': 'Blog',
     'nav.contact': 'Contact',
+
+    // Blog
+    'blog.badge': 'Blog',
+    'blog.title': 'Articole & Resurse',
+    'blog.subtitle': 'Sfaturi practice, ghiduri tehnice si studii de caz din lumea web development-ului.',
+    'blog.all': 'Toate',
+    'blog.featured': 'Articole recomandate',
+    'blog.noPosts': 'Niciun articol momentan.',
+    'blog.ctaTitle': 'Vrei sa discutam despre proiectul tau?',
+    'blog.ctaButton': 'Contacteaza-ne',
 
     // Hero
     'hero.badge': 'Acceptăm proiecte noi',
@@ -254,7 +265,18 @@ export const translations = {
     'nav.services': 'Services & Pricing',
     'nav.portfolio': 'Portfolio',
     'nav.about': 'About',
+    'nav.blog': 'Blog',
     'nav.contact': 'Contact',
+
+    // Blog
+    'blog.badge': 'Blog',
+    'blog.title': 'Articles & Resources',
+    'blog.subtitle': 'Practical tips, technical guides and case studies from the world of web development.',
+    'blog.all': 'All',
+    'blog.featured': 'Featured Articles',
+    'blog.noPosts': 'No articles yet.',
+    'blog.ctaTitle': 'Want to discuss your project?',
+    'blog.ctaButton': 'Contact Us',
 
     'hero.badge': 'Accepting new projects',
     'hero.title1': 'We build websites that',

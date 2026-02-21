@@ -17,6 +17,8 @@ const Pricing = lazy(() => import("./pages/Pricing"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Admin pages - lazy loaded
@@ -35,6 +37,7 @@ const AdminProcess = lazy(() => import("./pages/admin/AdminProcess"));
 const AdminTech = lazy(() => import("./pages/admin/AdminTech"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminMessages = lazy(() => import("./pages/admin/AdminMessages"));
+const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
 const AdminTrash = lazy(() => import("./pages/admin/AdminTrash"));
 
 const queryClient = new QueryClient();
@@ -56,6 +59,8 @@ const App = () => (
               <Route path="/about" element={<Layout><About /></Layout>} />
               <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
               <Route path="/contact" element={<Layout><Contact /></Layout>} />
+              <Route path="/blog" element={<Layout><Blog /></Layout>} />
+              <Route path="/blog/:slug" element={<Layout><BlogPost /></Layout>} />
               <Route path="/privacy" element={<Layout><Privacy /></Layout>} />
               <Route path="/terms" element={<Layout><Terms /></Layout>} />
 
@@ -73,6 +78,7 @@ const App = () => (
               <Route path="/admin/tech" element={<ProtectedRoute><AdminLayout><AdminTech /></AdminLayout></ProtectedRoute>} />
               <Route path="/admin/users" element={<ProtectedRoute><AdminLayout><AdminUsers /></AdminLayout></ProtectedRoute>} />
               <Route path="/admin/messages" element={<ProtectedRoute><AdminLayout><AdminMessages /></AdminLayout></ProtectedRoute>} />
+              <Route path="/admin/blog" element={<ProtectedRoute><AdminLayout><AdminBlog /></AdminLayout></ProtectedRoute>} />
               <Route path="/admin/trash" element={<ProtectedRoute><AdminLayout><AdminTrash /></AdminLayout></ProtectedRoute>} />
 
               <Route path="*" element={<Layout><NotFound /></Layout>} />
