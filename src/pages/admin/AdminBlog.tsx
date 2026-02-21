@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { getUserFriendlyError } from '@/lib/errorUtils';
-import { Plus, Trash2, Save, Eye, EyeOff, Star, StarOff } from 'lucide-react';
+import { Plus, Trash2, Save, Eye, EyeOff, Star, StarOff, ChevronUp, ChevronDown } from 'lucide-react';
 import {
   useAdminBlogPosts,
   createBlogPost,
@@ -61,6 +61,19 @@ const emptyPost: EditingPost = {
 
 const AdminBlog = () => {
   const { data: posts, loading, refetch } = useAdminBlogPosts();
+
+  async function movePost(id: string, direction: 'up' | 'down') {
+    const idx = posts.findIndex((p) => p.id === id);
+    const swapIdx = direction === 'up' ? idx - 1 : idx + 1;
+    if (swapIdx < 0 || swapIdx >= posts.length) return;
+    const a = posts[idx];
+    const b = posts[swapIdx];
+    await Promise.all([
+      supabase.from('blog_posts').update({ sort_order: b.sort_order }).eq('id', a.id),
+      supabase.from('blog_posts').update({ sort_order: a.sort_order }).eq('id', b.id),
+    ]);
+    refetch();
+  }
   const [editing, setEditing] = useState<EditingPost | null>(null);
   const [uploading, setUploading] = useState(false);
   const location = useLocation();
@@ -377,9 +390,28 @@ const AdminBlog = () => {
       </div>
 
       <div className="space-y-3">
-        {posts.map((p) => (
+        {posts.map((p, idx) => (
           <div key={p.id} className="glass-card p-3 sm:p-4" style={{ transform: 'none' }}>
             <div className="flex items-center gap-3">
+              {/* Order buttons */}
+              <div className="flex flex-col shrink-0">
+                <button
+                  onClick={() => movePost(p.id, 'up')}
+                  disabled={idx === 0}
+                  className="p-0.5 rounded hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                  title="Mută sus"
+                >
+                  <ChevronUp className="w-4 h-4 text-muted-foreground" />
+                </button>
+                <button
+                  onClick={() => movePost(p.id, 'down')}
+                  disabled={idx === posts.length - 1}
+                  className="p-0.5 rounded hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                  title="Mută jos"
+                >
+                  <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                </button>
+              </div>
               {p.cover_image && (
                 <img
                   src={p.cover_image}

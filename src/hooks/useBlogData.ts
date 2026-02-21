@@ -33,7 +33,7 @@ export function useBlogPosts() {
       .select('*')
       .is('deleted_at', null)
       .eq('published', true)
-      .order('published_at', { ascending: false })
+      .order('sort_order', { ascending: true })
       .then(({ data }) => {
         setData((data as BlogPostRow[]) || []);
         setLoading(false);
@@ -73,7 +73,7 @@ export function useAdminBlogPosts() {
       .from('blog_posts')
       .select('*')
       .is('deleted_at', null)
-      .order('created_at', { ascending: false });
+      .order('sort_order', { ascending: true });
     setData((data as BlogPostRow[]) || []);
     setLoading(false);
   }, []);

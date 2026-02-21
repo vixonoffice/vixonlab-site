@@ -53,7 +53,7 @@ export function Navbar() {
               }}
               className="flex items-center gap-2 relative z-50"
             >
-              <img src="/logo.png" alt="Vixon Lab" className="h-16 w-16 object-contain" />
+              <img src="/logo.png" alt="Vixon Lab" className="h-9 w-9 object-contain" />
               <span className="text-xl font-bold font-heading">
                 <span className="text-foreground">VIXON</span>
                 <span className="gradient-text">&nbsp;LAB</span>
