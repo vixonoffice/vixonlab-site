@@ -17,8 +17,11 @@ function renderMarkdown(md: string): string {
     .replace(/`([^`]+)`/g, '<code class="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-sm text-primary-light">$1</code>')
     // Images
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="rounded-xl my-4 max-w-full" loading="lazy" />')
-    // Links
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary-light underline hover:opacity-80">$1</a>')
+    // Links — sanitize: only allow http/https/relative URLs
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
+      const safe = /^(https?:\/\/|\/)/i.test(url) ? url : '#';
+      return `<a href="${safe}" target="_blank" rel="noopener noreferrer" class="text-primary-light underline hover:opacity-80">${text}</a>`;
+    })
     // Bold
     .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-foreground font-semibold">$1</strong>')
     // Italic
