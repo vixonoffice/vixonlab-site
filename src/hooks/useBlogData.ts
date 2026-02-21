@@ -30,7 +30,7 @@ export function useBlogPosts() {
   useEffect(() => {
     supabase
       .from('blog_posts')
-      .select('*')
+      .select('id,slug,title_ro,title_en,excerpt_ro,excerpt_en,cover_image,category,tags,featured,read_time_minutes,views,published_at,sort_order')
       .is('deleted_at', null)
       .eq('published', true)
       .order('sort_order', { ascending: true })
