@@ -41,12 +41,12 @@ export function Footer() {
             <h4 className="font-heading font-semibold text-sm mb-4 text-foreground">{t('footer.services')}</h4>
             <div className="flex flex-col gap-2.5">
               {[
-                { label: t('services.web.title'), hash: '#web-development' },
-                { label: t('services.ecommerce.title'), hash: '#ecommerce' },
-                { label: t('services.design.title'), hash: '#design' },
-                { label: t('services.marketing.title'), hash: '#marketing' },
+                { label: 'Essential', path: '/services' },
+                { label: 'Business', path: '/services' },
+                { label: 'Ecosistem', path: '/services' },
+                { label: 'Vixon Care', path: '/services' },
               ].map((link) => (
-                <Link key={link.hash} to={`/services${link.hash}`} className="text-sm text-muted-foreground hover:text-primary-light transition-colors">
+                <Link key={link.label} to={link.path} className="text-sm text-muted-foreground hover:text-primary-light transition-colors">
                   {link.label}
                 </Link>
               ))}

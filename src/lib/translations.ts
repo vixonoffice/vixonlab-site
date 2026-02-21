@@ -6,10 +6,9 @@ export const translations = {
   ro: {
     // Navbar
     'nav.home': 'Acasă',
-    'nav.services': 'Servicii',
+    'nav.services': 'Servicii & Prețuri',
     'nav.portfolio': 'Portofoliu',
     'nav.about': 'Despre',
-    'nav.pricing': 'Prețuri',
     'nav.contact': 'Contact',
 
     // Hero
@@ -26,7 +25,7 @@ export const translations = {
     'stats.years': 'Ani experiență',
     'stats.response': 'Timp de răspuns',
 
-    // Services section
+    // Services section (homepage)
     'services.label': 'Ce facem',
     'services.title': 'Tot ce ai nevoie ca să fii vizibil online',
     'services.web.title': 'Web Development',
@@ -42,12 +41,12 @@ export const translations = {
     // Why us
     'why.label': 'De ce noi',
     'why.title': 'De ce Vixon Lab?',
-    'why.fast.title': 'Gata în 1-3 săptămâni',
-    'why.fast.desc': 'Primești un timeline clar de la prima discuție. Majoritatea proiectelor sunt live în maxim 3 săptămâni.',
-    'why.clean.title': 'Cod curat, design actual',
-    'why.clean.desc': 'Folosim Next.js, Tailwind și cele mai noi tehnologii. Site-ul tău nu va arăta ca în 2018.',
-    'why.support.title': 'Nu dispărem după lansare',
-    'why.support.desc': 'Suport inclus în fiecare pachet. Ai o problemă? Rezolvăm. Vrei o modificare? Facem.',
+    'why.fast.title': 'Gata în 3-7 zile',
+    'why.fast.desc': 'Nu aștepți luni de zile. Primești un site premium, funcțional, livrat rapid — fără compromisuri de calitate.',
+    'why.clean.title': 'Cod Custom, nu WordPress',
+    'why.clean.desc': 'Fiecare site e scris de la zero. De 3x mai rapid, mai sigur și mai ușor de indexat de Google decât un site WordPress.',
+    'why.support.title': 'Digital All-in-One',
+    'why.support.desc': 'Ne ocupăm de tot: site, logo, branding, Google My Business, reclame — tu te concentrezi pe afacere.',
 
     // Process
     'process.label': 'Cum lucrăm',
@@ -79,7 +78,68 @@ export const translations = {
     'cta.subtitle': 'Spune-ne ce ai nevoie. Fără obligații, fără presiune — doar o discuție.',
     'cta.button': 'Scrie-ne →',
 
-    // Services page
+    // Services & Pricing page (combined)
+    'sp.badge': 'Servicii & Prețuri',
+    'sp.title': 'Investiția corectă pentru afacerea ta',
+    'sp.subtitle': 'Alege pachetul potrivit și trimite-ne mesaj pe WhatsApp. Discutăm gratuit despre afacerea ta și îți facem o ofertă personalizată.',
+    'sp.delivery': 'Livrare în 3-7 zile',
+    'sp.customCode': 'Cod Custom — fără WordPress',
+    'sp.allInOne': 'Digital All-in-One',
+
+    'sp.essential': 'ESSENTIAL',
+    'sp.essentialDesc': 'Website premium complet pentru afacerea ta. Prezență online profesională care atrage clienți.',
+    'sp.essentialPrice': '700€ — 900€',
+    'sp.essentialFeatures': 'Website Premium Multi-Pagină|Design Modern & Responsive|Cod Custom (viteză maximă)|Optimizare SEO & Google|Google My Business Setup|Formular de Contact|Domeniu GRATUIT 1 an|Livrare în 3-7 zile',
+
+    'sp.business': 'BUSINESS',
+    'sp.businessDesc': 'Tot ce include Essential, plus instrumente avansate ca să-ți gestionezi singur afacerea online.',
+    'sp.businessPrice': '1.200€ — 1.600€',
+    'sp.businessFeatures': 'Tot din pachetul Essential|Admin Panel Custom|Sistem de Rezervări Online|SAU Meniu Digital cu QR|Design Logo & Branding Complet|Integrare Google Maps & Reviews|Galerie Foto Profesională|Suport Prioritar 3 luni',
+
+    'sp.ecosystem': 'ECOSISTEM',
+    'sp.ecosystemDesc': 'Soluția completă: website + strategie de marketing + materiale fizice. Ne ocupăm de TOT.',
+    'sp.ecosystemPrice': 'De la 2.000€',
+    'sp.ecosystemFeatures': 'Tot din pachetul Business|Strategie Google Ads|Strategie Meta (Facebook/Instagram) Ads|Design Cărți de Vizită|Design Flyere Profesionale|Campanii de Marketing Setup|Analiză Competiție & Piață|Consultanță Ongoing',
+
+    'sp.maintenance': 'VIXON CARE',
+    'sp.maintenanceDesc': 'Mentenanță lunară — ne ocupăm noi ca site-ul tău să funcționeze perfect, mereu.',
+    'sp.maintenancePrice': '49€ / lună',
+    'sp.maintenanceFeatures': 'Hosting Premium Inclus|Update-uri de Securitate|Backup Zilnic Automat|Suport Prioritar pe WhatsApp|Modificări Minore Incluse|Monitorizare Uptime 24/7',
+
+    'sp.popular': 'Cel mai ales',
+    'sp.recommended': 'Recomandat',
+    'sp.from': 'De la',
+    'sp.perMonth': '/ lună',
+    'sp.includes': 'Include tot din',
+
+    'sp.selectTitle': 'Configurează-ți pachetul',
+    'sp.selectSubtitle': 'Selectează ce te interesează și trimite-ne mesaj direct pe WhatsApp.',
+    'sp.selectedPackage': 'Pachet selectat',
+    'sp.addMaintenance': 'Adaugă Vixon Care (mentenanță)',
+    'sp.sendWhatsapp': 'Trimite pe WhatsApp',
+    'sp.noSelection': 'Selectează un pachet',
+    'sp.estimatedPrice': 'Preț estimativ',
+
+    'sp.whyCustom': 'De ce Cod Custom?',
+    'sp.whyCustomDesc': 'Site-urile noastre nu sunt făcute cu WordPress sau Wix. Fiecare proiect e scris de la zero, ceea ce înseamnă:',
+    'sp.whyCustom1': 'Viteză de 3x mai mare — Google te pune mai sus în rezultate',
+    'sp.whyCustom2': 'Securitate maximă — fără plugin-uri vulnerabile',
+    'sp.whyCustom3': 'Design 100% personalizat — nu template-uri generice',
+    'sp.whyCustom4': 'Scalabilitate — site-ul crește odată cu afacerea ta',
+
+    'sp.targetTitle': 'Pentru cine sunt pachetele noastre?',
+    'sp.target1': 'Cabinete Medicale & Stomatologice',
+    'sp.target2': 'Firme de Construcții & Renovări',
+    'sp.target3': 'Birouri de Topometrie & Cadastru',
+    'sp.target4': 'Restaurante & Cafenele',
+    'sp.target5': 'Săli de Fitness & Sport',
+    'sp.target6': 'Orice afacere locală care vrea clienți noi',
+
+    'sp.ctaTitle': 'Gata să atragi mai mulți clienți?',
+    'sp.ctaSubtitle': 'Scrie-ne pe WhatsApp și în 24h ai o ofertă personalizată. Fără obligații.',
+    'sp.ctaButton': 'Scrie-ne pe WhatsApp',
+
+    // Services page (old keys kept for compatibility)
     'servicesPage.badge': 'Servicii',
     'servicesPage.title': 'Ce putem face pentru tine',
     'servicesPage.subtitle': 'De la o pagină simplă la un magazin online complet — alege ce se potrivește afacerii tale',
@@ -120,13 +180,13 @@ export const translations = {
     'about.p2.title': 'Prețuri clare',
     'about.p2.desc': 'Știi de la început cât costă și ce primești.',
     'about.p3.title': 'Tehnologii actuale',
-    'about.p3.desc': 'Next.js, React, Tailwind — nu WordPress cu 47 de plugin-uri.',
+    'about.p3.desc': 'React, Tailwind — nu WordPress cu 47 de plugin-uri.',
     'about.p4.title': 'Suport real',
     'about.p4.desc': 'Nu dispărem după lansare. Răspundem în maxim 24h.',
     'about.ctaTitle': 'Vrei să lucrăm împreună?',
     'about.ctaButton': 'Contactează-ne',
 
-    // Pricing
+    // Pricing (redirect keys kept for compatibility)
     'pricing.badge': 'Prețuri',
     'pricing.title': 'Prețuri transparente',
     'pricing.subtitle': 'Fără surprize. Alege pachetul care se potrivește sau cere o ofertă custom.',
@@ -161,14 +221,14 @@ export const translations = {
     'contact.projectType': 'Tip proiect',
     'contact.projectTypes': 'Website|Magazin Online|Design|Marketing|Altele',
     'contact.budget': 'Buget estimat',
-    'contact.budgets': 'Sub 2.000 RON|2.000 - 5.000 RON|5.000 - 10.000 RON|Peste 10.000 RON',
+    'contact.budgets': 'Sub 1.000€|1.000€ - 2.000€|2.000€ - 5.000€|Peste 5.000€',
     'contact.details': 'Detalii proiect',
     'contact.submit': 'Trimite mesaj',
     'contact.success': 'Mesajul a fost trimis cu succes! Revenim în maxim 24h.',
     'contact.error': 'A apărut o eroare. Încearcă din nou.',
     'contact.infoTitle': 'Contact',
     'contact.emailAddress': 'contact@vixonlab.com',
-    'contact.phoneNumber': '+40 700 000 000',
+    'contact.phoneNumber': '+40 758 840 269',
     'contact.schedule': 'L-V 9:00 - 18:00',
     'contact.whatsapp': 'Disponibil pe WhatsApp',
     'contact.social': 'Social Media',
@@ -192,10 +252,9 @@ export const translations = {
   },
   en: {
     'nav.home': 'Home',
-    'nav.services': 'Services',
+    'nav.services': 'Services & Pricing',
     'nav.portfolio': 'Portfolio',
     'nav.about': 'About',
-    'nav.pricing': 'Pricing',
     'nav.contact': 'Contact',
 
     'hero.badge': 'Accepting new projects',
@@ -224,12 +283,12 @@ export const translations = {
 
     'why.label': 'Why us',
     'why.title': 'Why Vixon Lab?',
-    'why.fast.title': 'Ready in 1-3 weeks',
-    'why.fast.desc': 'You get a clear timeline from the first discussion. Most projects are live within 3 weeks.',
-    'why.clean.title': 'Clean code, modern design',
-    'why.clean.desc': "We use Next.js, Tailwind and the latest technologies. Your site won't look like it's from 2018.",
-    'why.support.title': "We don't disappear after launch",
-    'why.support.desc': 'Support included in every package. Got a problem? We fix it. Want a change? We do it.',
+    'why.fast.title': 'Ready in 3-7 days',
+    'why.fast.desc': "No waiting for months. You get a premium, functional website delivered fast — without quality compromises.",
+    'why.clean.title': 'Custom Code, not WordPress',
+    'why.clean.desc': "Every site is written from scratch. 3x faster, more secure, and easier for Google to index than a WordPress site.",
+    'why.support.title': 'Digital All-in-One',
+    'why.support.desc': 'We handle everything: website, logo, branding, Google My Business, ads — you focus on your business.',
 
     'process.label': 'How we work',
     'process.title': 'Our process',
@@ -258,6 +317,68 @@ export const translations = {
     'cta.subtitle': 'Tell us what you need. No obligations, no pressure — just a conversation.',
     'cta.button': 'Write to us →',
 
+    // Services & Pricing page (combined)
+    'sp.badge': 'Services & Pricing',
+    'sp.title': 'The right investment for your business',
+    'sp.subtitle': 'Choose the right package and message us on WhatsApp. We discuss your business for free and give you a personalized offer.',
+    'sp.delivery': 'Delivery in 3-7 days',
+    'sp.customCode': 'Custom Code — no WordPress',
+    'sp.allInOne': 'Digital All-in-One',
+
+    'sp.essential': 'ESSENTIAL',
+    'sp.essentialDesc': 'Complete premium website for your business. Professional online presence that attracts clients.',
+    'sp.essentialPrice': '700€ — 900€',
+    'sp.essentialFeatures': 'Premium Multi-Page Website|Modern & Responsive Design|Custom Code (maximum speed)|SEO & Google Optimization|Google My Business Setup|Contact Form|FREE Domain for 1 year|Delivery in 3-7 days',
+
+    'sp.business': 'BUSINESS',
+    'sp.businessDesc': 'Everything in Essential, plus advanced tools to manage your business online by yourself.',
+    'sp.businessPrice': '1,200€ — 1,600€',
+    'sp.businessFeatures': 'Everything in Essential|Custom Admin Panel|Online Booking System|OR Digital Menu with QR|Logo Design & Full Branding|Google Maps & Reviews Integration|Professional Photo Gallery|Priority Support 3 months',
+
+    'sp.ecosystem': 'ECOSYSTEM',
+    'sp.ecosystemDesc': 'The complete solution: website + marketing strategy + physical materials. We handle EVERYTHING.',
+    'sp.ecosystemPrice': 'From 2,000€',
+    'sp.ecosystemFeatures': 'Everything in Business|Google Ads Strategy|Meta (Facebook/Instagram) Ads Strategy|Business Card Design|Professional Flyer Design|Marketing Campaign Setup|Competition & Market Analysis|Ongoing Consultancy',
+
+    'sp.maintenance': 'VIXON CARE',
+    'sp.maintenanceDesc': 'Monthly maintenance — we make sure your website works perfectly, always.',
+    'sp.maintenancePrice': '49€ / month',
+    'sp.maintenanceFeatures': 'Premium Hosting Included|Security Updates|Daily Automatic Backup|Priority WhatsApp Support|Minor Changes Included|24/7 Uptime Monitoring',
+
+    'sp.popular': 'Most chosen',
+    'sp.recommended': 'Recommended',
+    'sp.from': 'From',
+    'sp.perMonth': '/ month',
+    'sp.includes': 'Includes everything from',
+
+    'sp.selectTitle': 'Configure your package',
+    'sp.selectSubtitle': 'Select what interests you and message us directly on WhatsApp.',
+    'sp.selectedPackage': 'Selected package',
+    'sp.addMaintenance': 'Add Vixon Care (maintenance)',
+    'sp.sendWhatsapp': 'Send on WhatsApp',
+    'sp.noSelection': 'Select a package',
+    'sp.estimatedPrice': 'Estimated price',
+
+    'sp.whyCustom': 'Why Custom Code?',
+    'sp.whyCustomDesc': "Our websites aren't made with WordPress or Wix. Every project is written from scratch, which means:",
+    'sp.whyCustom1': '3x faster speed — Google ranks you higher',
+    'sp.whyCustom2': 'Maximum security — no vulnerable plugins',
+    'sp.whyCustom3': '100% custom design — no generic templates',
+    'sp.whyCustom4': 'Scalability — the website grows with your business',
+
+    'sp.targetTitle': 'Who are our packages for?',
+    'sp.target1': 'Medical & Dental Offices',
+    'sp.target2': 'Construction & Renovation Companies',
+    'sp.target3': 'Surveying & Cadastre Offices',
+    'sp.target4': 'Restaurants & Cafés',
+    'sp.target5': 'Gyms & Sports Facilities',
+    'sp.target6': 'Any local business that wants new clients',
+
+    'sp.ctaTitle': 'Ready to attract more clients?',
+    'sp.ctaSubtitle': 'Message us on WhatsApp and within 24h you have a personalized offer. No obligations.',
+    'sp.ctaButton': 'Message us on WhatsApp',
+
+    // Services page (old keys kept for compatibility)
     'servicesPage.badge': 'Services',
     'servicesPage.title': 'What we can do for you',
     'servicesPage.subtitle': 'From a simple page to a complete online store — choose what fits your business',
@@ -296,12 +417,13 @@ export const translations = {
     'about.p2.title': 'Clear pricing',
     'about.p2.desc': 'You know from the start how much it costs and what you get.',
     'about.p3.title': 'Current technologies',
-    'about.p3.desc': 'Next.js, React, Tailwind — not WordPress with 47 plugins.',
+    'about.p3.desc': 'React, Tailwind — not WordPress with 47 plugins.',
     'about.p4.title': 'Real support',
     'about.p4.desc': "We don't disappear after launch. We respond within 24h.",
     'about.ctaTitle': 'Want to work together?',
     'about.ctaButton': 'Contact us',
 
+    // Pricing (redirect keys kept for compatibility)
     'pricing.badge': 'Pricing',
     'pricing.title': 'Transparent pricing',
     'pricing.subtitle': 'No surprises. Choose the package that fits or request a custom quote.',
@@ -335,14 +457,14 @@ export const translations = {
     'contact.projectType': 'Project type',
     'contact.projectTypes': 'Website|Online Store|Design|Marketing|Other',
     'contact.budget': 'Estimated budget',
-    'contact.budgets': 'Under 2,000 RON|2,000 - 5,000 RON|5,000 - 10,000 RON|Over 10,000 RON',
+    'contact.budgets': 'Under 1,000€|1,000€ - 2,000€|2,000€ - 5,000€|Over 5,000€',
     'contact.details': 'Project details',
     'contact.submit': 'Send message',
     'contact.success': 'Message sent successfully! We\'ll get back to you within 24h.',
     'contact.error': 'An error occurred. Please try again.',
     'contact.infoTitle': 'Contact',
     'contact.emailAddress': 'contact@vixonlab.com',
-    'contact.phoneNumber': '+40 700 000 000',
+    'contact.phoneNumber': '+40 758 840 269',
     'contact.schedule': 'Mon-Fri 9:00 - 18:00',
     'contact.whatsapp': 'Available on WhatsApp',
     'contact.social': 'Social Media',

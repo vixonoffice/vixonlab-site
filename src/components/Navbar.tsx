@@ -9,7 +9,6 @@ const navLinks = [
   { key: 'nav.services' as const, path: '/services' },
   { key: 'nav.portfolio' as const, path: '/portfolio' },
   { key: 'nav.about' as const, path: '/about' },
-  { key: 'nav.pricing' as const, path: '/pricing' },
 ];
 
 export function Navbar() {
