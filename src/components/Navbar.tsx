@@ -51,10 +51,13 @@ export function Navbar() {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
               }}
-              className="flex items-center gap-0 text-xl font-bold font-heading relative z-50"
+              className="flex items-center gap-2 relative z-50"
             >
-              <span className="text-foreground">VIXON</span>
-              <span className="gradient-text">&nbsp;LAB</span>
+              <img src="/logo.png" alt="Vixon Lab" className="h-8 w-8 object-contain" />
+              <span className="text-xl font-bold font-heading">
+                <span className="text-foreground">VIXON</span>
+                <span className="gradient-text">&nbsp;LAB</span>
+              </span>
             </Link>
 
             {/* Desktop nav */}
