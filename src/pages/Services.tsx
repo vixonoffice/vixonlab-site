@@ -5,7 +5,7 @@ import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { useTechStack } from '@/hooks/useSupabaseData';
-import { Check, Zap, Shield, Code, Clock, MessageCircle, Building2, Stethoscope, HardHat, MapPin, UtensilsCrossed, Dumbbell, ChevronRight } from 'lucide-react';
+import { Check, Zap, Shield, Code, Clock, MessageCircle, Building2, ChevronRight } from 'lucide-react';
 
 const WHATSAPP_NUMBER = '40758840269';
 
@@ -83,15 +83,6 @@ const Services = () => {
       : `Hi VixonLab! I'm interested in the ${pkgName} package${maintenanceText}. I'd like to schedule a discussion for my business. [Estimated Price: ${estimatedPrice}]`;
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   }, [selectedPkg, addMaintenance, estimatedPrice, language, t]);
-
-  const targetAudience = [
-    { icon: Stethoscope, key: 'sp.target1' },
-    { icon: HardHat, key: 'sp.target2' },
-    { icon: MapPin, key: 'sp.target3' },
-    { icon: UtensilsCrossed, key: 'sp.target4' },
-    { icon: Dumbbell, key: 'sp.target5' },
-    { icon: Building2, key: 'sp.target6' },
-  ];
 
   return (
     <PageTransition>
@@ -190,7 +181,6 @@ const Services = () => {
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedPackage(pkg.id);
-                      document.getElementById('configurator')?.scrollIntoView({ behavior: 'smooth' });
                     }}
                     className={`w-full text-center font-medium py-3 rounded-2xl transition-all ${
                       isSelected
@@ -198,7 +188,7 @@ const Services = () => {
                         : 'border border-white/10 text-foreground hover:bg-white/5'
                     }`}
                   >
-                    {isSelected ? t('sp.sendWhatsapp') : (language === 'ro' ? 'Selectează' : 'Select')}
+                    {isSelected ? (language === 'ro' ? 'Selectat' : 'Selected') : (language === 'ro' ? 'Selectează' : 'Select')}
                   </button>
                 </div>
               </ScrollReveal>
@@ -338,16 +328,16 @@ const Services = () => {
                 </div>
               </div>
 
-              {/* Target audience */}
+              {/* What you get */}
               <div className="glass-card p-8">
-                <h3 className="font-heading font-bold text-xl text-foreground mb-6">{t('sp.targetTitle')}</h3>
+                <h3 className="font-heading font-bold text-xl text-foreground mb-6">{t('sp.whatYouGet')}</h3>
                 <div className="space-y-4">
-                  {targetAudience.map((item) => (
-                    <div key={item.key} className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                        <item.icon className="w-5 h-5 text-primary-light" />
+                  {[t('sp.benefit1'), t('sp.benefit2'), t('sp.benefit3'), t('sp.benefit4'), t('sp.benefit5')].map((item) => (
+                    <div key={item} className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0 mt-0.5">
+                        <Check className="w-3.5 h-3.5 text-primary-light" />
                       </div>
-                      <span className="text-foreground font-medium">{t(item.key as any)}</span>
+                      <span className="text-foreground">{item}</span>
                     </div>
                   ))}
                 </div>

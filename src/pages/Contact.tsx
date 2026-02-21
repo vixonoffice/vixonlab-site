@@ -4,10 +4,12 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { Mail, Phone, Clock } from 'lucide-react';
+import { Mail, Phone, Clock, MessageCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+const WHATSAPP_NUMBER = '40758840269';
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, 'Required').max(100),
@@ -19,7 +21,7 @@ const contactSchema = z.object({
 });
 
 const Contact = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   usePageSEO({ title: t('contact.badge'), description: t('contact.subtitle') });
 
   const [form, setForm] = useState({ name: '', email: '', phone: '', projectType: '', budget: '', details: '' });
@@ -27,11 +29,27 @@ const Contact = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
+  const buildWhatsAppUrl = () => {
+    const lines = [
+      language === 'ro' ? 'Salut VixonLab!' : 'Hi VixonLab!',
+      '',
+      `${t('contact.name')}: ${form.name}`,
+      `${t('contact.email')}: ${form.email}`,
+      form.phone ? `${t('contact.phone')}: ${form.phone}` : '',
+      `${t('contact.projectType')}: ${form.projectType}`,
+      `${t('contact.budget')}: ${form.budget}`,
+      '',
+      `${t('contact.details')}:`,
+      form.details,
+    ].filter(Boolean);
+
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Honeypot: bots fill this hidden field, real users don't
     if (honeypot) {
-      setStatus('success'); // Fake success for bots
+      setStatus('success');
       return;
     }
     const result = contactSchema.safeParse(form);
@@ -46,7 +64,8 @@ const Contact = () => {
     setErrors({});
     setStatus('loading');
 
-    const { error } = await supabase.from('contact_submissions').insert({
+    // Save to Supabase
+    await supabase.from('contact_submissions').insert({
       name: form.name,
       email: form.email,
       phone: form.phone || null,
@@ -55,10 +74,8 @@ const Contact = () => {
       details: form.details,
     });
 
-    if (error) {
-      setStatus('error');
-      return;
-    }
+    // Open WhatsApp with the message
+    window.open(buildWhatsAppUrl(), '_blank');
 
     setStatus('success');
     setForm({ name: '', email: '', phone: '', projectType: '', budget: '', details: '' });
@@ -152,8 +169,9 @@ const Contact = () => {
                   <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="w-full gradient-primary text-white font-medium py-3.5 rounded-2xl hover:opacity-90 transition-opacity disabled:opacity-60"
+                    className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold py-3.5 rounded-2xl text-lg transition-all disabled:opacity-60"
                   >
+                    <MessageCircle className="w-5 h-5" />
                     {status === 'loading' ? '...' : t('contact.submit')}
                   </button>
                   {status === 'success' && <p className="text-sm text-primary-light text-center">{t('contact.success')}</p>}
@@ -169,11 +187,11 @@ const Contact = () => {
               <div className="glass-card p-6">
                 <h3 className="font-heading font-semibold text-foreground mb-4">{t('contact.infoTitle')}</h3>
                 <div className="space-y-4">
-                  <a href="mailto:contact@vixonlab.com" className="flex items-center gap-3 group">
+                  <a href="mailto:vixonoffice@gmail.com" className="flex items-center gap-3 group">
                     <Mail className="w-5 h-5 text-primary-light shrink-0" />
                     <span className="text-sm text-muted-foreground group-hover:text-primary-light transition-colors">{t('contact.emailAddress')}</span>
                   </a>
-                  <a href="https://wa.me/40700000000" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 group">
+                  <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 group">
                     <Phone className="w-5 h-5 text-primary-light shrink-0 mt-0.5" />
                     <div>
                       <span className="text-sm text-muted-foreground group-hover:text-primary-light transition-colors block">{t('contact.phoneNumber')}</span>
