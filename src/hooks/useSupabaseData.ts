@@ -137,6 +137,7 @@ export interface PricingPlanRow {
   is_popular: boolean;
   cta_label_ro: string;
   cta_label_en: string;
+  plan_type: 'package' | 'maintenance';
 }
 
 export function usePricingPlans() {

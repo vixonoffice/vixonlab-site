@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { ScrollToTop } from './ScrollToTop';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -16,6 +17,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <Navbar />
       <main>{children}</main>
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }

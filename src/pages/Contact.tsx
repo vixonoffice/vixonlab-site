@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { Mail, Phone, Clock, MessageCircle } from 'lucide-react';
+import { Mail, Phone, Clock, MessageCircle, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -27,15 +27,20 @@ const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', phone: '', projectType: '', budget: '', details: '' });
   const [honeypot, setHoneypot] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [submitted, setSubmitted] = useState(false);
 
-  const buildWhatsAppUrl = () => {
+  const isValid = useMemo(() => {
+    return contactSchema.safeParse(form).success && !honeypot;
+  }, [form, honeypot]);
+
+  const whatsappUrl = useMemo(() => {
+    if (!isValid) return '';
     const lines = [
       language === 'ro' ? 'Salut VixonLab!' : 'Hi VixonLab!',
       '',
       `${t('contact.name')}: ${form.name}`,
-      `${t('contact.email')}: ${form.email}`,
-      form.phone ? `${t('contact.phone')}: ${form.phone}` : '',
+      `Email: ${form.email}`,
+      form.phone ? `${language === 'ro' ? 'Telefon' : 'Phone'}: ${form.phone}` : '',
       `${t('contact.projectType')}: ${form.projectType}`,
       `${t('contact.budget')}: ${form.budget}`,
       '',
@@ -44,14 +49,10 @@ const Contact = () => {
     ].filter(Boolean);
 
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
-  };
+  }, [form, isValid, language, t]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (honeypot) {
-      setStatus('success');
-      return;
-    }
+  const handleValidation = () => {
+    if (honeypot) return;
     const result = contactSchema.safeParse(form);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
@@ -62,10 +63,11 @@ const Contact = () => {
       return;
     }
     setErrors({});
-    setStatus('loading');
+  };
 
-    // Save to Supabase
-    await supabase.from('contact_submissions').insert({
+  const handleSendWhatsApp = () => {
+    // Save to Supabase as backup (fire and forget)
+    supabase.from('contact_submissions').insert({
       name: form.name,
       email: form.email,
       phone: form.phone || null,
@@ -73,12 +75,7 @@ const Contact = () => {
       budget: form.budget,
       details: form.details,
     });
-
-    // Open WhatsApp with the message
-    window.open(buildWhatsAppUrl(), '_blank');
-
-    setStatus('success');
-    setForm({ name: '', email: '', phone: '', projectType: '', budget: '', details: '' });
+    setSubmitted(true);
   };
 
   const projectTypes = t('contact.projectTypes').split('|');
@@ -105,78 +102,100 @@ const Contact = () => {
             <ScrollReveal>
               <div className="glass-card p-6 md:p-8">
                 <h2 className="font-heading font-semibold text-xl text-foreground mb-6">{t('contact.formTitle')}</h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.name')}</label>
-                      <input className={inputClass} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                      {errors.name && <p className="text-xs text-accent mt-1">{errors.name}</p>}
+
+                {submitted ? (
+                  <div className="text-center py-12">
+                    <MessageCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
+                    <p className="text-lg text-primary-light font-medium">{t('contact.success')}</p>
+                  </div>
+                ) : (
+                  <div className="space-y-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div>
+                        <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.name')}</label>
+                        <input className={inputClass} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} onBlur={handleValidation} />
+                        {errors.name && <p className="text-xs text-accent mt-1">{errors.name}</p>}
+                      </div>
+                      <div>
+                        <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.email')}</label>
+                        <input type="email" className={inputClass} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} onBlur={handleValidation} />
+                        {errors.email && <p className="text-xs text-accent mt-1">{errors.email}</p>}
+                      </div>
+                    </div>
+                    {/* Honeypot field - hidden from real users */}
+                    <div className="absolute opacity-0 top-0 left-0 h-0 w-0 -z-10" aria-hidden="true">
+                      <label htmlFor="website">Website</label>
+                      <input
+                        type="text"
+                        id="website"
+                        name="website"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={honeypot}
+                        onChange={(e) => setHoneypot(e.target.value)}
+                      />
                     </div>
                     <div>
-                      <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.email')}</label>
-                      <input type="email" className={inputClass} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                      {errors.email && <p className="text-xs text-accent mt-1">{errors.email}</p>}
+                      <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.phone')}</label>
+                      <input className={inputClass} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
                     </div>
-                  </div>
-                  {/* Honeypot field - hidden from real users */}
-                  <div className="absolute opacity-0 top-0 left-0 h-0 w-0 -z-10" aria-hidden="true">
-                    <label htmlFor="website">Website</label>
-                    <input
-                      type="text"
-                      id="website"
-                      name="website"
-                      tabIndex={-1}
-                      autoComplete="off"
-                      value={honeypot}
-                      onChange={(e) => setHoneypot(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.phone')}</label>
-                    <input className={inputClass} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.projectType')}</label>
-                      <Select value={form.projectType} onValueChange={(val) => setForm({ ...form, projectType: val })}>
-                        <SelectTrigger className="w-full bg-white/5 border-white/10 rounded-xl px-4 py-3 h-auto text-sm text-foreground focus:border-primary/50">
-                          <SelectValue placeholder={t('contact.selectPlaceholder')} />
-                        </SelectTrigger>
-                        <SelectContent className="bg-background border-white/10 z-50">
-                          {projectTypes.map((pt) => <SelectItem key={pt} value={pt}>{pt}</SelectItem>)}
-                        </SelectContent>
-                      </Select>
-                      {errors.projectType && <p className="text-xs text-accent mt-1">{errors.projectType}</p>}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div>
+                        <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.projectType')}</label>
+                        <Select value={form.projectType} onValueChange={(val) => setForm({ ...form, projectType: val })}>
+                          <SelectTrigger className="w-full bg-white/5 border-white/10 rounded-xl px-4 py-3 h-auto text-sm text-foreground focus:border-primary/50">
+                            <SelectValue placeholder={t('contact.selectPlaceholder')} />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background border-white/10 z-50">
+                            {projectTypes.map((pt) => <SelectItem key={pt} value={pt}>{pt}</SelectItem>)}
+                          </SelectContent>
+                        </Select>
+                        {errors.projectType && <p className="text-xs text-accent mt-1">{errors.projectType}</p>}
+                      </div>
+                      <div>
+                        <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.budget')}</label>
+                        <Select value={form.budget} onValueChange={(val) => setForm({ ...form, budget: val })}>
+                          <SelectTrigger className="w-full bg-white/5 border-white/10 rounded-xl px-4 py-3 h-auto text-sm text-foreground focus:border-primary/50">
+                            <SelectValue placeholder={t('contact.selectPlaceholder')} />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background border-white/10 z-50">
+                            {budgets.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+                          </SelectContent>
+                        </Select>
+                        {errors.budget && <p className="text-xs text-accent mt-1">{errors.budget}</p>}
+                      </div>
                     </div>
                     <div>
-                      <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.budget')}</label>
-                      <Select value={form.budget} onValueChange={(val) => setForm({ ...form, budget: val })}>
-                        <SelectTrigger className="w-full bg-white/5 border-white/10 rounded-xl px-4 py-3 h-auto text-sm text-foreground focus:border-primary/50">
-                          <SelectValue placeholder={t('contact.selectPlaceholder')} />
-                        </SelectTrigger>
-                        <SelectContent className="bg-background border-white/10 z-50">
-                          {budgets.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
-                        </SelectContent>
-                      </Select>
-                      {errors.budget && <p className="text-xs text-accent mt-1">{errors.budget}</p>}
+                      <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.details')}</label>
+                      <textarea className={`${inputClass} min-h-[120px]`} value={form.details} onChange={(e) => setForm({ ...form, details: e.target.value })} onBlur={handleValidation} />
+                      {errors.details && <p className="text-xs text-accent mt-1">{errors.details}</p>}
                     </div>
+
+                    {/* WhatsApp send button - direct link like Services page */}
+                    {isValid ? (
+                      <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={handleSendWhatsApp}
+                        className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold py-3.5 rounded-2xl text-lg transition-all hover:scale-[1.02]"
+                      >
+                        <MessageCircle className="w-5 h-5" />
+                        {t('contact.submit')}
+                        <ChevronRight className="w-5 h-5" />
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleValidation}
+                        className="w-full inline-flex items-center justify-center gap-3 bg-white/10 text-muted-foreground font-medium py-3.5 rounded-2xl text-lg cursor-pointer hover:bg-white/15 transition-all"
+                      >
+                        <MessageCircle className="w-5 h-5" />
+                        {t('contact.submit')}
+                      </button>
+                    )}
                   </div>
-                  <div>
-                    <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.details')}</label>
-                    <textarea className={`${inputClass} min-h-[120px]`} value={form.details} onChange={(e) => setForm({ ...form, details: e.target.value })} />
-                    {errors.details && <p className="text-xs text-accent mt-1">{errors.details}</p>}
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={status === 'loading'}
-                    className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold py-3.5 rounded-2xl text-lg transition-all disabled:opacity-60"
-                  >
-                    <MessageCircle className="w-5 h-5" />
-                    {status === 'loading' ? '...' : t('contact.submit')}
-                  </button>
-                  {status === 'success' && <p className="text-sm text-primary-light text-center">{t('contact.success')}</p>}
-                  {status === 'error' && <p className="text-sm text-accent text-center">{t('contact.error')}</p>}
-                </form>
+                )}
               </div>
             </ScrollReveal>
           </div>

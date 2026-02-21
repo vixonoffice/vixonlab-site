@@ -4,58 +4,27 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { useTechStack } from '@/hooks/useSupabaseData';
+import { useTechStack, usePricingPlans } from '@/hooks/useSupabaseData';
 import { Check, Zap, Shield, Code, Clock, MessageCircle, Building2, ChevronRight } from 'lucide-react';
 
 const WHATSAPP_NUMBER = '40758840269';
 
-interface PackageData {
-  id: string;
-  nameKey: string;
-  descKey: string;
-  priceKey: string;
-  featuresKey: string;
-  isPopular?: boolean;
-  gradient: string;
-  icon: typeof Code;
-}
+const packageIcons = [Code, Building2, Zap];
+const packageGradients = [
+  'from-blue-500 to-cyan-500',
+  'from-primary to-accent',
+  'from-purple-500 to-pink-500',
+];
 
 const Services = () => {
   const { t, language } = useLanguage();
   usePageSEO({ title: t('sp.badge'), description: t('sp.subtitle') });
 
   const { data: techStack } = useTechStack();
+  const { data: allPlans } = usePricingPlans();
 
-  const packages: PackageData[] = [
-    {
-      id: 'essential',
-      nameKey: 'sp.essential',
-      descKey: 'sp.essentialDesc',
-      priceKey: 'sp.essentialPrice',
-      featuresKey: 'sp.essentialFeatures',
-      gradient: 'from-blue-500 to-cyan-500',
-      icon: Code,
-    },
-    {
-      id: 'business',
-      nameKey: 'sp.business',
-      descKey: 'sp.businessDesc',
-      priceKey: 'sp.businessPrice',
-      featuresKey: 'sp.businessFeatures',
-      isPopular: true,
-      gradient: 'from-primary to-accent',
-      icon: Building2,
-    },
-    {
-      id: 'ecosystem',
-      nameKey: 'sp.ecosystem',
-      descKey: 'sp.ecosystemDesc',
-      priceKey: 'sp.ecosystemPrice',
-      featuresKey: 'sp.ecosystemFeatures',
-      gradient: 'from-purple-500 to-pink-500',
-      icon: Zap,
-    },
-  ];
+  const packages = allPlans.filter((p) => p.plan_type !== 'maintenance');
+  const maintenancePlan = allPlans.find((p) => p.plan_type === 'maintenance');
 
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [addMaintenance, setAddMaintenance] = useState(false);
@@ -64,25 +33,26 @@ const Services = () => {
 
   const estimatedPrice = useMemo(() => {
     if (!selectedPkg) return '';
-    const price = t(selectedPkg.priceKey as any);
+    const price = language === 'en' ? selectedPkg.price_label_en : selectedPkg.price_label_ro;
     const parts = [price];
-    if (addMaintenance) {
-      parts.push(`+ ${t('sp.maintenancePrice')}`);
+    if (addMaintenance && maintenancePlan) {
+      const mPrice = language === 'en' ? maintenancePlan.price_label_en : maintenancePlan.price_label_ro;
+      parts.push(`+ ${mPrice}`);
     }
     return parts.join(' ');
-  }, [selectedPkg, addMaintenance, t]);
+  }, [selectedPkg, addMaintenance, maintenancePlan, language]);
 
   const whatsappUrl = useMemo(() => {
     if (!selectedPkg) return '';
-    const pkgName = t(selectedPkg.nameKey as any);
-    const maintenanceText = addMaintenance
+    const pkgName = language === 'en' ? selectedPkg.name_en : selectedPkg.name_ro;
+    const maintenanceText = addMaintenance && maintenancePlan
       ? (language === 'ro' ? ' + Vixon Care (mentenanță 49€/lună)' : ' + Vixon Care (maintenance 49€/month)')
       : '';
     const message = language === 'ro'
       ? `Salut VixonLab! Sunt interesat de pachetul ${pkgName}${maintenanceText}. Vreau să programăm o discuție pentru afacerea mea. [Preț Estimativ: ${estimatedPrice}]`
       : `Hi VixonLab! I'm interested in the ${pkgName} package${maintenanceText}. I'd like to schedule a discussion for my business. [Estimated Price: ${estimatedPrice}]`;
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-  }, [selectedPkg, addMaintenance, estimatedPrice, language, t]);
+  }, [selectedPkg, addMaintenance, maintenancePlan, estimatedPrice, language]);
 
   return (
     <PageTransition>
@@ -118,26 +88,30 @@ const Services = () => {
       {/* Packages */}
       <SectionWrapper className="!pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          {packages.map((pkg) => {
-            const features = (t(pkg.featuresKey as any) as string).split('|');
+          {packages.map((pkg, index) => {
+            const name = language === 'en' ? pkg.name_en : pkg.name_ro;
+            const desc = language === 'en' ? pkg.description_en : pkg.description_ro;
+            const price = language === 'en' ? pkg.price_label_en : pkg.price_label_ro;
+            const features = language === 'en' ? pkg.features_en : pkg.features_ro;
             const isSelected = selectedPackage === pkg.id;
-            const Icon = pkg.icon;
+            const Icon = packageIcons[index] || Code;
+            const gradient = packageGradients[index] || packageGradients[0];
 
             return (
               <ScrollReveal key={pkg.id}>
                 <div
                   className={`glass-card p-8 relative cursor-pointer transition-all duration-300 ${
-                    pkg.isPopular ? 'lg:scale-105 shadow-xl shadow-primary/10' : ''
+                    pkg.is_popular ? 'lg:scale-105 shadow-xl shadow-primary/10' : ''
                   } ${
                     isSelected
                       ? 'border-primary/60 ring-2 ring-primary/30'
-                      : pkg.isPopular
+                      : pkg.is_popular
                         ? 'border-primary/40'
                         : 'hover:border-white/20'
                   }`}
                   onClick={() => setSelectedPackage(pkg.id)}
                 >
-                  {pkg.isPopular && (
+                  {pkg.is_popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                       <span className="gradient-primary text-white text-xs font-medium px-4 py-1 rounded-full">
                         {t('sp.popular')}
@@ -147,7 +121,7 @@ const Services = () => {
 
                   {/* Radio indicator */}
                   <div className="flex items-start justify-between mb-4">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${pkg.gradient} flex items-center justify-center`}>
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center`}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
@@ -157,14 +131,10 @@ const Services = () => {
                     </div>
                   </div>
 
-                  <h3 className="font-heading font-bold text-xl text-foreground mb-2">
-                    {t(pkg.nameKey as any)}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-6">{t(pkg.descKey as any)}</p>
+                  <h3 className="font-heading font-bold text-xl text-foreground mb-2">{name}</h3>
+                  <p className="text-sm text-muted-foreground mb-6">{desc}</p>
 
-                  <div className="font-heading font-bold text-3xl gradient-text mb-8">
-                    {t(pkg.priceKey as any)}
-                  </div>
+                  <div className="font-heading font-bold text-3xl gradient-text mb-8">{price}</div>
 
                   <div className="space-y-3 mb-6">
                     {features.map((f) => (
@@ -198,46 +168,54 @@ const Services = () => {
       </SectionWrapper>
 
       {/* Maintenance Card */}
-      <SectionWrapper className="!pt-0">
-        <ScrollReveal>
-          <div
-            className={`glass-card p-8 max-w-2xl mx-auto cursor-pointer transition-all duration-300 ${
-              addMaintenance ? 'border-primary/60 ring-2 ring-primary/30' : 'hover:border-white/20'
-            }`}
-            onClick={() => setAddMaintenance(!addMaintenance)}
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-heading font-bold text-xl text-foreground">{t('sp.maintenance')}</h3>
-                  <p className="text-sm text-muted-foreground">{t('sp.maintenanceDesc')}</p>
-                </div>
-              </div>
-              <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all shrink-0 mt-1 ${
-                addMaintenance ? 'border-primary bg-primary' : 'border-white/20'
-              }`}>
-                {addMaintenance && <Check className="w-3.5 h-3.5 text-white" />}
-              </div>
-            </div>
-
-            <div className="font-heading font-bold text-2xl gradient-text mb-6">{t('sp.maintenancePrice')}</div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {(t('sp.maintenanceFeatures') as string).split('|').map((f) => (
-                <div key={f} className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
-                    <Check className="w-3 h-3 text-green-400" />
+      {maintenancePlan && (
+        <SectionWrapper className="!pt-0">
+          <ScrollReveal>
+            <div
+              className={`glass-card p-8 max-w-2xl mx-auto cursor-pointer transition-all duration-300 ${
+                addMaintenance ? 'border-primary/60 ring-2 ring-primary/30' : 'hover:border-white/20'
+              }`}
+              onClick={() => setAddMaintenance(!addMaintenance)}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-white" />
                   </div>
-                  <span className="text-sm text-foreground">{f}</span>
+                  <div>
+                    <h3 className="font-heading font-bold text-xl text-foreground">
+                      {language === 'en' ? maintenancePlan.name_en : maintenancePlan.name_ro}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {language === 'en' ? maintenancePlan.description_en : maintenancePlan.description_ro}
+                    </p>
+                  </div>
                 </div>
-              ))}
+                <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all shrink-0 mt-1 ${
+                  addMaintenance ? 'border-primary bg-primary' : 'border-white/20'
+                }`}>
+                  {addMaintenance && <Check className="w-3.5 h-3.5 text-white" />}
+                </div>
+              </div>
+
+              <div className="font-heading font-bold text-2xl gradient-text mb-6">
+                {language === 'en' ? maintenancePlan.price_label_en : maintenancePlan.price_label_ro}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {(language === 'en' ? maintenancePlan.features_en : maintenancePlan.features_ro).map((f) => (
+                  <div key={f} className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
+                      <Check className="w-3 h-3 text-green-400" />
+                    </div>
+                    <span className="text-sm text-foreground">{f}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </ScrollReveal>
-      </SectionWrapper>
+          </ScrollReveal>
+        </SectionWrapper>
+      )}
 
       {/* Configurator / WhatsApp CTA */}
       <SectionWrapper id="configurator">
@@ -255,18 +233,26 @@ const Services = () => {
                 <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
                   <div className="text-left">
                     <p className="text-xs text-muted-foreground uppercase tracking-wide">{t('sp.selectedPackage')}</p>
-                    <p className="font-heading font-bold text-foreground">{t(selectedPkg.nameKey as any)}</p>
+                    <p className="font-heading font-bold text-foreground">
+                      {language === 'en' ? selectedPkg.name_en : selectedPkg.name_ro}
+                    </p>
                   </div>
-                  <p className="font-heading font-bold gradient-text">{t(selectedPkg.priceKey as any)}</p>
+                  <p className="font-heading font-bold gradient-text">
+                    {language === 'en' ? selectedPkg.price_label_en : selectedPkg.price_label_ro}
+                  </p>
                 </div>
 
-                {addMaintenance && (
+                {addMaintenance && maintenancePlan && (
                   <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
                     <div className="text-left">
                       <p className="text-xs text-muted-foreground uppercase tracking-wide">Vixon Care</p>
-                      <p className="font-heading font-bold text-foreground">{t('sp.maintenance')}</p>
+                      <p className="font-heading font-bold text-foreground">
+                        {language === 'en' ? maintenancePlan.name_en : maintenancePlan.name_ro}
+                      </p>
                     </div>
-                    <p className="font-heading font-bold text-green-400">{t('sp.maintenancePrice')}</p>
+                    <p className="font-heading font-bold text-green-400">
+                      {language === 'en' ? maintenancePlan.price_label_en : maintenancePlan.price_label_ro}
+                    </p>
                   </div>
                 )}
 
