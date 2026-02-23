@@ -4,12 +4,7 @@ import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { useTechStack } from '@/hooks/useSupabaseData';
-import { useConfigurator } from '@/components/configurator/useConfigurator';
-import { PackageStep } from '@/components/configurator/PackageStep';
-import { ExtraPagesStep } from '@/components/configurator/ExtraPagesStep';
-import { AddOnsStep } from '@/components/configurator/AddOnsStep';
-import { MaintenanceStep } from '@/components/configurator/MaintenanceStep';
-import { ConfigSummary } from '@/components/configurator/ConfigSummary';
+import { ConfiguratorStepper } from '@/components/configurator/ConfiguratorStepper';
 import { Check, Clock, Code, Zap, MessageCircle } from 'lucide-react';
 
 const WHATSAPP_NUMBER = '40758840269';
@@ -19,26 +14,6 @@ const Services = () => {
   usePageSEO({ title: t('sp.badge'), description: t('sp.subtitle') });
 
   const { data: techStack } = useTechStack();
-  const {
-    packages, addons, maintenancePlans, loading,
-    state, dispatch,
-    selectedPkg, packageMeta,
-    totalPrice, monthlyPrice, summaryLines, whatsappUrl,
-  } = useConfigurator();
-
-  if (loading) {
-    return (
-      <PageTransition>
-        <section className="section-padding pt-32 pb-16">
-          <div className="mx-auto max-w-content">
-            <div className="h-8 w-48 bg-white/5 rounded-lg animate-pulse mb-4" />
-            <div className="h-12 w-96 bg-white/5 rounded-lg animate-pulse mb-4" />
-            <div className="h-6 w-72 bg-white/5 rounded-lg animate-pulse" />
-          </div>
-        </section>
-      </PageTransition>
-    );
-  }
 
   return (
     <PageTransition>
@@ -70,69 +45,12 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Configurator */}
+      {/* Configurator Stepper */}
       <SectionWrapper className="!pt-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Steps — 2/3 */}
-          <div className="lg:col-span-2 space-y-12">
-            {/* Step 1: Packages */}
-            <PackageStep
-              packages={packages}
-              selectedId={state.packageId}
-              onSelect={(id) => dispatch({ type: 'SET_PACKAGE', id })}
-            />
-
-            {/* Step 2: Extra Pages (only for packages with extra_pages) */}
-            {selectedPkg && packageMeta?.extra_pages && (
-              <ExtraPagesStep
-                extraPages={state.extraPages}
-                maxPages={packageMeta.max_pages}
-                onChange={(count) => dispatch({ type: 'SET_EXTRA_PAGES', count })}
-              />
-            )}
-
-            {/* Step 3: Add-ons (only after package selection) */}
-            {selectedPkg && addons.length > 0 && (
-              <AddOnsStep
-                addons={addons}
-                selectedSlugs={state.selectedAddons}
-                onToggle={(slug) => dispatch({ type: 'TOGGLE_ADDON', slug })}
-              />
-            )}
-
-            {/* Step 4: Maintenance */}
-            {selectedPkg && maintenancePlans.length > 0 && (
-              <MaintenanceStep
-                plans={maintenancePlans}
-                selectedId={state.maintenanceId}
-                onSelect={(id) => dispatch({ type: 'SET_MAINTENANCE', id })}
-              />
-            )}
-          </div>
-
-          {/* Summary — 1/3 */}
-          <div className="hidden lg:block">
-            <ConfigSummary
-              summaryLines={summaryLines}
-              totalPrice={totalPrice}
-              monthlyPrice={monthlyPrice}
-              whatsappUrl={whatsappUrl}
-              hasSelection={!!selectedPkg}
-            />
-          </div>
+        <div className="max-w-3xl mx-auto">
+          <ConfiguratorStepper />
         </div>
       </SectionWrapper>
-
-      {/* Mobile summary bar */}
-      <div className="lg:hidden">
-        <ConfigSummary
-          summaryLines={summaryLines}
-          totalPrice={totalPrice}
-          monthlyPrice={monthlyPrice}
-          whatsappUrl={whatsappUrl}
-          hasSelection={!!selectedPkg}
-        />
-      </div>
 
       {/* Why Custom Code */}
       <section className="section-padding section-spacing bg-background-secondary/30">
@@ -212,9 +130,6 @@ const Services = () => {
           </div>
         </ScrollReveal>
       </SectionWrapper>
-
-      {/* Spacer for mobile bottom bar */}
-      <div className="lg:hidden h-20" />
     </PageTransition>
   );
 };

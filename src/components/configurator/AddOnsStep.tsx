@@ -13,10 +13,7 @@ export function AddOnsStep({ addons, selectedSlugs, onToggle }: Props) {
 
   return (
     <div>
-      <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2">
-        {t('cfg.addonsTitle')}
-      </h2>
-      <p className="text-muted-foreground mb-6">{t('cfg.addonsSubtitle')}</p>
+      <p className="text-muted-foreground mb-5">{t('cfg.addonsSubtitle')}</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {addons.map(({ plan, slug, price, included }) => {

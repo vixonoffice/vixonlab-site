@@ -22,12 +22,9 @@ export function PackageStep({ packages, selectedId, onSelect }: Props) {
 
   return (
     <div>
-      <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2">
-        {t('cfg.packagesTitle')}
-      </h2>
-      <p className="text-muted-foreground mb-6">{t('cfg.packagesSubtitle')}</p>
+      <p className="text-muted-foreground mb-5">{t('cfg.packagesSubtitle')}</p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {packages.map((pkg, index) => {
           const name = language === 'en' ? pkg.name_en : pkg.name_ro;
           const desc = language === 'en' ? pkg.description_en : pkg.description_ro;

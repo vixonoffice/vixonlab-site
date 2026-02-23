@@ -13,10 +13,7 @@ export function ExtraPagesStep({ extraPages, maxPages, onChange }: Props) {
 
   return (
     <div>
-      <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2">
-        {t('cfg.extraPagesTitle')}
-      </h2>
-      <p className="text-muted-foreground mb-6">
+      <p className="text-muted-foreground mb-5">
         {language === 'ro'
           ? `Pachetul include ${maxPages} pagini. Adaugă pagini suplimentare la ${EXTRA_PAGE_PRICE}€/pagină.`
           : `Package includes ${maxPages} pages. Add extra pages at ${EXTRA_PAGE_PRICE}€/page.`

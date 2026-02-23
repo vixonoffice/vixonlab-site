@@ -22,10 +22,7 @@ export function MaintenanceStep({ plans, selectedId, onSelect }: Props) {
 
   return (
     <div>
-      <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2">
-        {t('cfg.maintenanceTitle')}
-      </h2>
-      <p className="text-muted-foreground mb-6">{t('cfg.maintenanceSubtitle')}</p>
+      <p className="text-muted-foreground mb-5">{t('cfg.maintenanceSubtitle')}</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {plans.map((plan, index) => {
