@@ -1,58 +1,44 @@
-import { useState, useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { useTechStack, usePricingPlans } from '@/hooks/useSupabaseData';
-import { Check, Zap, Shield, Code, Clock, MessageCircle, Building2, ChevronRight } from 'lucide-react';
+import { useTechStack } from '@/hooks/useSupabaseData';
+import { useConfigurator } from '@/components/configurator/useConfigurator';
+import { PackageStep } from '@/components/configurator/PackageStep';
+import { ExtraPagesStep } from '@/components/configurator/ExtraPagesStep';
+import { AddOnsStep } from '@/components/configurator/AddOnsStep';
+import { MaintenanceStep } from '@/components/configurator/MaintenanceStep';
+import { ConfigSummary } from '@/components/configurator/ConfigSummary';
+import { Check, Clock, Code, Zap, MessageCircle } from 'lucide-react';
 
 const WHATSAPP_NUMBER = '40758840269';
-
-const packageIcons = [Code, Building2, Zap];
-const packageGradients = [
-  'from-blue-500 to-cyan-500',
-  'from-primary to-accent',
-  'from-purple-500 to-pink-500',
-];
 
 const Services = () => {
   const { t, language } = useLanguage();
   usePageSEO({ title: t('sp.badge'), description: t('sp.subtitle') });
 
   const { data: techStack } = useTechStack();
-  const { data: allPlans } = usePricingPlans();
+  const {
+    packages, addons, maintenancePlans, loading,
+    state, dispatch,
+    selectedPkg, packageMeta,
+    totalPrice, monthlyPrice, summaryLines, whatsappUrl,
+  } = useConfigurator();
 
-  const packages = allPlans.filter((p) => p.plan_type !== 'maintenance');
-  const maintenancePlan = allPlans.find((p) => p.plan_type === 'maintenance');
-
-  const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
-  const [addMaintenance, setAddMaintenance] = useState(false);
-
-  const selectedPkg = packages.find((p) => p.id === selectedPackage);
-
-  const estimatedPrice = useMemo(() => {
-    if (!selectedPkg) return '';
-    const price = language === 'en' ? selectedPkg.price_label_en : selectedPkg.price_label_ro;
-    const parts = [price];
-    if (addMaintenance && maintenancePlan) {
-      const mPrice = language === 'en' ? maintenancePlan.price_label_en : maintenancePlan.price_label_ro;
-      parts.push(`+ ${mPrice}`);
-    }
-    return parts.join(' ');
-  }, [selectedPkg, addMaintenance, maintenancePlan, language]);
-
-  const whatsappUrl = useMemo(() => {
-    if (!selectedPkg) return '';
-    const pkgName = language === 'en' ? selectedPkg.name_en : selectedPkg.name_ro;
-    const maintenanceText = addMaintenance && maintenancePlan
-      ? (language === 'ro' ? ' + Vixon Care (mentenanță 49€/lună)' : ' + Vixon Care (maintenance 49€/month)')
-      : '';
-    const message = language === 'ro'
-      ? `Salut VixonLab! Sunt interesat de pachetul ${pkgName}${maintenanceText}. Vreau să programăm o discuție pentru afacerea mea. [Preț Estimativ: ${estimatedPrice}]`
-      : `Hi VixonLab! I'm interested in the ${pkgName} package${maintenanceText}. I'd like to schedule a discussion for my business. [Estimated Price: ${estimatedPrice}]`;
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-  }, [selectedPkg, addMaintenance, maintenancePlan, estimatedPrice, language]);
+  if (loading) {
+    return (
+      <PageTransition>
+        <section className="section-padding pt-32 pb-16">
+          <div className="mx-auto max-w-content">
+            <div className="h-8 w-48 bg-white/5 rounded-lg animate-pulse mb-4" />
+            <div className="h-12 w-96 bg-white/5 rounded-lg animate-pulse mb-4" />
+            <div className="h-6 w-72 bg-white/5 rounded-lg animate-pulse" />
+          </div>
+        </section>
+      </PageTransition>
+    );
+  }
 
   return (
     <PageTransition>
@@ -69,7 +55,6 @@ const Services = () => {
             {t('sp.subtitle')}
           </p>
 
-          {/* USP badges */}
           <div className="flex flex-wrap gap-3">
             {[
               { icon: Clock, text: t('sp.delivery') },
@@ -85,209 +70,69 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Packages */}
+      {/* Configurator */}
       <SectionWrapper className="!pt-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          {packages.map((pkg, index) => {
-            const name = language === 'en' ? pkg.name_en : pkg.name_ro;
-            const desc = language === 'en' ? pkg.description_en : pkg.description_ro;
-            const price = language === 'en' ? pkg.price_label_en : pkg.price_label_ro;
-            const features = language === 'en' ? pkg.features_en : pkg.features_ro;
-            const isSelected = selectedPackage === pkg.id;
-            const Icon = packageIcons[index] || Code;
-            const gradient = packageGradients[index] || packageGradients[0];
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Steps — 2/3 */}
+          <div className="lg:col-span-2 space-y-12">
+            {/* Step 1: Packages */}
+            <PackageStep
+              packages={packages}
+              selectedId={state.packageId}
+              onSelect={(id) => dispatch({ type: 'SET_PACKAGE', id })}
+            />
 
-            return (
-              <ScrollReveal key={pkg.id}>
-                <div
-                  className={`glass-card p-8 relative cursor-pointer transition-all duration-300 ${
-                    pkg.is_popular ? 'lg:scale-105 shadow-xl shadow-primary/10' : ''
-                  } ${
-                    isSelected
-                      ? 'border-primary/60 ring-2 ring-primary/30'
-                      : pkg.is_popular
-                        ? 'border-primary/40'
-                        : 'hover:border-white/20'
-                  }`}
-                  onClick={() => setSelectedPackage(pkg.id)}
-                >
-                  {pkg.is_popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <span className="gradient-primary text-white text-xs font-medium px-4 py-1 rounded-full">
-                        {t('sp.popular')}
-                      </span>
-                    </div>
-                  )}
+            {/* Step 2: Extra Pages (only for packages with extra_pages) */}
+            {selectedPkg && packageMeta?.extra_pages && (
+              <ExtraPagesStep
+                extraPages={state.extraPages}
+                maxPages={packageMeta.max_pages}
+                onChange={(count) => dispatch({ type: 'SET_EXTRA_PAGES', count })}
+              />
+            )}
 
-                  {/* Radio indicator */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-                      <Icon className="w-6 h-6 text-white" />
-                    </div>
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
-                      isSelected ? 'border-primary bg-primary' : 'border-white/20'
-                    }`}>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
-                    </div>
-                  </div>
+            {/* Step 3: Add-ons (only after package selection) */}
+            {selectedPkg && addons.length > 0 && (
+              <AddOnsStep
+                addons={addons}
+                selectedSlugs={state.selectedAddons}
+                onToggle={(slug) => dispatch({ type: 'TOGGLE_ADDON', slug })}
+              />
+            )}
 
-                  <h3 className="font-heading font-bold text-xl text-foreground mb-2">{name}</h3>
-                  <p className="text-sm text-muted-foreground mb-6">{desc}</p>
+            {/* Step 4: Maintenance */}
+            {selectedPkg && maintenancePlans.length > 0 && (
+              <MaintenanceStep
+                plans={maintenancePlans}
+                selectedId={state.maintenanceId}
+                onSelect={(id) => dispatch({ type: 'SET_MAINTENANCE', id })}
+              />
+            )}
+          </div>
 
-                  <div className="font-heading font-bold text-3xl gradient-text mb-8">{price}</div>
-
-                  <div className="space-y-3 mb-6">
-                    {features.map((f) => (
-                      <div key={f} className="flex items-center gap-3">
-                        <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                          <Check className="w-3 h-3 text-primary-light" />
-                        </div>
-                        <span className="text-sm text-foreground">{f}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedPackage(pkg.id);
-                    }}
-                    className={`w-full text-center font-medium py-3 rounded-2xl transition-all ${
-                      isSelected
-                        ? 'gradient-primary text-white hover:opacity-90'
-                        : 'border border-white/10 text-foreground hover:bg-white/5'
-                    }`}
-                  >
-                    {isSelected ? (language === 'ro' ? 'Selectat' : 'Selected') : (language === 'ro' ? 'Selectează' : 'Select')}
-                  </button>
-                </div>
-              </ScrollReveal>
-            );
-          })}
+          {/* Summary — 1/3 */}
+          <div className="hidden lg:block">
+            <ConfigSummary
+              summaryLines={summaryLines}
+              totalPrice={totalPrice}
+              monthlyPrice={monthlyPrice}
+              whatsappUrl={whatsappUrl}
+              hasSelection={!!selectedPkg}
+            />
+          </div>
         </div>
       </SectionWrapper>
 
-      {/* Maintenance Card */}
-      {maintenancePlan && (
-        <SectionWrapper className="!pt-0">
-          <ScrollReveal>
-            <div
-              className={`glass-card p-8 max-w-2xl mx-auto cursor-pointer transition-all duration-300 ${
-                addMaintenance ? 'border-primary/60 ring-2 ring-primary/30' : 'hover:border-white/20'
-              }`}
-              onClick={() => setAddMaintenance(!addMaintenance)}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-heading font-bold text-xl text-foreground">
-                      {language === 'en' ? maintenancePlan.name_en : maintenancePlan.name_ro}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {language === 'en' ? maintenancePlan.description_en : maintenancePlan.description_ro}
-                    </p>
-                  </div>
-                </div>
-                <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all shrink-0 mt-1 ${
-                  addMaintenance ? 'border-primary bg-primary' : 'border-white/20'
-                }`}>
-                  {addMaintenance && <Check className="w-3.5 h-3.5 text-white" />}
-                </div>
-              </div>
-
-              <div className="font-heading font-bold text-2xl gradient-text mb-6">
-                {language === 'en' ? maintenancePlan.price_label_en : maintenancePlan.price_label_ro}
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {(language === 'en' ? maintenancePlan.features_en : maintenancePlan.features_ro).map((f) => (
-                  <div key={f} className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
-                      <Check className="w-3 h-3 text-green-400" />
-                    </div>
-                    <span className="text-sm text-foreground">{f}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
-        </SectionWrapper>
-      )}
-
-      {/* Configurator / WhatsApp CTA */}
-      <SectionWrapper id="configurator">
-        <ScrollReveal>
-          <div className="glass-card p-8 md:p-12 max-w-2xl mx-auto text-center">
-            <MessageCircle className="w-10 h-10 text-green-400 mx-auto mb-4" />
-            <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2">
-              {t('sp.selectTitle')}
-            </h2>
-            <p className="text-muted-foreground mb-8">{t('sp.selectSubtitle')}</p>
-
-            {/* Summary */}
-            {selectedPkg ? (
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
-                  <div className="text-left">
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">{t('sp.selectedPackage')}</p>
-                    <p className="font-heading font-bold text-foreground">
-                      {language === 'en' ? selectedPkg.name_en : selectedPkg.name_ro}
-                    </p>
-                  </div>
-                  <p className="font-heading font-bold gradient-text">
-                    {language === 'en' ? selectedPkg.price_label_en : selectedPkg.price_label_ro}
-                  </p>
-                </div>
-
-                {addMaintenance && maintenancePlan && (
-                  <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
-                    <div className="text-left">
-                      <p className="text-xs text-muted-foreground uppercase tracking-wide">Vixon Care</p>
-                      <p className="font-heading font-bold text-foreground">
-                        {language === 'en' ? maintenancePlan.name_en : maintenancePlan.name_ro}
-                      </p>
-                    </div>
-                    <p className="font-heading font-bold text-green-400">
-                      {language === 'en' ? maintenancePlan.price_label_en : maintenancePlan.price_label_ro}
-                    </p>
-                  </div>
-                )}
-
-                <div className="pt-2">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">{t('sp.estimatedPrice')}</p>
-                  <p className="font-heading font-bold text-2xl gradient-text">{estimatedPrice}</p>
-                </div>
-              </div>
-            ) : (
-              <div className="p-8 rounded-xl bg-white/5 border border-dashed border-white/10 mb-8">
-                <p className="text-muted-foreground">{t('sp.noSelection')}</p>
-              </div>
-            )}
-
-            {/* WhatsApp Button */}
-            {selectedPkg ? (
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold px-8 py-4 rounded-2xl text-lg transition-all hover:scale-105"
-              >
-                <MessageCircle className="w-6 h-6" />
-                {t('sp.sendWhatsapp')}
-                <ChevronRight className="w-5 h-5" />
-              </a>
-            ) : (
-              <div className="inline-flex items-center gap-3 bg-white/10 text-muted-foreground font-medium px-8 py-4 rounded-2xl text-lg cursor-not-allowed">
-                <MessageCircle className="w-6 h-6" />
-                {t('sp.noSelection')}
-              </div>
-            )}
-          </div>
-        </ScrollReveal>
-      </SectionWrapper>
+      {/* Mobile summary bar */}
+      <div className="lg:hidden">
+        <ConfigSummary
+          summaryLines={summaryLines}
+          totalPrice={totalPrice}
+          monthlyPrice={monthlyPrice}
+          whatsappUrl={whatsappUrl}
+          hasSelection={!!selectedPkg}
+        />
+      </div>
 
       {/* Why Custom Code */}
       <section className="section-padding section-spacing bg-background-secondary/30">
@@ -314,7 +159,6 @@ const Services = () => {
                 </div>
               </div>
 
-              {/* What you get */}
               <div className="glass-card p-8">
                 <h3 className="font-heading font-bold text-xl text-foreground mb-6">{t('sp.whatYouGet')}</h3>
                 <div className="space-y-4">
@@ -356,7 +200,7 @@ const Services = () => {
               href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
                 language === 'ro'
                   ? 'Salut VixonLab! Sunt interesat de serviciile voastre. Vreau să programăm o discuție.'
-                  : 'Hi VixonLab! I\'m interested in your services. I\'d like to schedule a discussion.'
+                  : "Hi VixonLab! I'm interested in your services. I'd like to schedule a discussion."
               )}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -368,6 +212,9 @@ const Services = () => {
           </div>
         </ScrollReveal>
       </SectionWrapper>
+
+      {/* Spacer for mobile bottom bar */}
+      <div className="lg:hidden h-20" />
     </PageTransition>
   );
 };
