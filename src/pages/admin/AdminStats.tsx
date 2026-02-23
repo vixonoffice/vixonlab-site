@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { getUserFriendlyError } from '@/lib/errorUtils';
+import { useConfirm } from '@/hooks/useConfirm';
 import { Plus, Trash2, Save } from 'lucide-react';
 
 interface Stat {
@@ -21,6 +22,7 @@ const AdminStats = () => {
   const [editing, setEditing] = useState<Stat | null>(null);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const { confirm, ConfirmDialog } = useConfirm();
 
   useEffect(() => { fetchData(); }, [location.key]);
   async function fetchData() {
@@ -45,7 +47,7 @@ const AdminStats = () => {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Sigur?')) return;
+    if (!await confirm('Sigur vrei să ștergi această statistică?')) return;
     await supabase.from('stats').delete().eq('id', id);
     toast.success('Șters!');
     fetchData();
@@ -93,6 +95,7 @@ const AdminStats = () => {
         ))}
         {items.length === 0 && <p className="text-muted-foreground text-sm">Nicio statistică.</p>}
       </div>
+      {ConfirmDialog}
     </div>
   );
 };

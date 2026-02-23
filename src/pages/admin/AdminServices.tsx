@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { getUserFriendlyError } from '@/lib/errorUtils';
+import { useConfirm } from '@/hooks/useConfirm';
 import { Plus, Trash2, Save } from 'lucide-react';
 
 interface Service {
@@ -30,6 +31,7 @@ const AdminServices = () => {
   const [editing, setEditing] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const { confirm, ConfirmDialog } = useConfirm();
 
   useEffect(() => { fetch(); }, [location.key]);
 
@@ -55,8 +57,9 @@ const AdminServices = () => {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Mută în Coș Reciclare? Poți restaura oricând din Admin → Coș Reciclare.')) return;
-    await supabase.from('services').update({ deleted_at: new Date().toISOString() }).eq('id', id);
+    if (!await confirm('Mută în Coș Reciclare? Poți restaura oricând din Admin → Coș Reciclare.')) return;
+    const { error } = await supabase.from('services').update({ deleted_at: new Date().toISOString() }).eq('id', id);
+    if (error) { toast.error(getUserFriendlyError(error)); return; }
     toast.success('Mutat în Coș Reciclare!');
     fetch();
   }
@@ -135,6 +138,7 @@ const AdminServices = () => {
         ))}
         {items.length === 0 && <p className="text-muted-foreground text-sm">Niciun serviciu.</p>}
       </div>
+      {ConfirmDialog}
     </div>
   );
 };

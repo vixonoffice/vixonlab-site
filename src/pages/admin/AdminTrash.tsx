@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useConfirm } from '@/hooks/useConfirm';
 import { Trash2, RotateCcw, AlertTriangle } from 'lucide-react';
 
 interface DeletedItem {
@@ -22,6 +23,7 @@ const TABLE_CONFIG: { table: string; label: string; titleField: string; subtitle
 const AdminTrash = () => {
   const [items, setItems] = useState<DeletedItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const { confirm, ConfirmDialog } = useConfirm();
 
   useEffect(() => { fetchDeleted(); }, []);
 
@@ -72,7 +74,7 @@ const AdminTrash = () => {
   }
 
   async function handlePermanentDelete(item: DeletedItem) {
-    if (!confirm(`ATENȚIE: Ștergi permanent "${item.title}"? Această acțiune NU poate fi anulată!`)) return;
+    if (!await confirm(`ATENȚIE: Ștergi permanent "${item.title}"? Această acțiune NU poate fi anulată!`)) return;
     const { error } = await supabase
       .from(item.table as any)
       .delete()
@@ -84,7 +86,7 @@ const AdminTrash = () => {
   }
 
   async function handleEmptyTrash() {
-    if (!confirm('ATENȚIE: Golești COMPLET coșul? Toate elementele vor fi șterse permanent și NU pot fi recuperate!')) return;
+    if (!await confirm('ATENȚIE: Golești COMPLET coșul? Toate elementele vor fi șterse permanent și NU pot fi recuperate!')) return;
 
     await Promise.all(
       TABLE_CONFIG.map(({ table }) =>
@@ -171,6 +173,7 @@ const AdminTrash = () => {
           ))}
         </div>
       )}
+      {ConfirmDialog}
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { getUserFriendlyError } from '@/lib/errorUtils';
+import { useConfirm } from '@/hooks/useConfirm';
 import { Plus, Trash2, Shield, Edit2 } from 'lucide-react';
 
 interface UserWithRole {
@@ -16,6 +17,7 @@ interface UserWithRole {
 
 const AdminUsers = () => {
   const { isAdmin } = useAuth();
+  const { confirm, ConfirmDialog } = useConfirm();
   const [users, setUsers] = useState<UserWithRole[]>([]);
   const [loading, setLoading] = useState(true);
   const [newEmail, setNewEmail] = useState('');
@@ -52,7 +54,7 @@ const AdminUsers = () => {
   }
 
   async function handleDeleteRole(userId: string) {
-    if (!confirm('Sigur vrei să elimini acest rol?')) return;
+    if (!await confirm('Sigur vrei să elimini acest rol?')) return;
     const { error } = await supabase.from('user_roles').delete().eq('user_id', userId);
     if (error) { toast.error(getUserFriendlyError(error)); return; }
     toast.success('Rol eliminat!');
@@ -90,6 +92,7 @@ const AdminUsers = () => {
         ))}
         {users.length === 0 && <p className="text-muted-foreground text-sm">Niciun utilizator cu rol atribuit.</p>}
       </div>
+      {ConfirmDialog}
     </div>
   );
 };

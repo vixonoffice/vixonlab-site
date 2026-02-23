@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { getUserFriendlyError } from '@/lib/errorUtils';
+import { useConfirm } from '@/hooks/useConfirm';
 import { Plus, Trash2, Save } from 'lucide-react';
 
 interface PricingPlan {
@@ -31,6 +32,7 @@ const AdminPricing = () => {
   const [editing, setEditing] = useState<PricingPlan | null>(null);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const { confirm, ConfirmDialog } = useConfirm();
 
   useEffect(() => { fetchData(); }, [location.key]);
 
@@ -56,8 +58,9 @@ const AdminPricing = () => {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Mută în Coș Reciclare? Poți restaura oricând din Admin → Coș Reciclare.')) return;
-    await supabase.from('pricing_plans').update({ deleted_at: new Date().toISOString() }).eq('id', id);
+    if (!await confirm('Mută în Coș Reciclare? Poți restaura oricând din Admin → Coș Reciclare.')) return;
+    const { error } = await supabase.from('pricing_plans').update({ deleted_at: new Date().toISOString() }).eq('id', id);
+    if (error) { toast.error(getUserFriendlyError(error)); return; }
     toast.success('Mutat în Coș Reciclare!');
     fetchData();
   }
@@ -137,6 +140,7 @@ const AdminPricing = () => {
         ))}
         {items.length === 0 && <p className="text-muted-foreground text-sm">Niciun plan.</p>}
       </div>
+      {ConfirmDialog}
     </div>
   );
 };

@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { getUserFriendlyError } from '@/lib/errorUtils';
+import { useConfirm } from '@/hooks/useConfirm';
 import { Plus, Trash2, Save } from 'lucide-react';
 
 interface ProcessStep {
@@ -24,6 +25,7 @@ const AdminProcess = () => {
   const [editing, setEditing] = useState<ProcessStep | null>(null);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const { confirm, ConfirmDialog } = useConfirm();
 
   useEffect(() => { fetchData(); }, [location.key]);
   async function fetchData() {
@@ -48,7 +50,7 @@ const AdminProcess = () => {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Sigur?')) return;
+    if (!await confirm('Sigur vrei să ștergi acest pas?')) return;
     await supabase.from('process_steps').delete().eq('id', id);
     toast.success('Șters!');
     fetchData();
@@ -103,6 +105,7 @@ const AdminProcess = () => {
         ))}
         {items.length === 0 && <p className="text-muted-foreground text-sm">Niciun pas.</p>}
       </div>
+      {ConfirmDialog}
     </div>
   );
 };

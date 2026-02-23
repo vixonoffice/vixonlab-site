@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { getUserFriendlyError } from '@/lib/errorUtils';
+import { useConfirm } from '@/hooks/useConfirm';
 import { Plus, Trash2, Save, ChevronUp, ChevronDown } from 'lucide-react';
 import type { CaseStudyData } from '@/hooks/useSupabaseData';
 
@@ -56,6 +57,7 @@ const AdminPortfolio = () => {
   const [uploading, setUploading] = useState(false);
   const [hasCaseStudy, setHasCaseStudy] = useState(false);
   const location = useLocation();
+  const { confirm, ConfirmDialog } = useConfirm();
 
   useEffect(() => { fetchProjects(); }, [location.key]);
 
@@ -120,7 +122,7 @@ const AdminPortfolio = () => {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Mută în Coș Reciclare? Poți restaura oricând din Admin → Coș Reciclare.')) return;
+    if (!await confirm('Mută în Coș Reciclare? Poți restaura oricând din Admin → Coș Reciclare.')) return;
     const { error } = await supabase.from('portfolio_projects').update({ deleted_at: new Date().toISOString() }).eq('id', id);
     if (error) { toast.error(getUserFriendlyError(error)); return; }
     toast.success('Proiect mutat în Coș Reciclare. Îl poți restaura din Admin → Coș Reciclare.');
@@ -545,6 +547,7 @@ const AdminPortfolio = () => {
           <p className="text-muted-foreground text-sm">Niciun proiect. Adauga primul!</p>
         )}
       </div>
+      {ConfirmDialog}
     </div>
   );
 };
