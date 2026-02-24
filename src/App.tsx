@@ -20,6 +20,7 @@ const Terms = lazy(() => import("./pages/Terms"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Preview = lazy(() => import("./pages/Preview"));
 
 // Admin pages - lazy loaded
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
@@ -80,6 +81,9 @@ const App = () => (
               <Route path="/admin/messages" element={<ProtectedRoute><AdminLayout><AdminMessages /></AdminLayout></ProtectedRoute>} />
               <Route path="/admin/blog" element={<ProtectedRoute><AdminLayout><AdminBlog /></AdminLayout></ProtectedRoute>} />
               <Route path="/admin/trash" element={<ProtectedRoute><AdminLayout><AdminTrash /></AdminLayout></ProtectedRoute>} />
+
+              {/* Preview pages pentru leaduri */}
+              <Route path="/preview/:slug" element={<Preview />} />
 
               <Route path="*" element={<Layout><NotFound /></Layout>} />
             </Routes>
