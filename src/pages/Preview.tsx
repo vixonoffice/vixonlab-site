@@ -286,6 +286,78 @@ const TEMPLATES: Record<string, {
     ],
   },
 
+  florarie: {
+    accent: "#f43f8a", accentDark: "#be185d", accentLight: "#fb7bb8",
+    bg: "#0d0008", bgCard: "#180010", text: "#fff0f8", textMuted: "#d4a0c0",
+    heroImg: "https://images.unsplash.com/photo-1487530811015-780780169af3?w=1920&q=80",
+    heroOverlay: "linear-gradient(to bottom, rgba(13,0,8,0.35) 0%, rgba(13,0,8,0.15) 40%, rgba(13,0,8,0.97) 100%)",
+    emoji: "🌸", tagline: "Flori proaspete pentru fiecare moment special",
+    subtitle: "Buchete artizanale, aranjamente florale pentru nunți și evenimente, plante exotice. Creăm cu pasiune, livrăm cu drag.",
+    services: [
+      { icon: "💐", title: "Buchete la Comandă", desc: "Buchete personalizate pentru orice ocazie — aniversări, Valentine's, mulțumiri" },
+      { icon: "💒", title: "Decorațiuni Nuntă", desc: "Aranjamente de masă, arcuri florale, buchete mireasă — totul coordonat" },
+      { icon: "🌿", title: "Plante de Interior", desc: "Suculente, orhidee, palmieri, plante rare — livrare și consiliere" },
+      { icon: "🎁", title: "Cutii & Aranjamente Cadou", desc: "Cutii cu flori și ciocolată, aranjamente în pălărie — cadouri memorabile" },
+      { icon: "🏢", title: "Flori pentru Firme", desc: "Abonamente de decorare birouri, recepții, săli de conferință" },
+      { icon: "🚚", title: "Livrare în Rm. Vâlcea", desc: "Livrăm în 2-3 ore, fresh-cut, la adresa dorită" },
+    ],
+    stats: [{ value: "12+", label: "Ani de activitate" }, { value: "500+", label: "Buchete/lună" }, { value: "200+", label: "Nunți decorate" }, { value: "4.8★", label: "Rating Google" }],
+    gallery: [
+      "https://images.unsplash.com/photo-1490750967868-88df5691cc64?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1519378058457-4c29a0a2efac?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1561181286-d5c73431a97f?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1457089328109-e5d9bd499191?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&h=400&fit=crop",
+    ],
+    testimonials: [
+      { name: "Andreea M.", text: "Buchetul de mireasă a fost exact visul meu. Fiecare floare la locul ei, culorile perfecte. Mulțumesc din suflet!", stars: 5 },
+      { name: "Ionuț P.", text: "Am comandat un buchet surpriză pentru soție și a plâns de fericire. Cel mai frumos cadou!", stars: 5 },
+      { name: "Firma XYZ", text: "Decorăm recepția biroului de 3 ani cu florile lor. Mereu proaspete, mereu frumoase, livrare la fix.", stars: 5 },
+    ],
+    whyUs: [
+      { icon: "🌺", title: "Flori Fresh-Cut Zilnic", desc: "Aprovizionare zilnică din piața angro — florile tale sunt mereu proaspete" },
+      { icon: "🎨", title: "Design Personalizat", desc: "Fiecare aranjament e unic, creat după gustul și bugetul tău" },
+      { icon: "⚡", title: "Livrare Rapidă", desc: "Livrăm în toată Rm. Vâlcea în 2-3 ore de la comandă" },
+    ],
+  },
+
+  cofetarie: {
+    accent: "#f97316", accentDark: "#ea580c", accentLight: "#fb923c",
+    bg: "#0f0600", bgCard: "#1a0e00", text: "#fff8f0", textMuted: "#d4b090",
+    heroImg: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=1920&q=80",
+    heroOverlay: "linear-gradient(to bottom, rgba(15,6,0,0.4) 0%, rgba(15,6,0,0.2) 40%, rgba(15,6,0,0.97) 100%)",
+    emoji: "🎂", tagline: "Dulciuri artizanale cu dragoste și pasiune",
+    subtitle: "Torturi de vis, prăjituri fine, ecleruri cremoase — fiecare preparat e o poveste dulce spusă cu ingrediente de calitate superioară.",
+    services: [
+      { icon: "🎂", title: "Torturi Personalizate", desc: "Torturi unicat pentru nunți, botezuri, aniversări — design la alegere" },
+      { icon: "🍰", title: "Prăjituri Fine", desc: "Eclere, tarte, choux, mousse — vitrina noastră e un spectacol zilnic" },
+      { icon: "🍫", title: "Ciocolată Artizanală", desc: "Bomboane de ciocolată belgiene, trufe, praline premium" },
+      { icon: "🥧", title: "Cheesecake & Entremet", desc: "Rețete moderne, texturi perfecte, ingrediente naturale" },
+      { icon: "☕", title: "Cafea & Băuturi Calde", desc: "Espresso, cappuccino, ciocolată caldă — savurează alături de dulciuri" },
+      { icon: "🎁", title: "Cutii Cadou Premium", desc: "Aranjamente dulci pentru cadouri corporate și personale de lux" },
+    ],
+    stats: [{ value: "10+", label: "Ani de dulcuri" }, { value: "50+", label: "Rețete în meniu" }, { value: "300+", label: "Torturi/lună" }, { value: "4.9★", label: "Rating Google" }],
+    gallery: [
+      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1516684732162-798a0062be99?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=600&h=400&fit=crop",
+    ],
+    testimonials: [
+      { name: "Familia Popescu", text: "Tortul de nuntă a fost vedeta serii! Toți invitații l-au fotografiat înainte să-l mănânce. Extraordinar!", stars: 5 },
+      { name: "Mara D.", text: "Comand torturi de ziua copiilor de 5 ani. Sunt mereu perfecte, copiii înnebunesc după ele!", stars: 5 },
+      { name: "Andrei C.", text: "Eclerele cu vanilie sunt de departe cele mai bune din Rm. Vâlcea. Vin săptămânal!", stars: 5 },
+    ],
+    whyUs: [
+      { icon: "🧈", title: "Ingrediente Premium", desc: "Ciocolată belgiană Callebaut, vanilie Bourbon, frisca naturală" },
+      { icon: "🎨", title: "Design Unic", desc: "Fiecare tort e o operă de artă comestibilă, personalizată 100%" },
+      { icon: "📅", title: "Comandă cu Avans", desc: "Rezervă cu 3-5 zile înainte pentru torturi speciale" },
+    ],
+  },
+
   pizzerie: {
     accent: "#ef4444", accentDark: "#b91c1c", accentLight: "#f87171",
     bg: "#0f0500", bgCard: "#1a0800", text: "#fff8f5", textMuted: "#d4a090",
