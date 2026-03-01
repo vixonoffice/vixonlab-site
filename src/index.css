@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow-x: clip;
+}
+
 @layer base {
   :root {
     --background: 243 40% 13%;

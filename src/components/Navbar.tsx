@@ -47,8 +47,9 @@ export function Navbar() {
             <Link
               to="/"
               onClick={() => {
+                setMobileOpen(false);
                 if (location.pathname === '/') {
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.scrollTo({ top: 0, behavior: 'instant' });
                 }
               }}
               className="flex items-center gap-2 relative z-50"
