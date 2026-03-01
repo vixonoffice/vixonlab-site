@@ -4,7 +4,8 @@ import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { useTechStack } from '@/hooks/useSupabaseData';
-import { ConfiguratorStepper } from '@/components/configurator/ConfiguratorStepper';
+import { lazy, Suspense } from 'react';
+const ConfiguratorStepper = lazy(() => import('@/components/configurator/ConfiguratorStepper').then(m => ({ default: m.ConfiguratorStepper })));
 import { Check, Clock, Code, Zap, MessageCircle } from 'lucide-react';
 
 const WHATSAPP_NUMBER = '40758840269';
@@ -48,7 +49,9 @@ const Services = () => {
       {/* Configurator Stepper */}
       <SectionWrapper className="!pt-8">
         <div className="max-w-3xl mx-auto">
-          <ConfiguratorStepper />
+          <Suspense fallback={<div className="space-y-4">{[1,2,3].map(i => <div key={i} className="h-48 bg-white/5 rounded-2xl animate-pulse" />)}</div>}>
+            <ConfiguratorStepper />
+          </Suspense>
         </div>
       </SectionWrapper>
 

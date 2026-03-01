@@ -142,4 +142,13 @@ html {
   .scroll-indicator {
     animation: scroll-indicator 2s ease-in-out infinite;
   }
+
+  @keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .animate-fadein {
+    animation: fadein 0.15s ease-out forwards;
+  }
 }

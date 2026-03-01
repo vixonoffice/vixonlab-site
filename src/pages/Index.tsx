@@ -5,16 +5,16 @@ import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { Zap, Star, Shield, ChevronDown } from 'lucide-react';
-import { useStats, useServices, useProcessSteps, useTestimonials, resolveIcon } from '@/hooks/useSupabaseData';
+import { resolveIcon, STATIC_STATS, STATIC_SERVICES, STATIC_PROCESS_STEPS, STATIC_TESTIMONIALS } from '@/data/staticData';
 
 const Index = () => {
   const { t, language } = useLanguage();
   usePageSEO({ title: t('nav.home'), description: t('hero.subtitle') });
 
-  const { data: stats } = useStats();
-  const { data: services } = useServices();
-  const { data: steps } = useProcessSteps();
-  const { data: testimonials } = useTestimonials();
+  const stats = STATIC_STATS;
+  const services = STATIC_SERVICES;
+  const steps = STATIC_PROCESS_STEPS;
+  const testimonials = STATIC_TESTIMONIALS;
 
   return (
     <PageTransition>

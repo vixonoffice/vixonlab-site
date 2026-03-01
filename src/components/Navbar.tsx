@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
   { key: 'nav.home' as const, path: '/' },
@@ -54,7 +53,7 @@ export function Navbar() {
               }}
               className="flex items-center gap-2 relative z-50"
             >
-              <img src="/logo.png" alt="Vixon Lab" className="h-9 w-9 object-contain" />
+              <img src="/logo.webp" alt="Vixon Lab" className="h-9 w-9 object-contain" />
               <span className="text-xl font-bold font-heading">
                 <span className="text-foreground">VIXON</span>
                 <span className="gradient-text">&nbsp;LAB</span>
@@ -139,47 +138,29 @@ export function Navbar() {
       </nav>
 
       {/* Mobile fullscreen menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-background/98 backdrop-blur-xl flex flex-col items-center justify-center gap-6 lg:hidden overflow-hidden touch-none"
+      <div
+        className={`fixed inset-0 z-40 bg-background/98 backdrop-blur-xl flex flex-col items-center justify-center gap-6 lg:hidden overflow-hidden touch-none transition-opacity duration-250 ${
+          mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        {navLinks.map((link) => (
+          <Link
+            key={link.path}
+            to={link.path}
+            className={`text-2xl font-heading font-semibold transition-colors ${
+              location.pathname === link.path ? 'gradient-text' : 'text-foreground hover:text-primary-light'
+            }`}
           >
-            {navLinks.map((link, i) => (
-              <motion.div
-                key={link.path}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 * i, duration: 0.3 }}
-              >
-                <Link
-                  to={link.path}
-                  className={`text-2xl font-heading font-semibold transition-colors ${
-                    location.pathname === link.path ? 'gradient-text' : 'text-foreground hover:text-primary-light'
-                  }`}
-                >
-                  {t(link.key)}
-                </Link>
-              </motion.div>
-            ))}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 * navLinks.length, duration: 0.3 }}
-            >
-              <Link
-                to="/contact"
-                className="gradient-primary text-white text-lg font-medium px-8 py-3 rounded-2xl mt-2 inline-block"
-              >
-                {t('nav.contact')}
-              </Link>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {t(link.key)}
+          </Link>
+        ))}
+        <Link
+          to="/contact"
+          className="gradient-primary text-white text-lg font-medium px-8 py-3 rounded-2xl mt-2 inline-block"
+        >
+          {t('nav.contact')}
+        </Link>
+      </div>
     </>
   );
 }
