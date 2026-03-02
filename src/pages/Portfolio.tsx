@@ -113,7 +113,7 @@ function ProjectCard({ project, language }: { project: PortfolioProjectRow; lang
           <span className="w-1.5 h-1.5 rounded-full bg-primary" />
           <span className="text-xs text-muted-foreground">{language === 'en' ? project.subtitle_en : project.subtitle_ro}</span>
         </div>
-        <h3 className="font-heading font-semibold text-lg text-foreground mb-2">{project.title}</h3>
+        <h2 className="font-heading font-semibold text-lg text-foreground mb-2">{project.title}</h2>
         <p className="text-sm text-muted-foreground mb-4">{language === 'en' ? project.description_en : project.description_ro}</p>
         <div className="flex flex-wrap gap-2">
           {project.tags.map((tag) => (

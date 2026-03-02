@@ -27,7 +27,6 @@ export function Navbar() {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -53,7 +52,7 @@ export function Navbar() {
               }}
               className="flex items-center gap-2 relative z-50"
             >
-              <img src="/logo.webp" alt="Vixon Lab" className="h-9 w-9 object-contain" />
+              <img src="/logo-nav.webp" alt="Vixon Lab" className="h-9 w-9 object-contain" width="36" height="36" />
               <span className="text-xl font-bold font-heading">
                 <span className="text-foreground">VIXON</span>
                 <span className="gradient-text">&nbsp;LAB</span>
@@ -77,7 +76,6 @@ export function Navbar() {
 
             {/* Desktop right */}
             <div className="hidden lg:flex items-center gap-4">
-              {/* Language toggle */}
               <div className="flex items-center rounded-full bg-white/5 border border-white/10 p-0.5">
                 <button
                   onClick={() => setLanguage('ro')}

@@ -1,9 +1,5 @@
 import { ReactNode } from 'react';
 
 export function PageTransition({ children }: { children: ReactNode }) {
-  return (
-    <div className="animate-fadein">
-      {children}
-    </div>
-  );
+  return <div className="animate-fadein">{children}</div>;
 }

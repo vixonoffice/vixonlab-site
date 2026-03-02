@@ -21,7 +21,7 @@ export function Footer() {
 
           {/* Quick links */}
           <div>
-            <h4 className="font-heading font-semibold text-sm mb-4 text-foreground">{t('footer.quickLinks')}</h4>
+            <h3 className="font-heading font-semibold text-sm mb-4 text-foreground">{t('footer.quickLinks')}</h3>
             <div className="flex flex-col gap-2.5">
               {[
                 { label: t('nav.home'), path: '/' },
@@ -38,7 +38,7 @@ export function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="font-heading font-semibold text-sm mb-4 text-foreground">{t('footer.services')}</h4>
+            <h3 className="font-heading font-semibold text-sm mb-4 text-foreground">{t('footer.services')}</h3>
             <div className="flex flex-col gap-2.5">
               {[
                 { label: 'Essential', path: '/services' },
@@ -55,7 +55,7 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="font-heading font-semibold text-sm mb-4 text-foreground">{t('footer.legal')}</h4>
+            <h3 className="font-heading font-semibold text-sm mb-4 text-foreground">{t('footer.legal')}</h3>
             <div className="flex flex-col gap-2.5">
               <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary-light transition-colors">
                 {t('footer.privacy')}
