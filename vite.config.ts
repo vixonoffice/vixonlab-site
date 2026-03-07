@@ -24,11 +24,13 @@ export default defineConfig(({ mode }) => ({
           'vendor-react': ['react', 'react-dom', 'react-router-dom'],
           'vendor-query': ['@tanstack/react-query'],
           'vendor-supabase': ['@supabase/supabase-js'],
-          // framer-motion removed from initial bundle — only used in admin/configurator (lazy loaded)
+          'vendor-motion': ['framer-motion'],
+          'vendor-ui': ['lucide-react', 'class-variance-authority', 'clsx', 'tailwind-merge'],
         },
       },
     },
     target: 'es2020',
+    cssCodeSplit: true,
     cssMinify: true,
     minify: 'terser',
     terserOptions: {

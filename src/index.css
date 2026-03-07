@@ -40,7 +40,7 @@ html {
     --primary: 263 83% 58%;
     --primary-foreground: 0 0% 100%;
     --primary-dark: 263 80% 50%;
-    --primary-light: 258 90% 76%;
+    --primary-light: 258 75% 87%;
 
     --secondary: 243 36% 18%;
     --secondary-foreground: 240 33% 97%;
@@ -49,7 +49,7 @@ html {
     --accent-foreground: 0 0% 100%;
 
     --muted: 243 36% 18%;
-    --muted-foreground: 240 10% 65%;
+    --muted-foreground: 240 12% 76%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
