@@ -23,17 +23,31 @@ Reguli:
 - Pentru detalii specifice sau ofertă personalizată, îndrumă spre pagina /contact
 - Nu inventa prețuri exacte pentru proiecte complexe`;
 
+const ALLOWED_ORIGINS = ['https://vixonlab.ro', 'https://www.vixonlab.ro'];
+
+function json(data: unknown, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
 export default async function handler(req: Request) {
+  // CORS — only allow requests from vixonlab.ro
+  const origin = req.headers.get('origin') ?? '';
+  const isProd = ALLOWED_ORIGINS.includes(origin);
+  const isDev = origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1');
+  if (!isProd && !isDev) {
+    return json({ error: 'Forbidden' }, 403);
+  }
+
   if (req.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 });
+    return json({ error: 'Method not allowed' }, 405);
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'Server configuration error' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return json({ error: 'Server configuration error' }, 500);
   }
 
   let message: string;
@@ -44,17 +58,21 @@ export default async function handler(req: Request) {
     message = body.message;
     history = body.history || [];
   } catch {
-    return new Response(JSON.stringify({ error: 'Invalid request' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return json({ error: 'Invalid request' }, 400);
   }
 
   if (!message?.trim()) {
-    return new Response(JSON.stringify({ error: 'Message required' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return json({ error: 'Message required' }, 400);
+  }
+
+  // Limit message length to prevent abuse
+  if (message.length > 500) {
+    return json({ error: 'Message too long' }, 400);
+  }
+
+  // Limit history depth to last 10 exchanges
+  if (history.length > 20) {
+    history = history.slice(-20);
   }
 
   const contents = [
@@ -87,7 +105,5 @@ export default async function handler(req: Request) {
     data.candidates?.[0]?.content?.parts?.[0]?.text ||
     'Îmi pare rău, a apărut o eroare. Te rog încearcă din nou.';
 
-  return new Response(JSON.stringify({ text }), {
-    headers: { 'Content-Type': 'application/json' },
-  });
+  return json({ text });
 }
