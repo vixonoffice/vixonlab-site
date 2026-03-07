@@ -21,7 +21,10 @@ export function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  const seen = typeof window !== 'undefined' && localStorage.getItem('vx_chat_seen');
+
   useEffect(() => {
+    if (seen) return;
     const t = setTimeout(() => setShowBubble(true), 4000);
     return () => clearTimeout(t);
   }, []);
@@ -33,6 +36,13 @@ export function ChatWidget() {
   function handleOpen() {
     setOpen((o) => !o);
     setShowBubble(false);
+    localStorage.setItem('vx_chat_seen', '1');
+  }
+
+  function dismissBubble(e: React.MouseEvent) {
+    e.stopPropagation();
+    setShowBubble(false);
+    localStorage.setItem('vx_chat_seen', '1');
   }
 
   async function send() {
@@ -87,7 +97,7 @@ export function ChatWidget() {
           >
             <button
               className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-              onClick={(e) => { e.stopPropagation(); setShowBubble(false); }}
+              onClick={dismissBubble}
             >
               <X className="w-3 h-3" />
             </button>
@@ -200,12 +210,12 @@ export function ChatWidget() {
         className="w-14 h-14 rounded-full gradient-primary shadow-lg shadow-primary/30 flex items-center justify-center text-white relative"
         aria-label="Chat"
       >
-        {/* Pulse ring — visible only when closed */}
-        {!open && (
+        {/* Pulse ring — doar dacă nu a văzut încă */}
+        {!open && !seen && (
           <span className="absolute inset-0 rounded-full animate-ping gradient-primary opacity-30 pointer-events-none" />
         )}
-        {/* Notification dot */}
-        {!open && (
+        {/* Notification dot — doar dacă nu a văzut încă */}
+        {!open && !seen && (
           <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-green-400 border-2 border-[#0e0e14] rounded-full" />
         )}
         <AnimatePresence mode="wait">
