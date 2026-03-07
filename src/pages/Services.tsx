@@ -3,18 +3,15 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { useTechStack } from '@/hooks/useSupabaseData';
 import { lazy, Suspense } from 'react';
 const ConfiguratorStepper = lazy(() => import('@/components/configurator/ConfiguratorStepper').then(m => ({ default: m.ConfiguratorStepper })));
-import { Check, Clock, Code, Zap, MessageCircle } from 'lucide-react';
-
-const WHATSAPP_NUMBER = '40758840269';
+import { Check, Clock, Code, Zap } from 'lucide-react';
 
 const Services = () => {
   const { t, language } = useLanguage();
   usePageSEO({ title: t('sp.badge'), description: t('sp.subtitle') });
 
-  const { data: techStack } = useTechStack();
+  const isRo = language === 'ro';
 
   return (
     <PageTransition>
@@ -22,13 +19,16 @@ const Services = () => {
       <section className="section-padding pt-32 pb-16">
         <div className="mx-auto max-w-content">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/5 border border-white/10 px-4 py-1.5 mb-6">
-            <span className="text-sm text-primary-light">{t('sp.badge')}</span>
+            <span className="dot-green" />
+            <span className="text-sm text-primary-light">{isRo ? 'Configurator de proiect' : 'Project Configurator'}</span>
           </div>
           <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
-            {t('sp.title')}
+            {isRo ? 'Configureaza-ti site-ul ideal' : 'Configure your ideal website'}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mb-8">
-            {t('sp.subtitle')}
+            {isRo
+              ? 'Raspunde la cateva intrebari si primesti o oferta personalizata in mai putin de 24h. Fara obligatii.'
+              : 'Answer a few questions and get a personalized offer in less than 24h. No obligations.'}
           </p>
 
           <div className="flex flex-wrap gap-3">
@@ -98,38 +98,47 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Tech Stack */}
+      {/* What's included / What's not — clarity section */}
       <SectionWrapper>
         <ScrollReveal>
-          <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3">{t('servicesPage.techLabel')}</p>
-          <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-10">{t('servicesPage.techTitle')}</h2>
-          <div className="flex flex-wrap gap-3">
-            {techStack.map((tech) => (
-              <span key={tech.id} className="glass-card px-5 py-2.5 text-sm font-medium text-foreground">{tech.name}</span>
-            ))}
-          </div>
-        </ScrollReveal>
-      </SectionWrapper>
-
-      {/* Final CTA */}
-      <SectionWrapper>
-        <ScrollReveal>
-          <div className="glass-card p-10 md:p-16 text-center max-w-3xl mx-auto">
-            <h2 className="font-heading font-bold text-3xl md:text-4xl gradient-text mb-4">{t('sp.ctaTitle')}</h2>
-            <p className="text-muted-foreground mb-8">{t('sp.ctaSubtitle')}</p>
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                language === 'ro'
-                  ? 'Salut VixonLab! Sunt interesat de serviciile voastre. Vreau să programăm o discuție.'
-                  : "Hi VixonLab! I'm interested in your services. I'd like to schedule a discussion."
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold px-8 py-4 rounded-2xl text-lg transition-all hover:scale-105"
-            >
-              <MessageCircle className="w-6 h-6" />
-              {t('sp.ctaButton')}
-            </a>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="glass-card p-6">
+              <h3 className="font-heading font-bold text-lg text-green-400 mb-4">
+                {isRo ? 'Ce include mentenanta' : 'What maintenance includes'}
+              </h3>
+              <div className="space-y-2.5">
+                {(isRo
+                  ? ['Hosting premium cloud', 'Certificat SSL gratuit', 'Backup zilnic automat', 'Update-uri de securitate', 'Monitorizare 24/7', 'Modificari texte si poze', 'Suport pe email/WhatsApp']
+                  : ['Premium cloud hosting', 'Free SSL certificate', 'Daily automatic backup', 'Security updates', '24/7 monitoring', 'Text and image modifications', 'Email/WhatsApp support']
+                ).map((item) => (
+                  <div key={item} className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-green-400 shrink-0" />
+                    <span className="text-sm text-foreground">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="glass-card p-6">
+              <h3 className="font-heading font-bold text-lg text-muted-foreground mb-4">
+                {isRo ? 'Ce NU include (se tarifeaza separat)' : 'What is NOT included (charged separately)'}
+              </h3>
+              <div className="space-y-2.5">
+                {(isRo
+                  ? ['Redesign complet al site-ului', 'Functionalitati noi complexe', 'Pagini noi cu design custom', 'Integrari externe noi', 'Migrare la alt domeniu/hosting', 'Campanii de marketing active']
+                  : ['Complete site redesign', 'New complex features', 'New pages with custom design', 'New external integrations', 'Domain/hosting migration', 'Active marketing campaigns']
+                ).map((item) => (
+                  <div key={item} className="flex items-center gap-2.5">
+                    <span className="w-4 h-4 rounded-full border border-white/20 shrink-0" />
+                    <span className="text-sm text-muted-foreground">{item}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground mt-4">
+                {isRo
+                  ? 'Fiecare modificare majora se estimeaza si se aproba de tine inainte.'
+                  : 'Every major modification is estimated and approved by you first.'}
+              </p>
+            </div>
           </div>
         </ScrollReveal>
       </SectionWrapper>
