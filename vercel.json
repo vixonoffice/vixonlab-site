@@ -8,7 +8,7 @@
     }
   ],
   "rewrites": [
-    { "source": "/((?!sitemap\\.xml|robots\\.txt|vixonlab-indexnow\\.txt).*)", "destination": "/index.html" }
+    { "source": "/((?!sitemap\\.xml|robots\\.txt|vixonlab-indexnow\\.txt|api\\/).*)", "destination": "/index.html" }
   ],
   "headers": [
     {

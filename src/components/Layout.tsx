@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { ScrollToTop } from './ScrollToTop';
+import { ChatWidget } from './ChatWidget';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -25,6 +26,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <main>{children}</main>
       <Footer />
       <ScrollToTop />
+      <ChatWidget />
     </div>
   );
 }
