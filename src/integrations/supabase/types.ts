@@ -14,6 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
+      configurator_options: {
+        Row: {
+          id: string
+          option_type: string
+          option_id: string
+          label_ro: string
+          label_en: string
+          description_ro: string
+          description_en: string
+          price: string | null
+          features_ro: string[]
+          features_en: string[]
+          is_popular: boolean
+          sort_order: number
+          metadata: Record<string, unknown> | null
+          deleted_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          option_type: string
+          option_id: string
+          label_ro?: string
+          label_en?: string
+          description_ro?: string
+          description_en?: string
+          price?: string | null
+          features_ro?: string[]
+          features_en?: string[]
+          is_popular?: boolean
+          sort_order?: number
+          metadata?: Record<string, unknown> | null
+          deleted_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          option_type?: string
+          option_id?: string
+          label_ro?: string
+          label_en?: string
+          description_ro?: string
+          description_en?: string
+          price?: string | null
+          features_ro?: string[]
+          features_en?: string[]
+          is_popular?: boolean
+          sort_order?: number
+          metadata?: Record<string, unknown> | null
+          deleted_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           budget: string

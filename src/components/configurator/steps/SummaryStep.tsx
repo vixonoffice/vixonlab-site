@@ -1,19 +1,34 @@
 import { useMemo } from 'react';
-import {
-  BUSINESS_TYPES, SITE_TYPES, PAGE_OPTIONS, FEATURE_OPTIONS,
-  DESIGN_STYLES, BRAND_EXTRAS, TEXT_STATUS, PHOTO_STATUS,
-  MARKETING_OPTIONS, MAINTENANCE_PLANS, BUDGET_OPTIONS, TIMELINE_OPTIONS,
-  LOGO_STATUS, label,
-} from '../configuratorConfig';
+import { label } from '../configuratorConfig';
+import type { Option, MaintenancePlan } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
 import { MessageCircle, ChevronRight } from 'lucide-react';
+
+interface AllOptions {
+  businessTypes: Option[];
+  siteTypes: Option[];
+  pages: Option[];
+  features: Option[];
+  designStyles: Option[];
+  brandExtras: Option[];
+  logoStatus: Option[];
+  textStatus: Option[];
+  photoStatus: Option[];
+  marketing: Option[];
+  maintenance: MaintenancePlan[];
+  budget: Option[];
+  timeline: Option[];
+}
 
 interface Props {
   state: ConfigState;
   setField: (field: keyof ConfigState, value: string) => void;
   lang: Language;
   whatsappUrl: string;
+  budgetOptions: Option[];
+  timelineOptions: Option[];
+  options: AllOptions;
 }
 
 function findLabel(options: { id: string; ro: string; en: string }[], id: string, lang: Language): string {
@@ -26,7 +41,7 @@ interface SummarySection {
   items: string[];
 }
 
-export function SummaryStep({ state, setField, lang, whatsappUrl }: Props) {
+export function SummaryStep({ state, setField, lang, whatsappUrl, budgetOptions, timelineOptions, options }: Props) {
   const isRo = lang === 'ro';
 
   const sections = useMemo((): SummarySection[] => {
@@ -35,43 +50,43 @@ export function SummaryStep({ state, setField, lang, whatsappUrl }: Props) {
     // Project
     const projectItems: string[] = [];
     if (state.businessName) projectItems.push(state.businessName);
-    if (state.businessType) projectItems.push(findLabel(BUSINESS_TYPES, state.businessType, lang));
-    if (state.siteType) projectItems.push(findLabel(SITE_TYPES, state.siteType, lang));
+    if (state.businessType) projectItems.push(findLabel(options.businessTypes, state.businessType, lang));
+    if (state.siteType) projectItems.push(findLabel(options.siteTypes, state.siteType, lang));
     if (state.hasWebsite === 'yes' && state.currentWebsiteUrl) projectItems.push(state.currentWebsiteUrl);
     if (projectItems.length) result.push({ title: isRo ? 'Proiect' : 'Project', items: projectItems });
 
     // Pages
     const pageItems = [
-      ...state.pages.map((id) => findLabel(PAGE_OPTIONS, id, lang)),
+      ...state.pages.map((id) => findLabel(options.pages, id, lang)),
       ...state.customPages,
     ];
     if (pageItems.length) result.push({ title: isRo ? 'Pagini' : 'Pages', items: pageItems });
 
     // Features
-    const featureItems = state.features.map((id) => findLabel(FEATURE_OPTIONS, id, lang));
+    const featureItems = state.features.map((id) => findLabel(options.features, id, lang));
     if (featureItems.length) result.push({ title: isRo ? 'Functionalitati' : 'Features', items: featureItems });
 
     // Design
     const designItems: string[] = [];
-    if (state.logoStatus) designItems.push(`Logo: ${findLabel(LOGO_STATUS, state.logoStatus, lang)}`);
-    if (state.designStyle) designItems.push(findLabel(DESIGN_STYLES, state.designStyle, lang));
+    if (state.logoStatus) designItems.push(`Logo: ${findLabel(options.logoStatus, state.logoStatus, lang)}`);
+    if (state.designStyle) designItems.push(findLabel(options.designStyles, state.designStyle, lang));
     if (state.hasBrandColors === 'yes' && state.brandColorsText) designItems.push(`${isRo ? 'Culori' : 'Colors'}: ${state.brandColorsText}`);
     if (state.referenceUrl) designItems.push(`Ref: ${state.referenceUrl}`);
-    const brandExtraItems = state.brandExtras.map((id) => findLabel(BRAND_EXTRAS, id, lang));
+    const brandExtraItems = state.brandExtras.map((id) => findLabel(options.brandExtras, id, lang));
     designItems.push(...brandExtraItems);
     if (designItems.length) result.push({ title: 'Design & Brand', items: designItems });
 
     // Content
     const contentItems: string[] = [];
-    if (state.textStatus) contentItems.push(`${isRo ? 'Texte' : 'Texts'}: ${findLabel(TEXT_STATUS, state.textStatus, lang)}`);
-    if (state.photoStatus) contentItems.push(`${isRo ? 'Poze' : 'Photos'}: ${findLabel(PHOTO_STATUS, state.photoStatus, lang)}`);
-    const marketingItems = state.marketing.map((id) => findLabel(MARKETING_OPTIONS, id, lang));
+    if (state.textStatus) contentItems.push(`${isRo ? 'Texte' : 'Texts'}: ${findLabel(options.textStatus, state.textStatus, lang)}`);
+    if (state.photoStatus) contentItems.push(`${isRo ? 'Poze' : 'Photos'}: ${findLabel(options.photoStatus, state.photoStatus, lang)}`);
+    const marketingItems = state.marketing.map((id) => findLabel(options.marketing, id, lang));
     contentItems.push(...marketingItems);
     if (contentItems.length) result.push({ title: isRo ? 'Continut & Marketing' : 'Content & Marketing', items: contentItems });
 
     // Maintenance
     if (state.maintenancePlan) {
-      const plan = MAINTENANCE_PLANS.find((p) => p.id === state.maintenancePlan);
+      const plan = options.maintenance.find((p) => p.id === state.maintenancePlan);
       if (plan) {
         const price = isRo ? plan.price_ro : plan.price_en;
         const planLabel = `${isRo ? plan.ro : plan.en} (${price === '0' ? (isRo ? 'Gratuit' : 'Free') : price + '\u20AC'})`;
@@ -80,7 +95,7 @@ export function SummaryStep({ state, setField, lang, whatsappUrl }: Props) {
     }
 
     return result;
-  }, [state, lang, isRo]);
+  }, [state, lang, isRo, options]);
 
   const canSubmit = !!state.contactName.trim() && !!state.contactPhone.trim();
 
@@ -119,7 +134,7 @@ export function SummaryStep({ state, setField, lang, whatsappUrl }: Props) {
           {isRo ? 'Ce buget ai in minte?' : 'What budget do you have in mind?'}
         </label>
         <div className="flex flex-wrap gap-2">
-          {BUDGET_OPTIONS.map((opt) => (
+          {budgetOptions.map((opt) => (
             <button
               key={opt.id}
               onClick={() => setField('budget', opt.id)}
@@ -141,7 +156,7 @@ export function SummaryStep({ state, setField, lang, whatsappUrl }: Props) {
           {isRo ? 'Cand vrei site-ul gata?' : 'When do you want the site ready?'}
         </label>
         <div className="flex flex-wrap gap-2">
-          {TIMELINE_OPTIONS.map((opt) => (
+          {timelineOptions.map((opt) => (
             <button
               key={opt.id}
               onClick={() => setField('timeline', opt.id)}

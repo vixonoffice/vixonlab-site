@@ -1,12 +1,25 @@
 import { useReducer, useMemo } from 'react';
 import {
-  WHATSAPP_NUMBER,
-  BUSINESS_TYPES, SITE_TYPES, PAGE_OPTIONS, FEATURE_OPTIONS,
-  DESIGN_STYLES, BRAND_EXTRAS, TEXT_STATUS, PHOTO_STATUS,
-  MARKETING_OPTIONS, MAINTENANCE_PLANS, BUDGET_OPTIONS, TIMELINE_OPTIONS,
-  LOGO_STATUS, label,
+  WHATSAPP_NUMBER, label,
 } from './configuratorConfig';
+import type { Option, MaintenancePlan } from './configuratorConfig';
 import type { Language } from '@/lib/translations';
+
+interface AllOptions {
+  businessTypes: Option[];
+  siteTypes: Option[];
+  pages: Option[];
+  features: Option[];
+  designStyles: Option[];
+  brandExtras: Option[];
+  logoStatus: Option[];
+  textStatus: Option[];
+  photoStatus: Option[];
+  marketing: Option[];
+  maintenance: MaintenancePlan[];
+  budget: Option[];
+  timeline: Option[];
+}
 
 // ---------------------------------------------------------------------------
 // State
@@ -145,11 +158,14 @@ export function useConfiguratorState() {
 
   const reset = () => dispatch({ type: 'RESET' });
 
-  // Build WhatsApp message
-  const buildWhatsAppUrl = (lang: Language): string => {
+  // Build WhatsApp message — accepts dynamic options from Supabase
+  const buildWhatsAppUrl = (lang: Language, opts?: AllOptions): string => {
     const lines: string[] = [];
     const s = state;
     const isRo = lang === 'ro';
+
+    // Use provided options or empty arrays as fallback
+    const o = opts || { businessTypes: [], siteTypes: [], pages: [], features: [], designStyles: [], brandExtras: [], logoStatus: [], textStatus: [], photoStatus: [], marketing: [], maintenance: [], budget: [], timeline: [] };
 
     lines.push(isRo
       ? `Salut VixonLab! Am configurat un proiect pe site-ul vostru.`
@@ -157,44 +173,33 @@ export function useConfiguratorState() {
     );
     lines.push('');
 
-    // Business
     if (s.businessName) lines.push(`${isRo ? 'Afacere' : 'Business'}: ${s.businessName}`);
-    if (s.businessType) lines.push(`${isRo ? 'Domeniu' : 'Industry'}: ${findLabel(BUSINESS_TYPES, s.businessType, lang)}`);
+    if (s.businessType) lines.push(`${isRo ? 'Domeniu' : 'Industry'}: ${findLabel(o.businessTypes, s.businessType, lang)}`);
     if (s.hasWebsite === 'yes' && s.currentWebsiteUrl) lines.push(`${isRo ? 'Site actual' : 'Current site'}: ${s.currentWebsiteUrl}`);
+    if (s.siteType) lines.push(`${isRo ? 'Tip site' : 'Site type'}: ${findLabel(o.siteTypes, s.siteType, lang)}`);
 
-    // Site type
-    if (s.siteType) lines.push(`${isRo ? 'Tip site' : 'Site type'}: ${findLabel(SITE_TYPES, s.siteType, lang)}`);
-
-    // Pages
-    const allPages = [
-      ...s.pages.map((id) => findLabel(PAGE_OPTIONS, id, lang)),
-      ...s.customPages,
-    ];
+    const allPages = [...s.pages.map((id) => findLabel(o.pages, id, lang)), ...s.customPages];
     if (allPages.length) lines.push(`\n${isRo ? 'Pagini' : 'Pages'}: ${allPages.join(', ')}`);
 
-    // Features
-    const featureNames = s.features.map((id) => findLabel(FEATURE_OPTIONS, id, lang));
+    const featureNames = s.features.map((id) => findLabel(o.features, id, lang));
     if (featureNames.length) lines.push(`${isRo ? 'Functionalitati' : 'Features'}: ${featureNames.join(', ')}`);
 
-    // Design
-    if (s.logoStatus) lines.push(`\nLogo: ${findLabel(LOGO_STATUS, s.logoStatus, lang)}`);
-    if (s.designStyle) lines.push(`${isRo ? 'Stil design' : 'Design style'}: ${findLabel(DESIGN_STYLES, s.designStyle, lang)}`);
+    if (s.logoStatus) lines.push(`\nLogo: ${findLabel(o.logoStatus, s.logoStatus, lang)}`);
+    if (s.designStyle) lines.push(`${isRo ? 'Stil design' : 'Design style'}: ${findLabel(o.designStyles, s.designStyle, lang)}`);
     if (s.hasBrandColors === 'yes' && s.brandColorsText) lines.push(`${isRo ? 'Culori brand' : 'Brand colors'}: ${s.brandColorsText}`);
     if (s.referenceUrl) lines.push(`${isRo ? 'Referinta' : 'Reference'}: ${s.referenceUrl}`);
 
-    const brandExtraNames = s.brandExtras.map((id) => findLabel(BRAND_EXTRAS, id, lang));
+    const brandExtraNames = s.brandExtras.map((id) => findLabel(o.brandExtras, id, lang));
     if (brandExtraNames.length) lines.push(`${isRo ? 'Materiale brand' : 'Brand materials'}: ${brandExtraNames.join(', ')}`);
 
-    // Content
-    if (s.textStatus) lines.push(`\n${isRo ? 'Texte' : 'Texts'}: ${findLabel(TEXT_STATUS, s.textStatus, lang)}`);
-    if (s.photoStatus) lines.push(`${isRo ? 'Poze' : 'Photos'}: ${findLabel(PHOTO_STATUS, s.photoStatus, lang)}`);
+    if (s.textStatus) lines.push(`\n${isRo ? 'Texte' : 'Texts'}: ${findLabel(o.textStatus, s.textStatus, lang)}`);
+    if (s.photoStatus) lines.push(`${isRo ? 'Poze' : 'Photos'}: ${findLabel(o.photoStatus, s.photoStatus, lang)}`);
 
-    const marketingNames = s.marketing.map((id) => findLabel(MARKETING_OPTIONS, id, lang));
+    const marketingNames = s.marketing.map((id) => findLabel(o.marketing, id, lang));
     if (marketingNames.length) lines.push(`Marketing: ${marketingNames.join(', ')}`);
 
-    // Maintenance
     if (s.maintenancePlan) {
-      const plan = MAINTENANCE_PLANS.find((p) => p.id === s.maintenancePlan);
+      const plan = o.maintenance.find((p) => p.id === s.maintenancePlan);
       if (plan) {
         const pName = lang === 'ro' ? plan.ro : plan.en;
         const pPrice = lang === 'ro' ? plan.price_ro : plan.price_en;
@@ -202,14 +207,10 @@ export function useConfiguratorState() {
       }
     }
 
-    // Budget & timeline
-    if (s.budget) lines.push(`\n${isRo ? 'Buget' : 'Budget'}: ${findLabel(BUDGET_OPTIONS, s.budget, lang)}\u20AC`);
-    if (s.timeline) lines.push(`${isRo ? 'Termen' : 'Timeline'}: ${findLabel(TIMELINE_OPTIONS, s.timeline, lang)}`);
-
-    // Notes
+    if (s.budget) lines.push(`\n${isRo ? 'Buget' : 'Budget'}: ${findLabel(o.budget, s.budget, lang)}\u20AC`);
+    if (s.timeline) lines.push(`${isRo ? 'Termen' : 'Timeline'}: ${findLabel(o.timeline, s.timeline, lang)}`);
     if (s.notes) lines.push(`\n${isRo ? 'Note' : 'Notes'}: ${s.notes}`);
 
-    // Contact
     lines.push('');
     if (s.contactName) lines.push(`${isRo ? 'Nume' : 'Name'}: ${s.contactName}`);
     if (s.contactEmail) lines.push(`Email: ${s.contactEmail}`);

@@ -1,4 +1,5 @@
-import { BUSINESS_TYPES, SITE_TYPES, label, desc } from '../configuratorConfig';
+import { label, desc } from '../configuratorConfig';
+import type { Option } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
 import { Globe, ShoppingCart, Zap, Layout } from 'lucide-react';
@@ -14,9 +15,11 @@ interface Props {
   state: ConfigState;
   setField: (field: keyof ConfigState, value: string) => void;
   lang: Language;
+  businessTypes: Option[];
+  siteTypes: Option[];
 }
 
-export function ProjectStep({ state, setField, lang }: Props) {
+export function ProjectStep({ state, setField, lang, businessTypes, siteTypes }: Props) {
   const isRo = lang === 'ro';
 
   return (
@@ -41,7 +44,7 @@ export function ProjectStep({ state, setField, lang }: Props) {
           {isRo ? 'Ce domeniu de activitate?' : 'What industry?'}
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {BUSINESS_TYPES.map((bt) => (
+          {businessTypes.map((bt) => (
             <button
               key={bt.id}
               onClick={() => setField('businessType', bt.id)}
@@ -98,7 +101,7 @@ export function ProjectStep({ state, setField, lang }: Props) {
           {isRo ? 'Alege tipul care se potriveste cel mai bine' : 'Choose the type that fits best'}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {SITE_TYPES.map((st) => {
+          {siteTypes.map((st) => {
             const Icon = siteIcons[st.id] || Globe;
             const selected = state.siteType === st.id;
             return (

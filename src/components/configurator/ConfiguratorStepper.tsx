@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useConfiguratorState } from './useConfiguratorState';
+import { useConfiguratorOptions } from '@/hooks/useConfiguratorOptions';
 import { STEP_LABELS, STEP_ORDER, label } from './configuratorConfig';
 import type { StepId } from './configuratorConfig';
 import { ProjectStep } from './steps/ProjectStep';
@@ -48,6 +49,7 @@ const STEP_TITLES: Record<StepId, { ro: string; en: string }> = {
 
 export function ConfiguratorStepper() {
   const { language } = useLanguage();
+  const { options, loading: optionsLoading } = useConfiguratorOptions();
   const {
     state, setField, toggleArray, addCustomPage, removeCustomPage,
     buildWhatsAppUrl, canProceed,
@@ -84,6 +86,14 @@ export function ConfiguratorStepper() {
   }, [currentIdx, goTo]);
 
   const isRo = language === 'ro';
+
+  if (optionsLoading) {
+    return (
+      <div className="space-y-4">
+        {[1, 2, 3].map(i => <div key={i} className="h-32 bg-white/5 rounded-2xl animate-pulse" />)}
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="scroll-mt-28">
@@ -171,25 +181,25 @@ export function ConfiguratorStepper() {
             transition={slideTransition}
           >
             {currentStep === 'project' && (
-              <ProjectStep state={state} setField={setField} lang={language} />
+              <ProjectStep state={state} setField={setField} lang={language} businessTypes={options.businessTypes} siteTypes={options.siteTypes} />
             )}
             {currentStep === 'pages' && (
-              <PagesStep state={state} toggleArray={toggleArray} addCustomPage={addCustomPage} removeCustomPage={removeCustomPage} lang={language} />
+              <PagesStep state={state} toggleArray={toggleArray} addCustomPage={addCustomPage} removeCustomPage={removeCustomPage} lang={language} pageOptions={options.pages} />
             )}
             {currentStep === 'features' && (
-              <FeaturesStep state={state} toggleArray={toggleArray} lang={language} />
+              <FeaturesStep state={state} toggleArray={toggleArray} lang={language} featureOptions={options.features} />
             )}
             {currentStep === 'brand' && (
-              <BrandStep state={state} setField={setField} toggleArray={toggleArray} lang={language} />
+              <BrandStep state={state} setField={setField} toggleArray={toggleArray} lang={language} logoOptions={options.logoStatus} designStyles={options.designStyles} brandExtras={options.brandExtras} />
             )}
             {currentStep === 'content' && (
-              <ContentStep state={state} setField={setField} toggleArray={toggleArray} lang={language} />
+              <ContentStep state={state} setField={setField} toggleArray={toggleArray} lang={language} textOptions={options.textStatus} photoOptions={options.photoStatus} marketingOptions={options.marketing} />
             )}
             {currentStep === 'maintenance' && (
-              <MaintenanceNewStep state={state} setField={setField} lang={language} />
+              <MaintenanceNewStep state={state} setField={setField} lang={language} plans={options.maintenance} />
             )}
             {currentStep === 'summary' && (
-              <SummaryStep state={state} setField={setField} lang={language} whatsappUrl={buildWhatsAppUrl(language)} />
+              <SummaryStep state={state} setField={setField} lang={language} whatsappUrl={buildWhatsAppUrl(language, options)} budgetOptions={options.budget} timelineOptions={options.timeline} options={options} />
             )}
           </motion.div>
         </AnimatePresence>

@@ -1,4 +1,5 @@
-import { TEXT_STATUS, PHOTO_STATUS, MARKETING_OPTIONS, label, desc } from '../configuratorConfig';
+import { label, desc } from '../configuratorConfig';
+import type { Option } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
 import { Check } from 'lucide-react';
@@ -8,9 +9,12 @@ interface Props {
   setField: (field: keyof ConfigState, value: string) => void;
   toggleArray: (field: keyof ConfigState, value: string) => void;
   lang: Language;
+  textOptions: Option[];
+  photoOptions: Option[];
+  marketingOptions: Option[];
 }
 
-export function ContentStep({ state, setField, toggleArray, lang }: Props) {
+export function ContentStep({ state, setField, toggleArray, lang, textOptions, photoOptions, marketingOptions }: Props) {
   const isRo = lang === 'ro';
 
   return (
@@ -21,7 +25,7 @@ export function ContentStep({ state, setField, toggleArray, lang }: Props) {
           {isRo ? 'Ai texte pregatite pentru site?' : 'Do you have texts ready for the site?'}
         </label>
         <div className="space-y-2">
-          {TEXT_STATUS.map((opt) => (
+          {textOptions.map((opt) => (
             <button
               key={opt.id}
               onClick={() => setField('textStatus', opt.id)}
@@ -43,7 +47,7 @@ export function ContentStep({ state, setField, toggleArray, lang }: Props) {
           {isRo ? 'Ai fotografii profesionale?' : 'Do you have professional photographs?'}
         </label>
         <div className="space-y-2">
-          {PHOTO_STATUS.map((opt) => (
+          {photoOptions.map((opt) => (
             <button
               key={opt.id}
               onClick={() => setField('photoStatus', opt.id)}
@@ -68,7 +72,7 @@ export function ContentStep({ state, setField, toggleArray, lang }: Props) {
           {isRo ? 'Optional — selecteaza ce te intereseaza' : 'Optional — select what interests you'}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {MARKETING_OPTIONS.map((opt) => {
+          {marketingOptions.map((opt) => {
             const selected = state.marketing.includes(opt.id);
             return (
               <button

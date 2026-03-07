@@ -40,6 +40,7 @@ const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminMessages = lazy(() => import("./pages/admin/AdminMessages"));
 const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
 const AdminTrash = lazy(() => import("./pages/admin/AdminTrash"));
+const AdminConfigurator = lazy(() => import("./pages/admin/AdminConfigurator"));
 
 const queryClient = new QueryClient();
 
@@ -80,6 +81,7 @@ const App = () => (
               <Route path="/admin/users" element={<ProtectedRoute><AdminLayout><AdminUsers /></AdminLayout></ProtectedRoute>} />
               <Route path="/admin/messages" element={<ProtectedRoute><AdminLayout><AdminMessages /></AdminLayout></ProtectedRoute>} />
               <Route path="/admin/blog" element={<ProtectedRoute><AdminLayout><AdminBlog /></AdminLayout></ProtectedRoute>} />
+              <Route path="/admin/configurator" element={<ProtectedRoute><AdminLayout><AdminConfigurator /></AdminLayout></ProtectedRoute>} />
               <Route path="/admin/trash" element={<ProtectedRoute><AdminLayout><AdminTrash /></AdminLayout></ProtectedRoute>} />
 
               {/* Preview pages pentru leaduri */}

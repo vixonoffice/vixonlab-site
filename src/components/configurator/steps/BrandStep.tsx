@@ -1,4 +1,5 @@
-import { LOGO_STATUS, DESIGN_STYLES, BRAND_EXTRAS, label, desc } from '../configuratorConfig';
+import { label, desc } from '../configuratorConfig';
+import type { Option } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
 import { Check } from 'lucide-react';
@@ -8,9 +9,12 @@ interface Props {
   setField: (field: keyof ConfigState, value: string) => void;
   toggleArray: (field: keyof ConfigState, value: string) => void;
   lang: Language;
+  logoOptions: Option[];
+  designStyles: Option[];
+  brandExtras: Option[];
 }
 
-export function BrandStep({ state, setField, toggleArray, lang }: Props) {
+export function BrandStep({ state, setField, toggleArray, lang, logoOptions, designStyles, brandExtras }: Props) {
   const isRo = lang === 'ro';
 
   return (
@@ -21,7 +25,7 @@ export function BrandStep({ state, setField, toggleArray, lang }: Props) {
           {isRo ? 'Ai logo?' : 'Do you have a logo?'}
         </label>
         <div className="flex flex-wrap gap-2">
-          {LOGO_STATUS.map((opt) => (
+          {logoOptions.map((opt) => (
             <button
               key={opt.id}
               onClick={() => setField('logoStatus', opt.id)}
@@ -74,7 +78,7 @@ export function BrandStep({ state, setField, toggleArray, lang }: Props) {
           {isRo ? 'Ce stil de design preferi?' : 'What design style do you prefer?'}
         </label>
         <div className="grid grid-cols-2 gap-2">
-          {DESIGN_STYLES.map((style) => {
+          {designStyles.map((style) => {
             const selected = state.designStyle === style.id;
             return (
               <button
@@ -122,7 +126,7 @@ export function BrandStep({ state, setField, toggleArray, lang }: Props) {
           {isRo ? 'Optional — ne putem ocupa si de materialele fizice/digitale' : 'Optional — we can also handle physical/digital materials'}
         </p>
         <div className="grid grid-cols-2 gap-2">
-          {BRAND_EXTRAS.map((extra) => {
+          {brandExtras.map((extra) => {
             const selected = state.brandExtras.includes(extra.id);
             return (
               <button

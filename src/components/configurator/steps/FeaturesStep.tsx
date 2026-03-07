@@ -1,4 +1,5 @@
-import { FEATURE_OPTIONS, label, desc } from '../configuratorConfig';
+import { label, desc } from '../configuratorConfig';
+import type { Option } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
 import { Check } from 'lucide-react';
@@ -7,9 +8,10 @@ interface Props {
   state: ConfigState;
   toggleArray: (field: keyof ConfigState, value: string) => void;
   lang: Language;
+  featureOptions: Option[];
 }
 
-export function FeaturesStep({ state, toggleArray, lang }: Props) {
+export function FeaturesStep({ state, toggleArray, lang, featureOptions }: Props) {
   const isRo = lang === 'ro';
 
   return (
@@ -21,7 +23,7 @@ export function FeaturesStep({ state, toggleArray, lang }: Props) {
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {FEATURE_OPTIONS.map((feat) => {
+        {featureOptions.map((feat) => {
           const selected = state.features.includes(feat.id);
           return (
             <button

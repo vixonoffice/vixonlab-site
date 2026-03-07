@@ -1,4 +1,4 @@
-import { MAINTENANCE_PLANS } from '../configuratorConfig';
+import type { MaintenancePlan } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
 import { Check, Star } from 'lucide-react';
@@ -7,9 +7,10 @@ interface Props {
   state: ConfigState;
   setField: (field: keyof ConfigState, value: string) => void;
   lang: Language;
+  plans: MaintenancePlan[];
 }
 
-export function MaintenanceNewStep({ state, setField, lang }: Props) {
+export function MaintenanceNewStep({ state, setField, lang, plans }: Props) {
   const isRo = lang === 'ro';
 
   return (
@@ -26,7 +27,7 @@ export function MaintenanceNewStep({ state, setField, lang }: Props) {
       </p>
 
       <div className="space-y-3">
-        {MAINTENANCE_PLANS.map((plan) => {
+        {plans.map((plan) => {
           const selected = state.maintenancePlan === plan.id;
           const features = isRo ? plan.features_ro : plan.features_en;
           const price = isRo ? plan.price_ro : plan.price_en;

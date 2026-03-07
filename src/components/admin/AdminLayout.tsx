@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import {
   LayoutDashboard, FileText, Briefcase, FolderOpen, MessageSquare,
-  DollarSign, BarChart3, Footprints, Code, Users, LogOut, Inbox, Menu, X, Trash2, PenSquare
+  DollarSign, BarChart3, Footprints, Code, Users, LogOut, Inbox, Menu, X, Trash2, PenSquare, Settings
 } from 'lucide-react';
 
 const navItems = [
@@ -15,6 +15,7 @@ const navItems = [
   { label: 'Blog', path: '/admin/blog', icon: PenSquare },
   { label: 'Testimoniale', path: '/admin/testimonials', icon: MessageSquare },
   { label: 'Prețuri', path: '/admin/pricing', icon: DollarSign },
+  { label: 'Configurator', path: '/admin/configurator', icon: Settings },
   { label: 'Statistici', path: '/admin/stats', icon: BarChart3 },
   { label: 'Proces', path: '/admin/process', icon: Footprints },
   { label: 'Tech Stack', path: '/admin/tech', icon: Code },

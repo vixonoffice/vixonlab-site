@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { PAGE_OPTIONS, label } from '../configuratorConfig';
+import { label } from '../configuratorConfig';
+import type { Option } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
 import { Check, Plus, X } from 'lucide-react';
@@ -10,9 +11,10 @@ interface Props {
   addCustomPage: (value: string) => void;
   removeCustomPage: (index: number) => void;
   lang: Language;
+  pageOptions: Option[];
 }
 
-export function PagesStep({ state, toggleArray, addCustomPage, removeCustomPage, lang }: Props) {
+export function PagesStep({ state, toggleArray, addCustomPage, removeCustomPage, lang, pageOptions }: Props) {
   const [customInput, setCustomInput] = useState('');
   const isRo = lang === 'ro';
 
@@ -32,7 +34,7 @@ export function PagesStep({ state, toggleArray, addCustomPage, removeCustomPage,
       </p>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-        {PAGE_OPTIONS.map((page) => {
+        {pageOptions.map((page) => {
           const selected = state.pages.includes(page.id);
           return (
             <button
