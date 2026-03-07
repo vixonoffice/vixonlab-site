@@ -1,4 +1,12 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.vixonlab.ro" }],
+      "destination": "https://vixonlab.ro/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/((?!sitemap\\.xml|robots\\.txt|vixonlab-indexnow\\.txt).*)", "destination": "/index.html" }
   ],
