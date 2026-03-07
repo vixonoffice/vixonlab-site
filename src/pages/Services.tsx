@@ -56,7 +56,7 @@ const Services = () => {
       </SectionWrapper>
 
       {/* Why Custom Code */}
-      <section className="section-padding section-spacing bg-background-secondary/30">
+      <section className="section-padding section-spacing bg-background-alt">
         <div className="mx-auto max-w-content">
           <ScrollReveal>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

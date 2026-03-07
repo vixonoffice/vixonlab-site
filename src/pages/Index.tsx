@@ -108,7 +108,7 @@ const Index = () => {
       </SectionWrapper>
 
       {/* Why Us */}
-      <section className="section-padding section-spacing bg-background-secondary/30">
+      <section className="section-padding section-spacing bg-background-alt">
         <div className="mx-auto max-w-content">
           <ScrollReveal>
             <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3 text-center">{t('why.label')}</p>
@@ -164,7 +164,7 @@ const Index = () => {
       </SectionWrapper>
 
       {/* Testimonials */}
-      <section className="section-padding section-spacing bg-background-secondary/30">
+      <section className="section-padding section-spacing bg-background-alt">
         <div className="mx-auto max-w-content">
           <ScrollReveal>
             <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3">{t('testimonials.label')}</p>

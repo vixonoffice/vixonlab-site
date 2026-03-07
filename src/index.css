@@ -28,6 +28,7 @@ html {
   :root {
     --background: 243 40% 13%;
     --background-secondary: 243 36% 18%;
+    --background-alt: 243 36% 16%;
     --foreground: 240 33% 97%;
 
     --card: 248 38% 24%;
