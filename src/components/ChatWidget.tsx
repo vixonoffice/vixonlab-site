@@ -9,9 +9,11 @@ type Message = {
 };
 
 const WELCOME = 'Salut! 👋 Sunt asistentul Vixon Lab. Cu ce te pot ajuta?';
+const BUBBLE_MSG = 'Bună! 👋 Ai întrebări despre site sau prețuri?';
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
+  const [showBubble, setShowBubble] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: 'model', text: WELCOME },
   ]);
@@ -20,8 +22,18 @@ export function ChatWidget() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const t = setTimeout(() => setShowBubble(true), 4000);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
+
+  function handleOpen() {
+    setOpen((o) => !o);
+    setShowBubble(false);
+  }
 
   async function send() {
     const text = input.trim();
@@ -62,6 +74,29 @@ export function ChatWidget() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+      {/* Speech bubble teaser */}
+      <AnimatePresence>
+        {showBubble && !open && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+            transition={{ duration: 0.25 }}
+            className="relative max-w-[220px] rounded-2xl rounded-br-sm border border-white/10 bg-[#0e0e14]/95 backdrop-blur-xl px-4 py-3 shadow-xl cursor-pointer"
+            onClick={handleOpen}
+          >
+            <button
+              className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+              onClick={(e) => { e.stopPropagation(); setShowBubble(false); }}
+            >
+              <X className="w-3 h-3" />
+            </button>
+            <p className="text-sm text-foreground leading-snug">{BUBBLE_MSG}</p>
+            {/* little triangle */}
+            <div className="absolute -bottom-[7px] right-6 w-3 h-3 bg-[#0e0e14] border-r border-b border-white/10 rotate-45" />
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Chat panel */}
       <AnimatePresence>
         {open && (
@@ -161,10 +196,18 @@ export function ChatWidget() {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => setOpen((o) => !o)}
+        onClick={handleOpen}
         className="w-14 h-14 rounded-full gradient-primary shadow-lg shadow-primary/30 flex items-center justify-center text-white relative"
         aria-label="Chat"
       >
+        {/* Pulse ring — visible only when closed */}
+        {!open && (
+          <span className="absolute inset-0 rounded-full animate-ping gradient-primary opacity-30 pointer-events-none" />
+        )}
+        {/* Notification dot */}
+        {!open && (
+          <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-green-400 border-2 border-[#0e0e14] rounded-full" />
+        )}
         <AnimatePresence mode="wait">
           {open ? (
             <motion.span
