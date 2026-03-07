@@ -129,6 +129,7 @@ export function ChatWidget() {
             onClick={handleOpen}
           >
             <button
+              aria-label="Închide"
               className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
               onClick={dismissBubble}
             >
