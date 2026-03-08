@@ -148,10 +148,10 @@ export function ChatWidget() {
             initial={{ x: 60, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 60, opacity: 0 }}
-            whileHover={{ x: -4 }}
+            whileHover={{ x: -4, opacity: 1 }}
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}
             onClick={() => setOpen(true)}
-            className="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex items-center gap-2 gradient-primary text-white shadow-lg shadow-primary/30 rounded-l-xl px-3 py-4 cursor-pointer select-none"
+            className="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex items-center gap-2 gradient-primary text-white shadow-lg shadow-primary/30 rounded-l-xl px-3 py-4 cursor-pointer select-none opacity-40 hover:opacity-100 transition-opacity duration-300"
             aria-label="Deschide chat"
           >
             <MessageCircle className="w-4 h-4 flex-shrink-0" />
