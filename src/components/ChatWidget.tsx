@@ -103,6 +103,9 @@ export function ChatWidget() {
     setInput('');
     setLoading(true);
 
+    // Keep keyboard open by refocusing input
+    setTimeout(() => inputRef.current?.focus(), 50);
+
     try {
       const history = newMessages.slice(0, -1).map((m) => ({
         role: m.role,
@@ -132,6 +135,7 @@ export function ChatWidget() {
       ]);
     } finally {
       setLoading(false);
+      setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [input, loading, messages]);
 
