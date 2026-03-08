@@ -38,20 +38,8 @@ export function ChatWidget() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [viewportH, setViewportH] = useState<number | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Track visual viewport height (shrinks when mobile keyboard opens)
-  useEffect(() => {
-    if (!open) return;
-    const vv = window.visualViewport;
-    if (!vv) return;
-    const update = () => setViewportH(vv.height);
-    update();
-    vv.addEventListener('resize', update);
-    return () => vv.removeEventListener('resize', update);
-  }, [open]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -63,7 +51,7 @@ export function ChatWidget() {
     }
   }, [loading, open]);
 
-  // Lock body scroll when open (mobile)
+  // Lock body scroll when open
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
@@ -115,11 +103,6 @@ export function ChatWidget() {
     }
   }, [input, loading, messages]);
 
-  // Mobile panel height — use visualViewport when keyboard is open
-  const mobileStyle: React.CSSProperties = viewportH
-    ? { height: viewportH, maxHeight: viewportH }
-    : { height: '100dvh', maxHeight: '100dvh' };
-
   return (
     <>
       {/* Side tab */}
@@ -149,7 +132,7 @@ export function ChatWidget() {
       <AnimatePresence>
         {open && (
           <>
-            {/* Overlay — mobile only */}
+            {/* Overlay — covers everything on mobile */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -166,16 +149,13 @@ export function ChatWidget() {
               transition={{ type: 'spring', stiffness: 320, damping: 32 }}
               className="
                 fixed z-50 flex flex-col
-                bg-[#0e0e14] border border-white/10
+                bg-[#0e0e14]
                 shadow-2xl
-                /* Mobile: fullscreen, pinned to top-left */
-                inset-0
-                /* Desktop: bottom-right panel */
+                inset-0 w-full h-full
                 md:inset-auto md:right-0 md:bottom-0
                 md:w-[380px] md:h-auto md:max-h-[min(520px,calc(100vh-80px))]
-                md:rounded-tl-2xl md:border-r-0 md:border-b-0
+                md:rounded-tl-2xl md:border md:border-white/10 md:border-r-0 md:border-b-0
               "
-              style={window.innerWidth < 768 ? mobileStyle : undefined}
             >
               {/* Header */}
               <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0">
@@ -200,7 +180,7 @@ export function ChatWidget() {
               </div>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
+              <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0 overscroll-contain">
                 {messages.map((msg, i) => (
                   <div
                     key={i}
