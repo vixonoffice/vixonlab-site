@@ -40,71 +40,38 @@ export function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
 
-  // iOS keyboard fix: lock page scroll + resize container to visual viewport
+  // Lock page scroll completely when chat is open (iOS-safe)
   useEffect(() => {
     if (!open) return;
 
-    const isMobile = window.innerWidth < 768;
-
-    // Lock page scroll
     const scrollY = window.scrollY;
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
     document.body.style.top = `-${scrollY}px`;
     document.body.style.left = '0';
     document.body.style.right = '0';
+    document.body.style.width = '100%';
     document.documentElement.style.overflow = 'hidden';
 
-    // Resize container to match visual viewport (handles keyboard)
-    const vv = window.visualViewport;
-    function syncViewport() {
-      if (!isMobile || !vv || !containerRef.current) return;
-      containerRef.current.style.height = `${vv.height}px`;
-      containerRef.current.style.top = `${vv.offsetTop}px`;
-    }
-
-    if (isMobile && vv) {
-      syncViewport();
-      vv.addEventListener('resize', syncViewport);
-      vv.addEventListener('scroll', syncViewport);
-    }
-
     return () => {
-      // Restore page scroll
       document.body.style.overflow = '';
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.left = '';
       document.body.style.right = '';
+      document.body.style.width = '';
       document.documentElement.style.overflow = '';
       window.scrollTo(0, scrollY);
-
-      if (vv) {
-        vv.removeEventListener('resize', syncViewport);
-        vv.removeEventListener('scroll', syncViewport);
-      }
     };
   }, [open]);
-
-  // Focus input after open/send, but not on initial open (avoid immediate keyboard)
-  const hasInteracted = useRef(false);
-  useEffect(() => {
-    if (!loading && open && hasInteracted.current) {
-      setTimeout(() => inputRef.current?.focus(), 100);
-    }
-  }, [loading, open]);
 
   const send = useCallback(async () => {
     const text = input.trim();
     if (!text || loading) return;
-    hasInteracted.current = true;
-
     const userMsg: Message = { role: 'user', text };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
@@ -172,7 +139,7 @@ export function ChatWidget() {
       <AnimatePresence>
         {open && (
           <motion.div
-            ref={containerRef}
+
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
