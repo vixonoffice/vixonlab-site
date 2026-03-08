@@ -155,7 +155,7 @@ export function ChatWidget() {
       <AnimatePresence>
         {!open && tabVisible && (
           <motion.button
-            initial={{ x: 60, opacity: 0 }}
+            initial={false}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 60, opacity: 0 }}
             whileHover={{ x: -4, opacity: 1 }}
