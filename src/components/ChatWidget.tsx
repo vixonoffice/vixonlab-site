@@ -13,8 +13,7 @@ type Message = {
 const WELCOME = 'Salut! 👋 Sunt asistentul Vixon Lab. Cu ce te pot ajuta?';
 
 function WhatsAppButton({ waNumber, text }: { waNumber: string; text: string }) {
-  const encoded = encodeURIComponent(text);
-  const url = `https://wa.me/${waNumber}?text=${encoded}`;
+  const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`;
   return (
     <a
       href={url}
@@ -40,10 +39,18 @@ export function ChatWidget() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
+
+  // Re-focus input dupa trimitere
+  useEffect(() => {
+    if (!loading && open) {
+      inputRef.current?.focus();
+    }
+  }, [loading, open]);
 
   async function send() {
     const text = input.trim();
@@ -89,26 +96,31 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Tab lateral fix pe dreapta */}
-      <motion.button
-        onClick={() => setOpen(true)}
-        initial={false}
-        animate={{ x: open ? 120 : 0 }}
-        whileHover={{ x: open ? 120 : -4 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex items-center gap-2 gradient-primary text-white shadow-lg shadow-primary/30 rounded-l-xl px-3 py-4 cursor-pointer select-none"
-        aria-label="Deschide chat"
-      >
-        <MessageCircle className="w-4 h-4 flex-shrink-0" />
-        <span
-          className="text-xs font-semibold tracking-wide"
-          style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-        >
-          Chat
-        </span>
-      </motion.button>
+      {/* Tab lateral — centrat vertical, se ascunde cand panoul e deschis */}
+      <AnimatePresence>
+        {!open && (
+          <motion.button
+            initial={{ x: 60, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 60, opacity: 0 }}
+            whileHover={{ x: -4 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+            onClick={() => setOpen(true)}
+            className="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex items-center gap-2 gradient-primary text-white shadow-lg shadow-primary/30 rounded-l-xl px-3 py-4 cursor-pointer select-none"
+            aria-label="Deschide chat"
+          >
+            <MessageCircle className="w-4 h-4 flex-shrink-0" />
+            <span
+              className="text-xs font-semibold tracking-wide"
+              style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+            >
+              Chat
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
-      {/* Panoul de chat */}
+      {/* Panoul de chat — ancorat jos-dreapta, creste in sus */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -116,11 +128,11 @@ export function ChatWidget() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 40 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed right-0 top-1/2 -translate-y-1/2 z-50 w-[340px] sm:w-[380px] rounded-l-2xl border border-white/10 border-r-0 bg-[#0e0e14]/97 backdrop-blur-xl shadow-2xl flex flex-col overflow-hidden"
-            style={{ maxHeight: '520px' }}
+            className="fixed right-0 bottom-0 z-50 w-[340px] sm:w-[380px] rounded-tl-2xl border border-white/10 border-r-0 border-b-0 bg-[#0e0e14]/97 backdrop-blur-xl shadow-2xl flex flex-col"
+            style={{ height: 'min(520px, calc(100vh - 60px))' }}
           >
             {/* Header */}
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0">
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0 rounded-tl-2xl">
               <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center flex-shrink-0">
                 <Bot className="w-4 h-4 text-white" />
               </div>
@@ -142,7 +154,7 @@ export function ChatWidget() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ minHeight: 0 }}>
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
               {messages.map((msg, i) => (
                 <div
                   key={i}
@@ -189,13 +201,13 @@ export function ChatWidget() {
             {/* Input */}
             <div className="p-3 border-t border-white/10 flex gap-2 flex-shrink-0">
               <input
+                ref={inputRef}
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-white/30 transition-colors"
                 placeholder="Scrie un mesaj..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && send()}
                 disabled={loading}
-                autoFocus
               />
               <Button
                 size="icon"
