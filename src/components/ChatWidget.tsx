@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MessageCircle, X, Send, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -38,9 +38,20 @@ export function ChatWidget() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [viewportH, setViewportH] = useState<number | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Track visual viewport height (shrinks when mobile keyboard opens)
+  useEffect(() => {
+    if (!open) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => setViewportH(vv.height);
+    update();
+    vv.addEventListener('resize', update);
+    return () => vv.removeEventListener('resize', update);
+  }, [open]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -52,22 +63,17 @@ export function ChatWidget() {
     }
   }, [loading, open]);
 
-  // Blocheaza scroll-ul paginii cand chat-ul e deschis
+  // Lock body scroll when open (mobile)
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none';
     } else {
       document.body.style.overflow = '';
-      document.body.style.touchAction = '';
     }
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-    };
+    return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  async function send() {
+  const send = useCallback(async () => {
     const text = input.trim();
     if (!text || loading) return;
 
@@ -107,11 +113,16 @@ export function ChatWidget() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [input, loading, messages]);
+
+  // Mobile panel height — use visualViewport when keyboard is open
+  const mobileStyle: React.CSSProperties = viewportH
+    ? { height: viewportH, maxHeight: viewportH }
+    : { height: '100dvh', maxHeight: '100dvh' };
 
   return (
     <>
-      {/* Tab lateral */}
+      {/* Side tab */}
       <AnimatePresence>
         {!open && (
           <motion.button
@@ -138,7 +149,7 @@ export function ChatWidget() {
       <AnimatePresence>
         {open && (
           <>
-            {/* Overlay inchide la click afara */}
+            {/* Overlay — mobile only */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -147,34 +158,27 @@ export function ChatWidget() {
               onClick={() => setOpen(false)}
             />
 
-            {/* Panoul de chat */}
+            {/* Chat panel */}
             <motion.div
-              ref={panelRef}
-              // Mobil: urcă din jos, ocupa ~70% ecran
-              // Desktop: glisează din dreapta, jos
               initial={{ y: '100%', opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: '100%', opacity: 0 }}
               transition={{ type: 'spring', stiffness: 320, damping: 32 }}
-              onTouchStart={(e) => e.stopPropagation()}
-              onTouchMove={(e) => e.stopPropagation()}
               className="
                 fixed z-50 flex flex-col
                 bg-[#0e0e14] border border-white/10
-                /* Mobil */
-                bottom-0 left-0 right-0 rounded-t-2xl border-b-0
-                h-[70dvh]
-                /* Desktop */
-                md:left-auto md:right-0 md:bottom-0 md:rounded-tl-2xl md:rounded-tr-none md:border-r-0
+                shadow-2xl
+                /* Mobile: fullscreen, pinned to top-left */
+                inset-0
+                /* Desktop: bottom-right panel */
+                md:inset-auto md:right-0 md:bottom-0
                 md:w-[380px] md:h-auto md:max-h-[min(520px,calc(100vh-80px))]
-                shadow-2xl backdrop-blur-xl
+                md:rounded-tl-2xl md:border-r-0 md:border-b-0
               "
-              style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+              style={window.innerWidth < 768 ? mobileStyle : undefined}
             >
               {/* Header */}
-              <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0 rounded-t-2xl md:rounded-tl-2xl md:rounded-tr-none">
-                {/* Drag handle pe mobil */}
-                <div className="absolute top-2 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-white/20 md:hidden" />
+              <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0">
                 <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center flex-shrink-0">
                   <Bot className="w-4 h-4 text-white" />
                 </div>
@@ -196,11 +200,7 @@ export function ChatWidget() {
               </div>
 
               {/* Messages */}
-              <div
-                className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0"
-                onTouchStart={(e) => e.stopPropagation()}
-                onTouchMove={(e) => e.stopPropagation()}
-              >
+              <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
                 {messages.map((msg, i) => (
                   <div
                     key={i}
@@ -243,7 +243,7 @@ export function ChatWidget() {
                 <div ref={bottomRef} />
               </div>
 
-              {/* Input — font-size 16px previne zoom iOS */}
+              {/* Input — 16px prevents iOS zoom */}
               <div
                 className="p-3 border-t border-white/10 flex gap-2 flex-shrink-0"
                 style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
