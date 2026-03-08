@@ -45,12 +45,22 @@ export function ChatWidget() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
 
-  // Re-focus input dupa trimitere
   useEffect(() => {
     if (!loading && open) {
-      inputRef.current?.focus();
+      // mic delay ca sa nu interfereze cu animatia de deschidere
+      setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [loading, open]);
+
+  // Blocheaza scroll-ul pe body pe mobil cand chat-ul e deschis
+  useEffect(() => {
+    if (open && window.innerWidth < 768) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
 
   async function send() {
     const text = input.trim();
@@ -96,7 +106,7 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Tab lateral — centrat vertical, se ascunde cand panoul e deschis */}
+      {/* Tab lateral — centrat vertical, dispare cand e deschis */}
       <AnimatePresence>
         {!open && (
           <motion.button
@@ -120,107 +130,165 @@ export function ChatWidget() {
         )}
       </AnimatePresence>
 
-      {/* Panoul de chat — ancorat jos-dreapta, creste in sus */}
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 40 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed right-0 bottom-0 z-50 w-[340px] sm:w-[380px] rounded-tl-2xl border border-white/10 border-r-0 border-b-0 bg-[#0e0e14]/97 backdrop-blur-xl shadow-2xl flex flex-col"
-            style={{ height: 'min(520px, calc(100vh - 60px))' }}
-          >
-            {/* Header */}
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0 rounded-tl-2xl">
-              <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center flex-shrink-0">
-                <Bot className="w-4 h-4 text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-foreground">Vixon Lab</p>
-                <p className="text-xs text-green-400 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block" />
-                  Online
-                </p>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="w-7 h-7 text-muted-foreground hover:text-foreground flex-shrink-0"
-                onClick={() => setOpen(false)}
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
-                      msg.role === 'user'
-                        ? 'gradient-primary text-white rounded-br-sm'
-                        : 'bg-white/10 text-foreground rounded-bl-sm'
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
-                  {msg.whatsapp && msg.waNumber && (
-                    <WhatsAppButton
-                      waNumber={msg.waNumber}
-                      text="Bună! Vreau să discutăm despre un proiect."
-                    />
-                  )}
-                </div>
-              ))}
-
-              {loading && (
-                <div className="flex justify-start">
-                  <div className="bg-white/10 rounded-2xl rounded-bl-sm px-4 py-3">
-                    <div className="flex gap-1">
-                      {[0, 1, 2].map((i) => (
-                        <motion.span
-                          key={i}
-                          className="w-1.5 h-1.5 bg-muted-foreground rounded-full block"
-                          animate={{ opacity: [0.3, 1, 0.3] }}
-                          transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div ref={bottomRef} />
-            </div>
-
-            {/* Input */}
-            <div className="p-3 border-t border-white/10 flex gap-2 flex-shrink-0">
-              <input
-                ref={inputRef}
-                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-white/30 transition-colors"
-                placeholder="Scrie un mesaj..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && send()}
-                disabled={loading}
+          <>
+            {/* MOBIL: full screen sheet */}
+            <motion.div
+              key="mobile-chat"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 32 }}
+              className="md:hidden fixed inset-0 z-50 flex flex-col bg-[#0e0e14]"
+              style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+            >
+              <ChatPanel
+                messages={messages}
+                input={input}
+                loading={loading}
+                inputRef={inputRef}
+                bottomRef={bottomRef}
+                onInput={setInput}
+                onSend={send}
+                onClose={() => setOpen(false)}
+                rounded={false}
               />
-              <Button
-                size="icon"
-                className="gradient-primary rounded-xl w-9 h-9 flex-shrink-0"
-                onClick={send}
-                disabled={loading || !input.trim()}
-              >
-                <Send className="w-4 h-4" />
-              </Button>
-            </div>
-          </motion.div>
+            </motion.div>
+
+            {/* DESKTOP: panou lateral jos-dreapta */}
+            <motion.div
+              key="desktop-chat"
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 40 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              className="hidden md:flex fixed right-0 bottom-0 z-50 flex-col w-[380px] rounded-tl-2xl border border-white/10 border-r-0 border-b-0 bg-[#0e0e14]/97 backdrop-blur-xl shadow-2xl"
+              style={{ height: 'min(520px, calc(100vh - 80px))' }}
+            >
+              <ChatPanel
+                messages={messages}
+                input={input}
+                loading={loading}
+                inputRef={inputRef}
+                bottomRef={bottomRef}
+                onInput={setInput}
+                onSend={send}
+                onClose={() => setOpen(false)}
+                rounded={true}
+              />
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
+    </>
+  );
+}
+
+// Componenta interna refolosita pe mobile si desktop
+function ChatPanel({
+  messages, input, loading, inputRef, bottomRef,
+  onInput, onSend, onClose, rounded,
+}: {
+  messages: Message[];
+  input: string;
+  loading: boolean;
+  inputRef: React.RefObject<HTMLInputElement>;
+  bottomRef: React.RefObject<HTMLDivElement>;
+  onInput: (v: string) => void;
+  onSend: () => void;
+  onClose: () => void;
+  rounded: boolean;
+}) {
+  return (
+    <>
+      {/* Header */}
+      <div className={`flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0 ${rounded ? 'rounded-tl-2xl' : ''}`}>
+        <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center flex-shrink-0">
+          <Bot className="w-4 h-4 text-white" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-foreground">Vixon Lab</p>
+          <p className="text-xs text-green-400 flex items-center gap-1">
+            <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block" />
+            Online
+          </p>
+        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-7 h-7 text-muted-foreground hover:text-foreground flex-shrink-0"
+          onClick={onClose}
+        >
+          <X className="w-4 h-4" />
+        </Button>
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
+        {messages.map((msg, i) => (
+          <div
+            key={i}
+            className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
+          >
+            <div
+              className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+                msg.role === 'user'
+                  ? 'gradient-primary text-white rounded-br-sm'
+                  : 'bg-white/10 text-foreground rounded-bl-sm'
+              }`}
+            >
+              {msg.text}
+            </div>
+            {msg.whatsapp && msg.waNumber && (
+              <WhatsAppButton
+                waNumber={msg.waNumber}
+                text="Bună! Vreau să discutăm despre un proiect."
+              />
+            )}
+          </div>
+        ))}
+
+        {loading && (
+          <div className="flex justify-start">
+            <div className="bg-white/10 rounded-2xl rounded-bl-sm px-4 py-3">
+              <div className="flex gap-1">
+                {[0, 1, 2].map((i) => (
+                  <motion.span
+                    key={i}
+                    className="w-1.5 h-1.5 bg-muted-foreground rounded-full block"
+                    animate={{ opacity: [0.3, 1, 0.3] }}
+                    transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div ref={bottomRef} />
+      </div>
+
+      {/* Input */}
+      <div className="p-3 border-t border-white/10 flex gap-2 flex-shrink-0">
+        <input
+          ref={inputRef}
+          className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-white/30 transition-colors"
+          placeholder="Scrie un mesaj..."
+          value={input}
+          onChange={(e) => onInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && onSend()}
+          disabled={loading}
+        />
+        <Button
+          size="icon"
+          className="gradient-primary rounded-xl w-9 h-9 flex-shrink-0"
+          onClick={onSend}
+          disabled={loading || !input.trim()}
+        >
+          <Send className="w-4 h-4" />
+        </Button>
+      </div>
     </>
   );
 }
