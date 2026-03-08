@@ -40,34 +40,70 @@ export function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
 
+  // iOS keyboard fix: lock page scroll + resize container to visual viewport
   useEffect(() => {
-    if (!loading && open) {
-      setTimeout(() => inputRef.current?.focus(), 150);
-    }
-  }, [loading, open]);
+    if (!open) return;
 
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+    const isMobile = window.innerWidth < 768;
+
+    // Lock page scroll
+    const scrollY = window.scrollY;
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.documentElement.style.overflow = 'hidden';
+
+    // Resize container to match visual viewport (handles keyboard)
+    const vv = window.visualViewport;
+    function syncViewport() {
+      if (!isMobile || !vv || !containerRef.current) return;
+      containerRef.current.style.height = `${vv.height}px`;
+      containerRef.current.style.top = `${vv.offsetTop}px`;
     }
+
+    if (isMobile && vv) {
+      syncViewport();
+      vv.addEventListener('resize', syncViewport);
+      vv.addEventListener('scroll', syncViewport);
+    }
+
     return () => {
+      // Restore page scroll
       document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
       document.documentElement.style.overflow = '';
+      window.scrollTo(0, scrollY);
+
+      if (vv) {
+        vv.removeEventListener('resize', syncViewport);
+        vv.removeEventListener('scroll', syncViewport);
+      }
     };
   }, [open]);
+
+  // Focus input after open/send, but not on initial open (avoid immediate keyboard)
+  const hasInteracted = useRef(false);
+  useEffect(() => {
+    if (!loading && open && hasInteracted.current) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [loading, open]);
 
   const send = useCallback(async () => {
     const text = input.trim();
     if (!text || loading) return;
+    hasInteracted.current = true;
 
     const userMsg: Message = { role: 'user', text };
     const newMessages = [...messages, userMsg];
@@ -136,129 +172,115 @@ export function ChatWidget() {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={containerRef}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            className="flex flex-col md:w-[380px] md:max-h-[min(520px,calc(100vh-80px))] md:rounded-tl-2xl md:border md:border-white/10 md:border-r-0 md:border-b-0 md:shadow-2xl"
             style={{
               position: 'fixed',
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
-              width: '100%',
-              height: '100%',
               zIndex: 9999,
               background: '#0e0e14',
+              // Desktop override
+              ...(typeof window !== 'undefined' && window.innerWidth >= 768
+                ? { top: 'auto', left: 'auto', width: 380 }
+                : {}),
             }}
           >
-            {/* Inner flex container — on desktop, position as side panel */}
-            <div
-              className="
-                flex flex-col w-full h-full
-                md:absolute md:right-0 md:bottom-0 md:top-auto md:left-auto
-                md:w-[380px] md:max-h-[min(520px,calc(100vh-80px))]
-                md:rounded-tl-2xl md:border md:border-white/10 md:border-r-0 md:border-b-0
-                md:shadow-2xl
-              "
-              style={{ background: '#0e0e14' }}
-            >
-              {/* Header */}
-              <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0">
-                <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center flex-shrink-0">
-                  <Bot className="w-4 h-4 text-white" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-foreground">Vixon Lab</p>
-                  <p className="text-xs text-green-400 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block" />
-                    Online
-                  </p>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="w-7 h-7 text-muted-foreground hover:text-foreground flex-shrink-0"
-                  onClick={() => setOpen(false)}
-                >
-                  <X className="w-4 h-4" />
-                </Button>
+            {/* Header */}
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0">
+              <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center flex-shrink-0">
+                <Bot className="w-4 h-4 text-white" />
               </div>
-
-              {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0 overscroll-contain">
-                {messages.map((msg, i) => (
-                  <div
-                    key={i}
-                    className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
-                  >
-                    <div
-                      className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
-                        msg.role === 'user'
-                          ? 'gradient-primary text-white rounded-br-sm'
-                          : 'bg-white/10 text-foreground rounded-bl-sm'
-                      }`}
-                    >
-                      {msg.text}
-                    </div>
-                    {msg.whatsapp && msg.waNumber && (
-                      <WhatsAppButton
-                        waNumber={msg.waNumber}
-                        text="Bună! Vreau să discutăm despre un proiect."
-                      />
-                    )}
-                  </div>
-                ))}
-
-                {loading && (
-                  <div className="flex justify-start">
-                    <div className="bg-white/10 rounded-2xl rounded-bl-sm px-4 py-3">
-                      <div className="flex gap-1">
-                        {[0, 1, 2].map((i) => (
-                          <motion.span
-                            key={i}
-                            className="w-1.5 h-1.5 bg-muted-foreground rounded-full block"
-                            animate={{ opacity: [0.3, 1, 0.3] }}
-                            transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <div ref={bottomRef} />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-foreground">Vixon Lab</p>
+                <p className="text-xs text-green-400 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block" />
+                  Online
+                </p>
               </div>
-
-              {/* Input */}
-              <div
-                className="p-3 border-t border-white/10 flex gap-2 flex-shrink-0"
-                style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="w-7 h-7 text-muted-foreground hover:text-foreground flex-shrink-0"
+                onClick={() => setOpen(false)}
               >
-                <input
-                  ref={inputRef}
-                  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-foreground placeholder:text-muted-foreground outline-none focus:border-white/30 transition-colors"
-                  style={{ fontSize: '16px' }}
-                  placeholder="Scrie un mesaj..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && send()}
-                  disabled={loading}
-                />
-                <Button
-                  size="icon"
-                  className="gradient-primary rounded-xl w-10 h-10 flex-shrink-0"
-                  onClick={send}
-                  disabled={loading || !input.trim()}
-                >
-                  <Send className="w-4 h-4" />
-                </Button>
-              </div>
+                <X className="w-4 h-4" />
+              </Button>
             </div>
 
-            {/* Desktop: click outside panel to close */}
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0 overscroll-contain">
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
+                >
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+                      msg.role === 'user'
+                        ? 'gradient-primary text-white rounded-br-sm'
+                        : 'bg-white/10 text-foreground rounded-bl-sm'
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
+                  {msg.whatsapp && msg.waNumber && (
+                    <WhatsAppButton
+                      waNumber={msg.waNumber}
+                      text="Bună! Vreau să discutăm despre un proiect."
+                    />
+                  )}
+                </div>
+              ))}
+
+              {loading && (
+                <div className="flex justify-start">
+                  <div className="bg-white/10 rounded-2xl rounded-bl-sm px-4 py-3">
+                    <div className="flex gap-1">
+                      {[0, 1, 2].map((i) => (
+                        <motion.span
+                          key={i}
+                          className="w-1.5 h-1.5 bg-muted-foreground rounded-full block"
+                          animate={{ opacity: [0.3, 1, 0.3] }}
+                          transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div ref={bottomRef} />
+            </div>
+
+            {/* Input */}
             <div
-              className="hidden md:block absolute inset-0 -z-10"
-              onClick={() => setOpen(false)}
-            />
+              className="p-3 border-t border-white/10 flex gap-2 flex-shrink-0"
+              style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
+            >
+              <input
+                ref={inputRef}
+                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-foreground placeholder:text-muted-foreground outline-none focus:border-white/30 transition-colors"
+                style={{ fontSize: '16px' }}
+                placeholder="Scrie un mesaj..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && send()}
+                disabled={loading}
+              />
+              <Button
+                size="icon"
+                className="gradient-primary rounded-xl w-10 h-10 flex-shrink-0"
+                onClick={send}
+                disabled={loading || !input.trim()}
+              >
+                <Send className="w-4 h-4" />
+              </Button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
