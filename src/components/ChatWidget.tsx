@@ -51,14 +51,18 @@ export function ChatWidget() {
     }
   }, [loading, open]);
 
-  // Lock body scroll when open
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
   }, [open]);
 
   const send = useCallback(async () => {
@@ -131,31 +135,32 @@ export function ChatWidget() {
 
       <AnimatePresence>
         {open && (
-          <>
-            {/* Overlay — covers everything on mobile */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 bg-black/40 md:hidden"
-              onClick={() => setOpen(false)}
-            />
-
-            {/* Chat panel */}
-            <motion.div
-              initial={{ y: '100%', opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: '100%', opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 9999,
+              background: '#0e0e14',
+            }}
+          >
+            {/* Inner flex container — on desktop, position as side panel */}
+            <div
               className="
-                fixed z-50 flex flex-col
-                bg-[#0e0e14]
-                shadow-2xl
-                inset-0 w-full h-full
-                md:inset-auto md:right-0 md:bottom-0
-                md:w-[380px] md:h-auto md:max-h-[min(520px,calc(100vh-80px))]
+                flex flex-col w-full h-full
+                md:absolute md:right-0 md:bottom-0 md:top-auto md:left-auto
+                md:w-[380px] md:max-h-[min(520px,calc(100vh-80px))]
                 md:rounded-tl-2xl md:border md:border-white/10 md:border-r-0 md:border-b-0
+                md:shadow-2xl
               "
+              style={{ background: '#0e0e14' }}
             >
               {/* Header */}
               <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0">
@@ -223,7 +228,7 @@ export function ChatWidget() {
                 <div ref={bottomRef} />
               </div>
 
-              {/* Input — 16px prevents iOS zoom */}
+              {/* Input */}
               <div
                 className="p-3 border-t border-white/10 flex gap-2 flex-shrink-0"
                 style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
@@ -247,8 +252,14 @@ export function ChatWidget() {
                   <Send className="w-4 h-4" />
                 </Button>
               </div>
-            </motion.div>
-          </>
+            </div>
+
+            {/* Desktop: click outside panel to close */}
+            <div
+              className="hidden md:block absolute inset-0 -z-10"
+              onClick={() => setOpen(false)}
+            />
+          </motion.div>
         )}
       </AnimatePresence>
     </>
