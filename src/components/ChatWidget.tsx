@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { AnimatePresence, motion, useMotionValue } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, GripHorizontal } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { MessageCircle, X, Send, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 type Message = {
@@ -9,60 +9,19 @@ type Message = {
 };
 
 const WELCOME = 'Salut! 👋 Sunt asistentul Vixon Lab. Cu ce te pot ajuta?';
-const BUBBLE_MSG = 'Bună! 👋 Ai întrebări despre site sau prețuri?';
-
-function getSavedPos() {
-  try {
-    const s = localStorage.getItem('vx_chat_pos');
-    return s ? JSON.parse(s) : { x: 0, y: 0 };
-  } catch {
-    return { x: 0, y: 0 };
-  }
-}
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
-  const [showBubble, setShowBubble] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: 'model', text: WELCOME },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
-
-  const seen = typeof window !== 'undefined' && localStorage.getItem('vx_chat_seen');
-  const savedPos = typeof window !== 'undefined' ? getSavedPos() : { x: 0, y: 0 };
-  const x = useMotionValue(savedPos.x);
-  const y = useMotionValue(savedPos.y);
-
-  useEffect(() => {
-    if (seen) return;
-    const t = setTimeout(() => setShowBubble(true), 4000);
-    return () => clearTimeout(t);
-  }, []);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
-
-  function handleOpen() {
-    if (isDragging) return;
-    setOpen((o) => !o);
-    setShowBubble(false);
-    localStorage.setItem('vx_chat_seen', '1');
-  }
-
-  function dismissBubble(e: React.MouseEvent) {
-    e.stopPropagation();
-    setShowBubble(false);
-    localStorage.setItem('vx_chat_seen', '1');
-  }
-
-  function onDragEnd() {
-    setIsDragging(false);
-    localStorage.setItem('vx_chat_pos', JSON.stringify({ x: x.get(), y: y.get() }));
-  }
 
   async function send() {
     const text = input.trim();
@@ -102,61 +61,39 @@ export function ChatWidget() {
   }
 
   return (
-    <motion.div
-      drag
-      dragMomentum={false}
-      dragElastic={0}
-      style={{ x, y }}
-      onDragStart={() => setIsDragging(true)}
-      onDragEnd={onDragEnd}
-      dragConstraints={{
-        top: -(typeof window !== 'undefined' ? window.innerHeight - 80 : 600),
-        left: -(typeof window !== 'undefined' ? window.innerWidth - 80 : 300),
-        right: 0,
-        bottom: 0,
-      }}
-      className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 touch-none"
-    >
-      {/* Speech bubble teaser */}
-      <AnimatePresence>
-        {showBubble && !open && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.9 }}
-            transition={{ duration: 0.25 }}
-            className="relative max-w-[220px] rounded-2xl rounded-br-sm border border-white/10 bg-[#0e0e14]/95 backdrop-blur-xl px-4 py-3 shadow-xl cursor-pointer"
-            onClick={handleOpen}
-          >
-            <button
-              aria-label="Închide"
-              className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-              onClick={dismissBubble}
-            >
-              <X className="w-3 h-3" />
-            </button>
-            <p className="text-sm text-foreground leading-snug">{BUBBLE_MSG}</p>
-            <div className="absolute -bottom-[7px] right-6 w-3 h-3 bg-[#0e0e14] border-r border-b border-white/10 rotate-45" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <>
+      {/* Tab lateral fix pe dreapta */}
+      <motion.button
+        onClick={() => setOpen(true)}
+        initial={false}
+        animate={{ x: open ? 120 : 0 }}
+        whileHover={{ x: open ? 120 : -4 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        className="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex items-center gap-2 gradient-primary text-white shadow-lg shadow-primary/30 rounded-l-xl px-3 py-4 cursor-pointer select-none"
+        aria-label="Deschide chat"
+      >
+        <MessageCircle className="w-4 h-4 flex-shrink-0" />
+        <span
+          className="text-xs font-semibold tracking-wide"
+          style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+        >
+          Chat
+        </span>
+      </motion.button>
 
-      {/* Chat panel */}
+      {/* Panoul de chat */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="w-[340px] sm:w-[380px] rounded-2xl border border-white/10 bg-[#0e0e14]/95 backdrop-blur-xl shadow-2xl flex flex-col overflow-hidden"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 40 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className="fixed right-0 top-1/2 -translate-y-1/2 z-50 w-[340px] sm:w-[380px] rounded-l-2xl border border-white/10 border-r-0 bg-[#0e0e14]/97 backdrop-blur-xl shadow-2xl flex flex-col overflow-hidden"
             style={{ maxHeight: '520px' }}
           >
-            {/* Header — drag handle */}
-            <div
-              className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 cursor-grab active:cursor-grabbing select-none"
-              title="Trage pentru a muta"
-            >
+            {/* Header */}
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0">
               <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center flex-shrink-0">
                 <Bot className="w-4 h-4 text-white" />
               </div>
@@ -167,23 +104,18 @@ export function ChatWidget() {
                   Online
                 </p>
               </div>
-              <GripHorizontal className="w-4 h-4 text-white/20 mr-1" />
               <Button
                 variant="ghost"
                 size="icon"
-                className="w-7 h-7 text-muted-foreground hover:text-foreground"
-                onClick={(e) => { e.stopPropagation(); setOpen(false); }}
+                className="w-7 h-7 text-muted-foreground hover:text-foreground flex-shrink-0"
+                onClick={() => setOpen(false)}
               >
                 <X className="w-4 h-4" />
               </Button>
             </div>
 
             {/* Messages */}
-            <div
-              className="flex-1 overflow-y-auto p-4 space-y-3"
-              style={{ minHeight: 0 }}
-              onPointerDown={(e) => e.stopPropagation()}
-            >
+            <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ minHeight: 0 }}>
               {messages.map((msg, i) => (
                 <div
                   key={i}
@@ -222,10 +154,7 @@ export function ChatWidget() {
             </div>
 
             {/* Input */}
-            <div
-              className="p-3 border-t border-white/10 flex gap-2"
-              onPointerDown={(e) => e.stopPropagation()}
-            >
+            <div className="p-3 border-t border-white/10 flex gap-2 flex-shrink-0">
               <input
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-white/30 transition-colors"
                 placeholder="Scrie un mesaj..."
@@ -233,6 +162,7 @@ export function ChatWidget() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && send()}
                 disabled={loading}
+                autoFocus
               />
               <Button
                 size="icon"
@@ -246,45 +176,6 @@ export function ChatWidget() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Toggle button */}
-      <motion.button
-        whileHover={{ scale: isDragging ? 1 : 1.05 }}
-        whileTap={{ scale: isDragging ? 1 : 0.95 }}
-        onClick={handleOpen}
-        className="w-14 h-14 rounded-full gradient-primary shadow-lg shadow-primary/30 flex items-center justify-center text-white relative cursor-grab active:cursor-grabbing"
-        aria-label="Chat"
-      >
-        {!open && !seen && (
-          <span className="absolute inset-0 rounded-full animate-ping gradient-primary opacity-30 pointer-events-none" />
-        )}
-        {!open && !seen && (
-          <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-green-400 border-2 border-[#0e0e14] rounded-full" />
-        )}
-        <AnimatePresence mode="wait">
-          {open ? (
-            <motion.span
-              key="x"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            >
-              <X className="w-6 h-6" />
-            </motion.span>
-          ) : (
-            <motion.span
-              key="chat"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            >
-              <MessageCircle className="w-6 h-6" />
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </motion.button>
-    </motion.div>
+    </>
   );
 }
