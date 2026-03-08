@@ -38,6 +38,16 @@ export function ChatWidget() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [tabVisible, setTabVisible] = useState(true);
+
+  // Hide tab after 5 seconds if not opened
+  useEffect(() => {
+    if (open) return;
+    setTabVisible(true);
+    const timer = setTimeout(() => setTabVisible(false), 5000);
+    return () => clearTimeout(timer);
+  }, [open]);
+
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
@@ -143,7 +153,7 @@ export function ChatWidget() {
     <>
       {/* Side tab */}
       <AnimatePresence>
-        {!open && (
+        {!open && tabVisible && (
           <motion.button
             initial={{ x: 60, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
