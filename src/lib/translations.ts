@@ -27,7 +27,7 @@ export const translations = {
     'hero.title1': 'Facem site-uri pe care',
     'hero.title2': 'clienții tăi le folosesc',
     'hero.subtitle': 'Nu mai pierzi vizitatori cu un site lent sau învechit. Construim site-uri rapide, magazine online funcționale și identități vizuale care te diferențiază.',
-    'hero.cta1': 'Hai să vorbim',
+    'hero.cta1': 'Vezi serviciile',
     'hero.cta2': 'Vezi portofoliul',
 
     // Stats
@@ -293,7 +293,7 @@ export const translations = {
     'hero.title1': 'We build websites that',
     'hero.title2': 'your clients actually use',
     'hero.subtitle': 'Stop losing visitors with a slow or outdated website. We build fast websites, functional online stores, and visual identities that set you apart.',
-    'hero.cta1': "Let's talk",
+    'hero.cta1': 'View services',
     'hero.cta2': 'View portfolio',
 
     'stats.projects': 'Projects delivered',

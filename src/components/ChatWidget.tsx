@@ -38,15 +38,6 @@ export function ChatWidget() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [tabVisible, setTabVisible] = useState(true);
-
-  // Hide tab after 5 seconds if not opened
-  useEffect(() => {
-    if (open) return;
-    setTabVisible(true);
-    const timer = setTimeout(() => setTabVisible(false), 5000);
-    return () => clearTimeout(timer);
-  }, [open]);
 
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -82,7 +73,6 @@ export function ChatWidget() {
   }, [open]);
 
   // Adjust INNER container to visual viewport (keyboard aware)
-  // Outer container stays fullscreen (no flash), inner adjusts
   useEffect(() => {
     if (!open) return;
     const vv = window.visualViewport;
@@ -113,7 +103,6 @@ export function ChatWidget() {
     setInput('');
     setLoading(true);
 
-    // Keep keyboard open by refocusing input
     setTimeout(() => inputRef.current?.focus(), 50);
 
     try {
@@ -151,26 +140,19 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Side tab */}
+      {/* Floating bubble — always visible */}
       <AnimatePresence>
-        {!open && tabVisible && (
+        {!open && (
           <motion.button
-            initial={false}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 60, opacity: 0 }}
-            whileHover={{ x: -4, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 24 }}
             onClick={() => setOpen(true)}
-            className="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex items-center gap-2 gradient-primary text-white shadow-lg shadow-primary/30 rounded-l-xl px-3 py-4 cursor-pointer select-none opacity-40 hover:opacity-100 transition-opacity duration-300"
+            className="fixed bottom-5 right-5 z-50 w-12 h-12 rounded-full gradient-primary text-white shadow-lg shadow-primary/25 flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-transform"
             aria-label="Deschide chat"
           >
-            <MessageCircle className="w-4 h-4 flex-shrink-0" />
-            <span
-              className="text-xs font-semibold tracking-wide"
-              style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-            >
-              Chat
-            </span>
+            <MessageCircle className="w-5 h-5" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -178,34 +160,30 @@ export function ChatWidget() {
       <AnimatePresence>
         {open && (
           <>
-            {/* OUTER: always fullscreen, opaque background — prevents flash */}
+            {/* OUTER: always fullscreen on mobile, panel on desktop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                width: '100%',
-                height: '100%',
-                zIndex: 9999,
-                background: '#0e0e14',
-              }}
+              className="fixed inset-0 z-[9999] md:inset-auto md:bottom-5 md:right-5 md:w-[380px] md:h-[min(520px,calc(100vh-80px))]"
+              style={{ background: 'transparent' }}
             >
-              {/* INNER: adjusts to visual viewport on mobile */}
+              {/* Desktop backdrop click to close */}
+              <div
+                className="fixed inset-0 -z-10 md:hidden"
+                onClick={() => setOpen(false)}
+              />
+
+              {/* INNER: chat panel */}
               <div
                 ref={innerRef}
                 className="
                   flex flex-col w-full h-full
-                  md:absolute md:right-0 md:bottom-0 md:top-auto md:left-auto
-                  md:w-[380px] md:max-h-[min(520px,calc(100vh-80px))]
-                  md:rounded-tl-2xl md:border md:border-white/10 md:border-r-0 md:border-b-0
+                  md:rounded-2xl md:border md:border-white/10
                   md:shadow-2xl
+                  overflow-hidden
                 "
-                style={{ background: '#0e0e14', overflow: 'hidden' }}
+                style={{ background: '#0e0e14' }}
               >
                 {/* Header */}
                 <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5 flex-shrink-0">
@@ -298,12 +276,6 @@ export function ChatWidget() {
                   </Button>
                 </div>
               </div>
-
-              {/* Desktop: click outside to close */}
-              <div
-                className="hidden md:block absolute inset-0 -z-10"
-                onClick={() => setOpen(false)}
-              />
             </motion.div>
           </>
         )}

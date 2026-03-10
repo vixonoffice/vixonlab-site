@@ -40,7 +40,7 @@ const Index = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                to="/contact"
+                to="/services"
                 className="gradient-primary text-white font-medium px-8 py-3.5 rounded-2xl text-center hover:opacity-90 transition-opacity"
               >
                 {t('hero.cta1')}
