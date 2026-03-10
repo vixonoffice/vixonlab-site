@@ -149,7 +149,8 @@ export function ChatWidget() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 24 }}
             onClick={() => setOpen(true)}
-            className="fixed top-20 left-5 z-50 w-12 h-12 rounded-full gradient-primary text-white shadow-lg shadow-primary/25 flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+            className="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full gradient-primary text-white flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+            style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
             aria-label="Deschide chat"
           >
             <MessageCircle className="w-5 h-5" />
@@ -165,7 +166,7 @@ export function ChatWidget() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[9999] md:inset-auto md:top-20 md:left-5 md:w-[380px] md:h-[min(520px,calc(100vh-120px))]"
+              className="fixed inset-0 z-[9999] md:inset-auto md:bottom-5 md:right-5 md:w-[380px] md:h-[min(520px,calc(100vh-80px))]"
               style={{ background: 'transparent' }}
             >
               {/* Desktop backdrop click to close */}
