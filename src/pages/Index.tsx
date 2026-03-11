@@ -62,7 +62,7 @@ const Index = () => {
       </section>
 
       {/* Stats */}
-      <section className="border-y border-white/5 bg-background-alt section-padding py-16">
+      <section className="border-y border-white/5 bg-background-secondary/50 section-padding py-16">
         <div className="mx-auto max-w-content">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
             {stats.map((stat) => (
