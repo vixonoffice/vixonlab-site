@@ -132,7 +132,7 @@ export const translations = {
     'sp.maintenance': 'VIXON CARE',
     'sp.maintenanceDesc': 'Mentenanță lunară — ne ocupăm noi ca site-ul tău să funcționeze perfect, mereu.',
     'sp.maintenancePrice': '20€ / lună sau 200€ / an',
-    'sp.maintenanceFeatures': 'Hosting Premium Inclus|Update-uri de Securitate|Backup Zilnic Automat|Suport Prioritar pe WhatsApp|Modificări Minore Incluse|Monitorizare Uptime 24/7',
+    'sp.maintenanceFeatures': 'Hosting Premium Inclus|Domeniu .ro (sau ce vrei tu) inclus|Certificat SSL Gratuit|Backup Zilnic Automat|Update-uri de Securitate|Monitorizare Uptime 24/7|Modificări Minore Incluse|Suport pe WhatsApp',
 
     'sp.popular': 'Cel mai ales',
     'sp.recommended': 'Recomandat',
@@ -398,7 +398,7 @@ export const translations = {
     'sp.maintenance': 'VIXON CARE',
     'sp.maintenanceDesc': 'Monthly maintenance — we make sure your website works perfectly, always.',
     'sp.maintenancePrice': '20€ / month or 200€ / year',
-    'sp.maintenanceFeatures': 'Premium Hosting Included|Security Updates|Daily Automatic Backup|Priority WhatsApp Support|Minor Changes Included|24/7 Uptime Monitoring',
+    'sp.maintenanceFeatures': 'Premium Hosting Included|Domain .ro (or whatever you want) included|Free SSL Certificate|Daily Automatic Backup|Security Updates|24/7 Uptime Monitoring|Minor Changes Included|WhatsApp Support',
 
     'sp.popular': 'Most chosen',
     'sp.recommended': 'Recommended',
