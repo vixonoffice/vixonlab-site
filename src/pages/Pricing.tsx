@@ -24,6 +24,16 @@ const Pricing = () => {
 
   const packages = [
     {
+      key: 'landing',
+      title: t('sp.landing'),
+      desc: t('sp.landingDesc'),
+      price: t('sp.landingPrice'),
+      features: t('sp.landingFeatures').split('|'),
+      popular: false,
+      colorClass: 'from-slate-500 to-slate-400',
+      waMsg: isRo ? 'Bună ziua! Sunt interesat de pachetul Landing Page.' : 'Hello! I am interested in the Landing Page package.',
+    },
+    {
       key: 'essential',
       title: t('sp.essential'),
       desc: t('sp.essentialDesc'),
@@ -186,9 +196,12 @@ const Pricing = () => {
                       ? 'Hosting, securitate, backup, update-uri și suport — ne ocupăm noi. Tu te concentrezi pe afacere.'
                       : 'Hosting, security, backup, updates and support — we handle it. You focus on your business.'}
                   </p>
-                  <div className="mb-6">
+                  <div className="mb-2">
                     <span className="font-heading font-bold text-4xl gradient-text">{t('sp.maintenancePrice')}</span>
                   </div>
+                  <p className="text-xs text-green-400 mb-5">
+                    {isRo ? '✓ Plătești anual — economisești 2 luni' : '✓ Pay annually — save 2 months'}
+                  </p>
                   <a
                     href={wa(isRo ? 'Bună ziua! Sunt interesat de planul Vixon Care.' : 'Hello! I am interested in the Vixon Care plan.')}
                     target="_blank"

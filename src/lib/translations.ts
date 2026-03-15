@@ -109,6 +109,11 @@ export const translations = {
     'sp.customCode': 'Cod Custom — fără WordPress',
     'sp.allInOne': 'Digital All-in-One',
 
+    'sp.landing': 'LANDING PAGE',
+    'sp.landingDesc': 'Prezență online rapidă, curată și profesională. Ideal dacă vrei să testezi sau ai nevoie urgent de un site.',
+    'sp.landingPrice': '300€',
+    'sp.landingFeatures': 'O pagină completă (Hero + Servicii + Contact)|Design Modern & Responsive|Formular contact cu WhatsApp|SEO de bază|Google Analytics|Domeniu GRATUIT 1 an|Livrare în 2-3 zile',
+
     'sp.essential': 'ESSENTIAL',
     'sp.essentialDesc': 'Website premium complet pentru afacerea ta. Prezență online profesională care atrage clienți.',
     'sp.essentialPrice': '700€ — 900€',
@@ -126,7 +131,7 @@ export const translations = {
 
     'sp.maintenance': 'VIXON CARE',
     'sp.maintenanceDesc': 'Mentenanță lunară — ne ocupăm noi ca site-ul tău să funcționeze perfect, mereu.',
-    'sp.maintenancePrice': '49€ / lună',
+    'sp.maintenancePrice': '20€ / lună sau 200€ / an',
     'sp.maintenanceFeatures': 'Hosting Premium Inclus|Update-uri de Securitate|Backup Zilnic Automat|Suport Prioritar pe WhatsApp|Modificări Minore Incluse|Monitorizare Uptime 24/7',
 
     'sp.popular': 'Cel mai ales',
@@ -370,6 +375,11 @@ export const translations = {
     'sp.customCode': 'Custom Code — no WordPress',
     'sp.allInOne': 'Digital All-in-One',
 
+    'sp.landing': 'LANDING PAGE',
+    'sp.landingDesc': 'Fast, clean and professional online presence. Ideal if you want to test the waters or need a site urgently.',
+    'sp.landingPrice': '300€',
+    'sp.landingFeatures': 'One complete page (Hero + Services + Contact)|Modern & Responsive Design|Contact form with WhatsApp|Basic SEO|Google Analytics|FREE Domain for 1 year|Delivery in 2-3 days',
+
     'sp.essential': 'ESSENTIAL',
     'sp.essentialDesc': 'Complete premium website for your business. Professional online presence that attracts clients.',
     'sp.essentialPrice': '700€ — 900€',
@@ -387,7 +397,7 @@ export const translations = {
 
     'sp.maintenance': 'VIXON CARE',
     'sp.maintenanceDesc': 'Monthly maintenance — we make sure your website works perfectly, always.',
-    'sp.maintenancePrice': '49€ / month',
+    'sp.maintenancePrice': '20€ / month or 200€ / year',
     'sp.maintenanceFeatures': 'Premium Hosting Included|Security Updates|Daily Automatic Backup|Priority WhatsApp Support|Minor Changes Included|24/7 Uptime Monitoring',
 
     'sp.popular': 'Most chosen',
