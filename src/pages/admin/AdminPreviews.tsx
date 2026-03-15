@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -32,6 +32,7 @@ interface Preview {
 }
 
 const AdminPreviews = () => {
+  const queryClient = useQueryClient();
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [categoryFilter, setCategoryFilter] = useState('Toate');
   const [search, setSearch] = useState('');
@@ -47,6 +48,26 @@ const AdminPreviews = () => {
       return data as Preview[];
     },
   });
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('previews-realtime')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'previews' }, (payload) => {
+        const updated = payload.new as Preview;
+        if ((updated.views ?? 0) > 0) {
+          toast(`👁️ ${updated.business_name} a deschis preview-ul!`, {
+            description: `${updated.views} vizualizări · acum`,
+            duration: 8000,
+          });
+        }
+        queryClient.setQueryData(['previews'], (old: Preview[] = []) =>
+          old.map((p) => p.id === updated.id ? { ...p, ...updated } : p)
+        );
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [queryClient]);
 
   const filtered = previews.filter((p) => {
     const matchCat = categoryFilter === 'Toate' || p.category === categoryFilter;
