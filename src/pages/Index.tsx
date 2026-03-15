@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
@@ -6,6 +7,8 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 import { MagneticButton } from '@/components/MagneticButton';
 import { TiltCard } from '@/components/TiltCard';
 import { TextRotator } from '@/components/TextRotator';
+
+const ParticleField = lazy(() => import('@/components/ParticleField').then(m => ({ default: m.ParticleField })));
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { Zap, Star, Shield, ChevronDown, Utensils, Scissors, HeartPulse, Dumbbell, ShoppingBag, Scale, Car, Home, Laptop, Camera } from 'lucide-react';
 import { resolveIcon, STATIC_STATS, STATIC_SERVICES, STATIC_PROCESS_STEPS, STATIC_TESTIMONIALS } from '@/data/staticData';
@@ -40,6 +43,11 @@ const Index = () => {
     <PageTransition>
       {/* Hero */}
       <section className="relative min-h-screen flex items-center section-padding pt-20 overflow-hidden">
+        {/* 3D particles — desktop only, lazy loaded, skips if no WebGL */}
+        <Suspense fallback={null}>
+          <ParticleField />
+        </Suspense>
+
         {/* Floating gradient orbs */}
         <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[120px] pointer-events-none hero-orb-1" />
         <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-accent/8 blur-[100px] pointer-events-none hero-orb-2" />
@@ -52,16 +60,14 @@ const Index = () => {
               <span className="text-sm text-muted-foreground">{t('hero.badge')}</span>
             </div>
 
-            {/* Title — full original text restored */}
-            <h1 className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[1.1] mb-2 hero-fade hero-fade-2">
-              <span className="text-foreground">{t('hero.title1')}</span>
-              <br />
-              <span className="gradient-text">{t('hero.title2')}</span>
+            {/* Title */}
+            <h1 className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[1.1] mb-2 text-foreground hero-fade hero-fade-2">
+              {t('hero.title1')}
             </h1>
 
-            {/* Rotating text — what we create */}
+            {/* Rotating gradient text */}
             <div className="mb-6 hero-fade hero-fade-3">
-              <span className="font-heading font-semibold text-xl sm:text-2xl md:text-3xl text-primary-light/70">
+              <span className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[1.1] gradient-text">
                 <TextRotator words={rotatingWords} interval={3000} />
               </span>
             </div>
