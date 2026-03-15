@@ -6,7 +6,8 @@ export const translations = {
   ro: {
     // Navbar
     'nav.home': 'Acasă',
-    'nav.services': 'Servicii & Prețuri',
+    'nav.services': 'Servicii',
+    'nav.pricing': 'Prețuri',
     'nav.portfolio': 'Portofoliu',
     'nav.about': 'Despre',
     'nav.blog': 'Blog',
@@ -249,7 +250,7 @@ export const translations = {
     'contact.error': 'A apărut o eroare. Încearcă din nou.',
     'contact.infoTitle': 'Contact',
     'contact.emailAddress': 'vixonoffice@gmail.com',
-    'contact.phoneNumber': '+40 758 840 269',
+    'contact.phoneNumber': '+40 779 383 164',
     'contact.schedule': 'L-V 9:00 - 18:00',
     'contact.whatsapp': 'Disponibil pe WhatsApp',
     'contact.social': 'Social Media',
@@ -273,7 +274,8 @@ export const translations = {
   },
   en: {
     'nav.home': 'Home',
-    'nav.services': 'Services & Pricing',
+    'nav.services': 'Services',
+    'nav.pricing': 'Pricing',
     'nav.portfolio': 'Portfolio',
     'nav.about': 'About',
     'nav.blog': 'Blog',
@@ -506,7 +508,7 @@ export const translations = {
     'contact.error': 'An error occurred. Please try again.',
     'contact.infoTitle': 'Contact',
     'contact.emailAddress': 'vixonoffice@gmail.com',
-    'contact.phoneNumber': '+40 758 840 269',
+    'contact.phoneNumber': '+40 779 383 164',
     'contact.schedule': 'Mon-Fri 9:00 - 18:00',
     'contact.whatsapp': 'Available on WhatsApp',
     'contact.social': 'Social Media',

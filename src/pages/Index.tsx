@@ -4,7 +4,7 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { Zap, Star, Shield, ChevronDown } from 'lucide-react';
+import { Zap, Star, Shield, ChevronDown, Utensils, Scissors, HeartPulse, Dumbbell, ShoppingBag, Scale, Car, Home, Laptop, Camera } from 'lucide-react';
 import { resolveIcon, STATIC_STATS, STATIC_SERVICES, STATIC_PROCESS_STEPS, STATIC_TESTIMONIALS } from '@/data/staticData';
 
 const Index = () => {
@@ -15,6 +15,19 @@ const Index = () => {
   const services = STATIC_SERVICES;
   const steps = STATIC_PROCESS_STEPS;
   const testimonials = STATIC_TESTIMONIALS;
+
+  const industries = [
+    { icon: Utensils, label: language === 'ro' ? 'Restaurante' : 'Restaurants' },
+    { icon: Scissors, label: language === 'ro' ? 'Saloane Beauty' : 'Beauty Salons' },
+    { icon: HeartPulse, label: language === 'ro' ? 'Cabinete Medicale' : 'Medical Clinics' },
+    { icon: Dumbbell, label: language === 'ro' ? 'Fitness & Gym' : 'Fitness & Gym' },
+    { icon: ShoppingBag, label: language === 'ro' ? 'Magazine Online' : 'Online Stores' },
+    { icon: Scale, label: language === 'ro' ? 'Avocatură' : 'Law Firms' },
+    { icon: Car, label: language === 'ro' ? 'Auto & Service' : 'Auto & Service' },
+    { icon: Home, label: language === 'ro' ? 'Imobiliare' : 'Real Estate' },
+    { icon: Laptop, label: language === 'ro' ? 'IT & Tech' : 'IT & Tech' },
+    { icon: Camera, label: language === 'ro' ? 'Fotografi' : 'Photographers' },
+  ];
 
   return (
     <PageTransition>
@@ -135,6 +148,28 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Industries */}
+      <SectionWrapper>
+        <ScrollReveal>
+          <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3 text-center">
+            {language === 'ro' ? 'Clienți' : 'Clients'}
+          </p>
+          <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground text-center mb-12">
+            {language === 'ro' ? 'Lucrăm cu orice tip de afacere' : 'We work with any type of business'}
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            {industries.map((item) => (
+              <div key={item.label} className="glass-card p-4 flex flex-col items-center gap-2.5 text-center group hover:border-primary/30 transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <item.icon className="w-5 h-5 text-primary-light" />
+                </div>
+                <span className="text-sm text-muted-foreground font-medium">{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </ScrollReveal>
+      </SectionWrapper>
+
       {/* Process */}
       <SectionWrapper>
         <ScrollReveal>
@@ -175,6 +210,11 @@ const Index = () => {
             {testimonials.map((item) => (
               <ScrollReveal key={item.id}>
                 <div className="glass-card p-6 border-l-4 border-l-primary">
+                  <div className="flex gap-0.5 mb-3">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
                   <p className="text-sm text-muted-foreground leading-relaxed mb-6 italic">
                     "{language === 'en' ? item.quote_en : item.quote_ro}"
                   </p>

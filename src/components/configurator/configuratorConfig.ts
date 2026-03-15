@@ -2,7 +2,7 @@
 // Full website configurator — all options data (RO/EN)
 // ---------------------------------------------------------------------------
 
-export const WHATSAPP_NUMBER = '40758840269';
+export const WHATSAPP_NUMBER = '40779383164';
 
 type Lang = 'ro' | 'en';
 export interface Option {

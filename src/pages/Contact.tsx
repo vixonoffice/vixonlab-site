@@ -9,7 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const WHATSAPP_NUMBER = '40758840269';
+const WHATSAPP_NUMBER = '40779383164';
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, 'Required').max(100),

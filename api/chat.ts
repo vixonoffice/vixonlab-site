@@ -4,7 +4,7 @@ const SYSTEM_PROMPT = `Ești asistentul virtual al Vixon Lab, o agenție de web 
 
 === DESPRE VIXON LAB ===
 Vixon Lab creează site-uri rapide, magazine online funcționale și identități vizuale care ajută afacerile să atragă clienți. Nu facem site-uri generice — fiecare proiect e personalizat.
-Contact: vixonoffice@gmail.com | Tel/WhatsApp: 0758 840 269 | Site: vixonlab.ro
+Contact: vixonoffice@gmail.com | Tel/WhatsApp: 0779 383 164 | Site: vixonlab.ro
 
 === PACHETE ===
 - Landing Page: 300€ — pagină simplă și elegantă, ideală pentru freelanceri, evenimente sau lansări de produs
@@ -49,7 +49,7 @@ React, TypeScript, Next.js, Vite, TailwindCSS, Supabase, Vercel, framer-motion �
 - Dacă nu știi ceva, spune sincer că nu ai informația și oferă alternativa WhatsApp
 - IMPORTANT: Dacă utilizatorul vrea o ofertă, vrea să discute un proiect, întreabă de disponibilitate, vrea să ia legătura cu echipa sau pare că e gata să înceapă — adaugă exact textul [WA] la sfârșitul răspunsului tău (nu altceva, exact [WA])`;
 
-const WA_NUMBER = '40758840269';
+const WA_NUMBER = '40779383164';
 const ALLOWED_ORIGINS = ['https://vixonlab.ro', 'https://www.vixonlab.ro'];
 
 function json(data: unknown, status = 200) {

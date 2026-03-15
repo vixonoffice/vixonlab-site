@@ -4,7 +4,7 @@ import { usePricingPlans } from '@/hooks/useSupabaseData';
 import { parsePrice, parsePackageMeta, getAddonSlug, EXTRA_PAGE_PRICE } from '@/lib/configuratorData';
 import type { PricingPlanRow } from '@/hooks/useSupabaseData';
 
-const WHATSAPP_NUMBER = '40758840269';
+const WHATSAPP_NUMBER = '40779383164';
 
 // ---------------------------------------------------------------------------
 // State

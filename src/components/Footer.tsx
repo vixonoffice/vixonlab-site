@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { MessageCircle } from 'lucide-react';
 
 export function Footer() {
   const { t } = useLanguage();
@@ -17,6 +18,15 @@ export function Footer() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               {t('footer.description')}
             </p>
+            <a
+              href="https://wa.me/40779383164"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary-light transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" />
+              WhatsApp
+            </a>
           </div>
 
           {/* Quick links */}
@@ -27,6 +37,7 @@ export function Footer() {
                 { label: t('nav.home'), path: '/' },
                 { label: t('nav.about'), path: '/about' },
                 { label: t('nav.portfolio'), path: '/portfolio' },
+                { label: t('nav.blog'), path: '/blog' },
                 { label: t('nav.contact'), path: '/contact' },
               ].map((link) => (
                 <Link key={link.path} to={link.path} className="text-sm text-muted-foreground hover:text-primary-light transition-colors">
@@ -41,10 +52,11 @@ export function Footer() {
             <h3 className="font-heading font-semibold text-sm mb-4 text-foreground">{t('footer.services')}</h3>
             <div className="flex flex-col gap-2.5">
               {[
-                { label: 'Essential', path: '/services' },
-                { label: 'Business', path: '/services' },
-                { label: 'Ecosistem', path: '/services' },
-                { label: 'Vixon Care', path: '/services' },
+                { label: 'Essential', path: '/pricing' },
+                { label: 'Business', path: '/pricing' },
+                { label: 'Ecosistem', path: '/pricing' },
+                { label: 'Vixon Care', path: '/pricing' },
+                { label: t('nav.pricing'), path: '/pricing' },
               ].map((link) => (
                 <Link key={link.label} to={link.path} className="text-sm text-muted-foreground hover:text-primary-light transition-colors">
                   {link.label}

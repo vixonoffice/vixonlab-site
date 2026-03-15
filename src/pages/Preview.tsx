@@ -7,7 +7,7 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 );
 
-const WHATSAPP_NUMBER = "40758840269";
+const WHATSAPP_NUMBER = "40779383164";
 
 interface PreviewData {
   slug: string;

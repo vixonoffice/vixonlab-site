@@ -126,8 +126,8 @@ export const STATIC_TESTIMONIALS: TestimonialRow[] = [
   {
     id: '1',
     sort_order: 1,
-    quote_ro: 'Am venit cu un brief vag și au reușit să-l transforme în exact ce aveam nevoie. Site-ul se încarcă instant și arată mult mai bine decât mă așteptam.',
-    quote_en: 'I came with a vague brief and they managed to turn it into exactly what I needed. The site loads instantly and looks much better than I expected.',
+    quote_ro: 'Am venit fără un brief clar și în 5 zile aveam site-ul live. Se încarcă instant, arată profesionist și deja am primit primele solicitări prin formularul de contact.',
+    quote_en: 'I came without a clear brief and in 5 days the site was live. It loads instantly, looks professional, and I already received the first inquiries through the contact form.',
     author_name: 'Maria P.',
     author_role: 'TechStart SRL',
     author_initial: 'M',
@@ -136,8 +136,8 @@ export const STATIC_TESTIMONIALS: TestimonialRow[] = [
   {
     id: '2',
     sort_order: 2,
-    quote_ro: 'Magazinul online a fost gata în 2 săptămâni. Am fost sceptic la început, dar funcționează impecabil. Suportul după lansare e ce m-a convins cel mai mult.',
-    quote_en: 'The online store was ready in 2 weeks. I was skeptical at first, but it works flawlessly. Post-launch support is what convinced me the most.',
+    quote_ro: 'Magazinul online gata în 2 săptămâni. Am fost sceptic, dar în prima lună am procesat comenzi fără nicio problemă. Suportul după lansare m-a surprins cel mai mult — răspund în ore, nu în zile.',
+    quote_en: 'Online store ready in 2 weeks. I was skeptical, but in the first month I processed orders without any issues. Post-launch support surprised me the most — they respond in hours, not days.',
     author_name: 'Andrei I.',
     author_role: 'ShopLocal',
     author_initial: 'A',
@@ -146,8 +146,8 @@ export const STATIC_TESTIMONIALS: TestimonialRow[] = [
   {
     id: '3',
     sort_order: 3,
-    quote_ro: 'Am lucrat cu alte agenții înainte, dar comunicarea cu Vixon Lab e pe alt nivel. Răspund repede, explică clar, și nu încearcă să-ți vândă chestii de care nu ai nevoie.',
-    quote_en: 'I\'ve worked with other agencies before, but communication with Vixon Lab is on another level. They respond quickly, explain clearly, and don\'t try to sell you things you don\'t need.',
+    quote_ro: 'Am lucrat cu 2 agenții înainte și de fiecare dată a fost frustrare. Cu Vixon Lab a fost altceva — comunicare clară, livrare la timp, și nu mi-au vândut servicii de care nu aveam nevoie.',
+    quote_en: "I worked with 2 agencies before and it was frustrating each time. With Vixon Lab it was different — clear communication, on-time delivery, and they didn't sell me services I didn't need.",
     author_name: 'Elena D.',
     author_role: 'Bella Boutique',
     author_initial: 'E',
