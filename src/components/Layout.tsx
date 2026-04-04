@@ -9,7 +9,7 @@ export function Layout({ children }: { children: ReactNode }) {
   useScrollToTop();
 
   return (
-    <div className="ambient-glow relative min-h-screen overflow-x-hidden">
+    <div className="ambient-glow relative isolate min-h-screen overflow-x-hidden">
       <Navbar />
       <main>{children}</main>
       <Footer />
