@@ -54,5 +54,12 @@ const replacement = `<style>${criticalCSS}</style>
 
 html = html.replace(cssLinkMatch[0], replacement);
 
+// Remove modulepreload for non-critical vendor chunks (query, ui)
+// They'll still load when needed via dynamic import
+const preloadsBefore = (html.match(/modulepreload/g) || []).length;
+html = html.replace(/\s*<link rel="modulepreload" crossorigin href="\/assets\/vendor-(?:query|ui)[^"]*\.js">\n?/g, '');
+const preloadsAfter = (html.match(/modulepreload/g) || []).length;
+
 fs.writeFileSync(htmlPath, html);
 console.log(`✓ Critical CSS inlined (${criticalCSS.length} bytes), full CSS async-loaded.`);
+console.log(`✓ Removed ${preloadsBefore - preloadsAfter} non-critical modulepreload hints.`);
