@@ -106,8 +106,8 @@ const AdminPreviews = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-        {/* List */}
-        <div className="lg:col-span-1 space-y-3">
+        {/* List - hidden on mobile when a business is selected */}
+        <div className={`lg:col-span-1 space-y-3 ${selectedId !== null ? 'hidden lg:block' : ''}`}>
           <input
             type="text"
             placeholder="Caută business..."
@@ -156,10 +156,16 @@ const AdminPreviews = () => {
           </div>
         </div>
 
-        {/* Detail */}
-        <div className="lg:col-span-2">
+        {/* Detail - always visible on mobile when selected */}
+        <div className={`lg:col-span-2 ${selectedId === null ? 'hidden lg:block' : ''}`}>
           {selected ? (
             <div className="glass-card p-6 space-y-5">
+              <button
+                onClick={() => setSelectedId(null)}
+                className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-2 lg:hidden"
+              >
+                ← Înapoi la listă
+              </button>
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h2 className="font-heading font-semibold text-xl text-foreground">{selected.business_name}</h2>
