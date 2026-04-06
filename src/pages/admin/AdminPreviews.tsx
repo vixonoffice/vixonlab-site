@@ -4,15 +4,28 @@ import { supabase } from '@/integrations/supabase/client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Copy, ExternalLink, Eye, Star, Phone, MapPin } from 'lucide-react';
+import { Copy, ExternalLink, Eye, Star, Phone, MapPin, Check, EyeOff } from 'lucide-react';
 
-const CATEGORIES = ['Toate', 'restaurant', 'pizzerie', 'service auto', 'salon coafura', 'frizerie', 'gym sala fitness', 'cabinet stomatologic', 'florarie', 'cofetarie', 'pensiune', 'constructor', 'instalator', 'brutarie', 'patiserie', 'farmacie', 'cabinet contabilitate'];
+const CATEGORIES = ['Toate', 'restaurant', 'pizzerie', 'service auto', 'salon coafura', 'frizerie', 'gym sala fitness', 'cabinet stomatologic', 'florarie', 'cofetarie', 'pensiune', 'constructor', 'instalator', 'brutarie', 'patiserie', 'farmacie', 'cabinet contabilitate', 'hotel', 'firma curatenie'];
 
 const SITE_STATUS_COLORS: Record<string, string> = {
   'Nu': 'bg-red-500/20 text-red-400',
   'Doar Facebook': 'bg-orange-500/20 text-orange-400',
   'Da': 'bg-green-500/20 text-green-400',
 };
+
+const CONTACTED_KEY = 'vixon_contacted_ids';
+
+function getContactedIds(): Set<number> {
+  try {
+    const raw = localStorage.getItem(CONTACTED_KEY);
+    return raw ? new Set(JSON.parse(raw)) : new Set();
+  } catch { return new Set(); }
+}
+
+function saveContactedIds(ids: Set<number>) {
+  localStorage.setItem(CONTACTED_KEY, JSON.stringify([...ids]));
+}
 
 interface Preview {
   id: number;
@@ -36,6 +49,8 @@ const AdminPreviews = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [categoryFilter, setCategoryFilter] = useState('Toate');
   const [search, setSearch] = useState('');
+  const [contactedIds, setContactedIds] = useState<Set<number>>(getContactedIds);
+  const [hideContacted, setHideContacted] = useState(false);
 
   const { data: previews = [], isLoading } = useQuery({
     queryKey: ['previews'],
@@ -55,8 +70,8 @@ const AdminPreviews = () => {
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'previews' }, (payload) => {
         const updated = payload.new as Preview;
         if ((updated.views ?? 0) > 0) {
-          toast(`👁️ ${updated.business_name} a deschis preview-ul!`, {
-            description: `${updated.views} vizualizări · acum`,
+          toast(`${updated.business_name} a deschis preview-ul!`, {
+            description: `${updated.views} vizualizari · acum`,
             duration: 8000,
           });
         }
@@ -69,13 +84,35 @@ const AdminPreviews = () => {
     return () => { supabase.removeChannel(channel); };
   }, [queryClient]);
 
-  const filtered = previews.filter((p) => {
-    const matchCat = categoryFilter === 'Toate' || p.category === categoryFilter;
-    const matchSearch = p.business_name.toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchSearch;
-  });
+  const toggleContacted = (id: number) => {
+    setContactedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      saveContactedIds(next);
+      return next;
+    });
+  };
+
+  const filtered = previews
+    .filter((p) => {
+      const matchCat = categoryFilter === 'Toate' || p.category === categoryFilter;
+      const matchSearch = p.business_name.toLowerCase().includes(search.toLowerCase());
+      const matchContacted = !hideContacted || !contactedIds.has(p.id);
+      return matchCat && matchSearch && matchContacted;
+    })
+    .sort((a, b) => {
+      // Contacted go to bottom
+      const aC = contactedIds.has(a.id) ? 1 : 0;
+      const bC = contactedIds.has(b.id) ? 1 : 0;
+      return aC - bC;
+    });
 
   const selected = previews.find((p) => p.id === selectedId);
+  const isContacted = selected ? contactedIds.has(selected.id) : false;
 
   const copyWhatsapp = (msg: string) => {
     navigator.clipboard.writeText(msg);
@@ -91,8 +128,9 @@ const AdminPreviews = () => {
   };
 
   const totalViewed = previews.filter((p) => p.views > 0).length;
+  const totalContacted = contactedIds.size;
 
-  if (isLoading) return <div className="text-muted-foreground">Se încarcă...</div>;
+  if (isLoading) return <div className="text-muted-foreground">Se incarca...</div>;
 
   return (
     <div>
@@ -100,7 +138,7 @@ const AdminPreviews = () => {
         <div>
           <h1 className="text-2xl font-heading font-bold text-foreground">Preview-uri Leaduri</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {previews.length} business-uri • {totalViewed} vizionate • {previews.length - totalViewed} nevăzute
+            {previews.length} business-uri · {totalViewed} vizionate · {totalContacted} contactate · {previews.length - totalContacted} ramase
           </p>
         </div>
       </div>
@@ -110,30 +148,46 @@ const AdminPreviews = () => {
         <div className={`lg:col-span-1 space-y-3 ${selectedId !== null ? 'hidden lg:block' : ''}`}>
           <input
             type="text"
-            placeholder="Caută business..."
+            placeholder="Cauta business..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50"
           />
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-foreground focus:outline-none focus:border-primary/50"
-          >
-            {CATEGORIES.map((c) => (
-              <option key={c} value={c} className="bg-background">{c} {c !== 'Toate' ? `(${previews.filter(p => p.category === c).length})` : `(${previews.length})`}</option>
-            ))}
-          </select>
+          <div className="flex gap-2">
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="flex-1 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-foreground focus:outline-none focus:border-primary/50"
+            >
+              {CATEGORIES.map((c) => (
+                <option key={c} value={c} className="bg-background">{c} {c !== 'Toate' ? `(${previews.filter(p => p.category === c).length})` : `(${previews.length})`}</option>
+              ))}
+            </select>
+            <button
+              onClick={() => setHideContacted(!hideContacted)}
+              className={`px-3 py-2 rounded-xl border text-sm shrink-0 transition-colors ${
+                hideContacted
+                  ? 'bg-primary/20 border-primary/50 text-primary-light'
+                  : 'bg-white/5 border-white/10 text-muted-foreground'
+              }`}
+              title={hideContacted ? 'Arată toate' : 'Ascunde contactate'}
+            >
+              <EyeOff className="w-4 h-4" />
+            </button>
+          </div>
 
           <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-1">
             {filtered.map((p) => (
               <button
                 key={p.id}
                 onClick={() => setSelectedId(p.id)}
-                className={`w-full text-left glass-card p-3 transition-all ${selectedId === p.id ? 'border-primary/50' : ''}`}
+                className={`w-full text-left glass-card p-3 transition-all ${selectedId === p.id ? 'border-primary/50' : ''} ${contactedIds.has(p.id) ? 'opacity-50' : ''}`}
               >
                 <div className="flex items-start justify-between gap-2">
-                  <span className="text-sm font-medium text-foreground leading-tight">{p.business_name}</span>
+                  <span className="text-sm font-medium text-foreground leading-tight">
+                    {contactedIds.has(p.id) && <Check className="w-3 h-3 inline mr-1 text-green-400" />}
+                    {p.business_name}
+                  </span>
                   <Badge className={`text-[10px] shrink-0 ${SITE_STATUS_COLORS[p.are_website || 'Nu'] || ''}`}>
                     {p.are_website || 'Nu'}
                   </Badge>
@@ -164,7 +218,7 @@ const AdminPreviews = () => {
                 onClick={() => setSelectedId(null)}
                 className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-2 lg:hidden"
               >
-                ← Înapoi la listă
+                ← Inapoi la lista
               </button>
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -172,6 +226,17 @@ const AdminPreviews = () => {
                   <p className="text-sm text-muted-foreground capitalize mt-0.5">{selected.category}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={() => toggleContacted(selected.id)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      isContacted
+                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                        : 'bg-white/5 text-muted-foreground border border-white/10 hover:border-green-500/30 hover:text-green-400'
+                    }`}
+                  >
+                    <Check className="w-3.5 h-3.5" />
+                    {isContacted ? 'Contactat' : 'Marcheaza'}
+                  </button>
                   <Badge className={SITE_STATUS_COLORS[selected.are_website || 'Nu'] || ''}>
                     {selected.are_website || 'Nu'}
                   </Badge>
@@ -230,13 +295,19 @@ const AdminPreviews = () => {
                     toast.success('Link copiat!');
                   }}
                 >
-                  <Copy className="w-4 h-4 mr-1.5" /> Copiază Link
+                  <Copy className="w-4 h-4 mr-1.5" /> Copiaza Link
                 </Button>
                 {selected.phone && selected.whatsapp_mesaj && (
                   <Button
                     size="sm"
                     className="bg-green-600 hover:bg-green-700 text-white"
-                    onClick={() => openWhatsapp(selected.phone!, selected.whatsapp_mesaj!)}
+                    onClick={() => {
+                      openWhatsapp(selected.phone!, selected.whatsapp_mesaj!);
+                      // Auto-mark as contacted when WhatsApp is opened
+                      if (!contactedIds.has(selected.id)) {
+                        toggleContacted(selected.id);
+                      }
+                    }}
                   >
                     WhatsApp
                   </Button>
@@ -252,7 +323,7 @@ const AdminPreviews = () => {
                       onClick={() => copyWhatsapp(selected.whatsapp_mesaj!)}
                       className="text-xs text-primary-light hover:underline flex items-center gap-1"
                     >
-                      <Copy className="w-3 h-3" /> Copiază
+                      <Copy className="w-3 h-3" /> Copiaza
                     </button>
                   </div>
                   <pre className="bg-white/5 rounded-xl p-4 text-sm text-foreground whitespace-pre-wrap font-sans leading-relaxed">
@@ -263,7 +334,7 @@ const AdminPreviews = () => {
             </div>
           ) : (
             <div className="glass-card p-8 text-center text-muted-foreground">
-              Selectează un business din listă.
+              Selecteaza un business din lista.
             </div>
           )}
         </div>
