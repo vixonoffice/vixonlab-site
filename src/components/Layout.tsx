@@ -11,9 +11,13 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="ambient-glow relative isolate min-h-screen overflow-x-hidden">
-      <PromoBanner />
       <Navbar />
-      <main>{children}</main>
+      <main>
+        <div className="pt-16 md:pt-20">
+          <PromoBanner />
+        </div>
+        {children}
+      </main>
       <Footer />
       <Suspense fallback={null}>
         <ChatWidget />
