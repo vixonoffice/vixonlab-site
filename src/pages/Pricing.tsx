@@ -4,13 +4,26 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { Check, MessageCircle, Shield, Zap, Settings } from 'lucide-react';
+import { Check, MessageCircle, Shield, Zap, Settings, Flame } from 'lucide-react';
+import { isPromoActive, PROMO_PRICES, PROMO_LABEL_RO, PROMO_LABEL_EN } from '@/lib/promo';
 
 const WHATSAPP_NUMBER = '40779383164';
 
 const Pricing = () => {
   const { t, language } = useLanguage();
   const isRo = language === 'ro';
+  const promoActive = isPromoActive();
+  const promoLabel = isRo ? PROMO_LABEL_RO : PROMO_LABEL_EN;
+
+  const getDisplayPrice = (key: string, fallback: string) => {
+    if (!promoActive) return { old: null as string | null, current: fallback };
+    const p = PROMO_PRICES[key];
+    if (!p) return { old: null, current: fallback };
+    return {
+      old: isRo ? p.oldRo : p.oldEn,
+      current: isRo ? p.newRo : p.newEn,
+    };
+  };
 
   usePageSEO({
     title: isRo ? 'Prețuri' : 'Pricing',
@@ -108,6 +121,14 @@ const Pricing = () => {
           <p className="text-sm text-muted-foreground">
             {isRo ? 'Prețuri în EUR · TVA inclus' : 'Prices in EUR · VAT included'}
           </p>
+          {promoActive && (
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-red-500/10 border border-red-500/30 px-5 py-2">
+              <Flame className="w-4 h-4 text-red-400 animate-pulse" />
+              <span className="text-sm font-semibold text-red-300">
+                {promoLabel} · {isRo ? 'până pe 26 aprilie' : 'until April 26'}
+              </span>
+            </div>
+          )}
         </div>
       </section>
 
@@ -130,7 +151,26 @@ const Pricing = () => {
                 <p className="text-sm text-muted-foreground mb-5 leading-relaxed">{pkg.desc}</p>
 
                 <div className="mb-6">
-                  <span className="font-heading font-bold text-3xl gradient-text">{pkg.price}</span>
+                  {(() => {
+                    const dp = getDisplayPrice(pkg.key, pkg.price);
+                    return (
+                      <div className="flex flex-col gap-0.5">
+                        {dp.old && (
+                          <span className="text-sm text-muted-foreground line-through decoration-red-500/70">
+                            {dp.old}
+                          </span>
+                        )}
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                          <span className="font-heading font-bold text-3xl gradient-text">{dp.current}</span>
+                          {dp.old && (
+                            <span className="text-[10px] font-bold uppercase tracking-wider bg-red-500/15 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full">
+                              -30%
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 <ul className="space-y-3 mb-8 flex-1">
@@ -197,7 +237,26 @@ const Pricing = () => {
                       : 'Hosting, security, backup, updates and support — we handle it. You focus on your business.'}
                   </p>
                   <div className="mb-2">
-                    <span className="font-heading font-bold text-4xl gradient-text">{t('sp.maintenancePrice')}</span>
+                    {(() => {
+                      const dp = getDisplayPrice('maintenance', t('sp.maintenancePrice'));
+                      return (
+                        <div className="flex flex-col gap-1">
+                          {dp.old && (
+                            <span className="text-sm text-muted-foreground line-through decoration-red-500/70">
+                              {dp.old}
+                            </span>
+                          )}
+                          <div className="flex items-baseline gap-2 flex-wrap">
+                            <span className="font-heading font-bold text-4xl gradient-text">{dp.current}</span>
+                            {dp.old && (
+                              <span className="text-[10px] font-bold uppercase tracking-wider bg-red-500/15 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full">
+                                -25%
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </div>
                   <p className="text-xs text-green-400 mb-5">
                     {isRo ? '✓ Plătești anual — economisești 2 luni' : '✓ Pay annually — save 2 months'}
