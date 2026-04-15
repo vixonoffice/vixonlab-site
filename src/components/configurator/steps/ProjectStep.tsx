@@ -1,4 +1,4 @@
-import { label, desc } from '../configuratorConfig';
+import { label, desc, isPromoActive } from '../configuratorConfig';
 import type { Option } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
@@ -123,7 +123,15 @@ export function ProjectStep({ state, setField, lang, businessTypes, siteTypes }:
                   <div className="min-w-0">
                     <div className="font-medium text-foreground text-sm">{label(st, lang)}</div>
                     <div className="text-xs text-muted-foreground mt-0.5">{desc(st, lang)}</div>
-                    <div className="text-xs text-primary-light mt-1.5 font-medium">{st.price}&euro;</div>
+                    {isPromoActive() && st.promoPrice ? (
+                      <div className="flex items-center gap-2 mt-1.5">
+                        <span className="text-xs text-muted-foreground line-through">{st.price}&euro;</span>
+                        <span className="text-xs text-primary-light font-medium">{st.promoPrice}&euro;</span>
+                        <span className="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full font-bold">-30%</span>
+                      </div>
+                    ) : (
+                      <div className="text-xs text-primary-light mt-1.5 font-medium">{st.price}&euro;</div>
+                    )}
                   </div>
                 </div>
               </button>

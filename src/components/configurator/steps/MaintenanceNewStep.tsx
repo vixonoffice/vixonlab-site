@@ -1,4 +1,5 @@
 import type { MaintenancePlan } from '../configuratorConfig';
+import { isPromoActive } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
 import { Check, Star } from 'lucide-react';
@@ -31,6 +32,8 @@ export function MaintenanceNewStep({ state, setField, lang, plans }: Props) {
           const selected = state.maintenancePlan === plan.id;
           const features = isRo ? plan.features_ro : plan.features_en;
           const price = isRo ? plan.price_ro : plan.price_en;
+          const promoPrice = isRo ? plan.promoPrice_ro : plan.promoPrice_en;
+          const showPromo = isPromoActive() && !!promoPrice;
 
           return (
             <button
@@ -75,9 +78,19 @@ export function MaintenanceNewStep({ state, setField, lang, plans }: Props) {
                   )}
                 </div>
                 <div className="text-right shrink-0">
-                  <div className={`font-bold text-lg ${selected ? 'text-primary-light' : 'gradient-text'}`}>
-                    {price === '0' ? (isRo ? 'Gratuit' : 'Free') : `${price}\u20AC`}
-                  </div>
+                  {showPromo ? (
+                    <div className="flex flex-col items-end gap-0.5">
+                      <span className="text-xs text-muted-foreground line-through">{price}&euro;</span>
+                      <div className={`font-bold text-lg ${selected ? 'text-primary-light' : 'gradient-text'}`}>
+                        {promoPrice}&euro;
+                      </div>
+                      <span className="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full font-bold">-30%</span>
+                    </div>
+                  ) : (
+                    <div className={`font-bold text-lg ${selected ? 'text-primary-light' : 'gradient-text'}`}>
+                      {price === '0' ? (isRo ? 'Gratuit' : 'Free') : `${price}\u20AC`}
+                    </div>
+                  )}
                 </div>
               </div>
             </button>

@@ -2,6 +2,8 @@
 // Full website configurator — all options data (RO/EN)
 // ---------------------------------------------------------------------------
 
+export { isPromoActive } from '@/lib/promo';
+
 export const WHATSAPP_NUMBER = '40779383164';
 
 type Lang = 'ro' | 'en';
@@ -13,6 +15,7 @@ export interface Option {
   desc_en?: string;
   icon?: string;
   price?: string;
+  promoPrice?: string;
 }
 
 // Step 1 — Business type
@@ -40,6 +43,7 @@ export const SITE_TYPES: Option[] = [
     desc_ro: 'Arata-ti afacerea online. Pagini despre servicii, echipa, contact.',
     desc_en: 'Showcase your business online. Pages about services, team, contact.',
     price: '500 - 1.200',
+    promoPrice: '350 - 850',
   },
   {
     id: 'ecommerce',
@@ -48,6 +52,7 @@ export const SITE_TYPES: Option[] = [
     desc_ro: 'Vinde produse online cu cos, plati si gestiune stocuri.',
     desc_en: 'Sell products online with cart, payments and inventory.',
     price: '1.200 - 3.000',
+    promoPrice: '850 - 2.100',
   },
   {
     id: 'landing',
@@ -56,6 +61,7 @@ export const SITE_TYPES: Option[] = [
     desc_ro: 'O singura pagina focusata pe conversie. Ideal pentru campanii.',
     desc_en: 'Single page focused on conversion. Ideal for campaigns.',
     price: '300 - 500',
+    promoPrice: '200 - 350',
   },
   {
     id: 'webapp',
@@ -64,6 +70,7 @@ export const SITE_TYPES: Option[] = [
     desc_ro: 'Platforma complexa cu functionalitati custom (booking, dashboard, etc.)',
     desc_en: 'Complex platform with custom features (booking, dashboard, etc.)',
     price: 'de la 2.000',
+    promoPrice: 'de la 1.400',
   },
 ];
 
@@ -156,6 +163,8 @@ export interface MaintenancePlan {
   en: string;
   price_ro: string;
   price_en: string;
+  promoPrice_ro?: string;
+  promoPrice_en?: string;
   desc_ro: string;
   desc_en: string;
   features_ro: string[];
@@ -182,6 +191,8 @@ export const MAINTENANCE_PLANS: MaintenancePlan[] = [
     en: 'Vixon Care',
     price_ro: '20/luna',
     price_en: '20/month',
+    promoPrice_ro: '15/luna',
+    promoPrice_en: '15/month',
     desc_ro: 'Ne ocupam de hosting, securitate si modificari minore. Tu te concentrezi pe afacere.',
     desc_en: 'We handle hosting, security and minor modifications. You focus on your business.',
     features_ro: [
@@ -211,6 +222,8 @@ export const MAINTENANCE_PLANS: MaintenancePlan[] = [
     en: 'Vixon Care Annual',
     price_ro: '200/an',
     price_en: '200/year',
+    promoPrice_ro: '150/an',
+    promoPrice_en: '150/year',
     desc_ro: 'Tot din Vixon Care + domeniu inclus. Economisesti 40 fata de plata lunara.',
     desc_en: 'Everything in Vixon Care + domain included. Save 40 compared to monthly.',
     features_ro: [
@@ -234,6 +247,8 @@ export const MAINTENANCE_PLANS: MaintenancePlan[] = [
     en: 'Vixon Care Pro',
     price_ro: '40/luna',
     price_en: '40/month',
+    promoPrice_ro: '30/luna',
+    promoPrice_en: '30/month',
     desc_ro: 'Modificari nelimitate, suport prioritar si raport lunar de performanta.',
     desc_en: 'Unlimited modifications, priority support and monthly performance report.',
     features_ro: [
@@ -259,6 +274,8 @@ export const MAINTENANCE_PLANS: MaintenancePlan[] = [
     en: 'Vixon Care Premium',
     price_ro: '60/luna',
     price_en: '60/month',
+    promoPrice_ro: '45/luna',
+    promoPrice_en: '45/month',
     desc_ro: 'Protectie completa: modificari design, SEO ongoing, suport telefonic dedicat.',
     desc_en: 'Complete protection: design modifications, ongoing SEO, dedicated phone support.',
     features_ro: [

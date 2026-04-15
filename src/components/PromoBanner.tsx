@@ -72,7 +72,7 @@ export function PromoBanner() {
   };
 
   return (
-    <div className="relative z-30 w-full bg-gradient-to-r from-primary via-accent to-primary text-white shadow-lg">
+    <div className="sticky top-16 md:top-20 z-40 w-full bg-gradient-to-r from-primary via-accent to-primary text-white shadow-lg">
       <div className="mx-auto max-w-content px-4 py-2.5 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-center">
         <div className="flex items-center gap-2 font-heading font-semibold text-sm md:text-base">
           <Flame className="w-4 h-4 md:w-5 md:h-5 shrink-0 animate-pulse" />
