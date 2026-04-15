@@ -20,24 +20,49 @@ export interface ConfiguratorOptionRow {
   metadata: Record<string, unknown> | null;
 }
 
+/** Correct prices for site types — kept in sync with pricing page */
+const SITE_TYPE_PRICES: Record<string, string> = {
+  landing: '300',
+  presentation: '700 - 1.600',
+  ecommerce: '1.200 - 2.500',
+  webapp: 'de la 2.000',
+};
+
+/** Apply -30% to numeric values in a price label */
+function calcPromoPrice(label: string): string {
+  return label.replace(/[\d.]+/g, (m) => {
+    const n = parseInt(m.replace(/\./g, ''), 10);
+    const d = Math.round(n * 0.7);
+    return d >= 1000 ? d.toLocaleString('ro-RO') : String(d);
+  });
+}
+
 function rowToOption(row: ConfiguratorOptionRow): Option {
+  const price = (row.option_type === 'site_type' && SITE_TYPE_PRICES[row.option_id])
+    ? SITE_TYPE_PRICES[row.option_id]
+    : (row.price ?? undefined);
   return {
     id: row.option_id,
     ro: row.label_ro,
     en: row.label_en,
     desc_ro: row.description_ro ?? undefined,
     desc_en: row.description_en ?? undefined,
-    price: row.price ?? undefined,
+    price,
+    promoPrice: price ? calcPromoPrice(price) : undefined,
   };
 }
 
 function rowToMaintenance(row: ConfiguratorOptionRow): MaintenancePlan {
+  const priceRo = row.price ?? '0';
+  const priceEn = priceRo.replace('luna', 'month').replace('an', 'year');
   return {
     id: row.option_id,
     ro: row.label_ro,
     en: row.label_en,
-    price_ro: row.price ?? '0',
-    price_en: (row.price ?? '0').replace('luna', 'month').replace('an', 'year'),
+    price_ro: priceRo,
+    price_en: priceEn,
+    promoPrice_ro: priceRo !== '0' ? calcPromoPrice(priceRo) : undefined,
+    promoPrice_en: priceEn !== '0' ? calcPromoPrice(priceEn) : undefined,
     desc_ro: row.description_ro ?? '',
     desc_en: row.description_en ?? '',
     features_ro: row.features_ro ?? [],
