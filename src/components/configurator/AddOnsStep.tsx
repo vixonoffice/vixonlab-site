@@ -1,6 +1,14 @@
 import { useLanguage } from '@/contexts/LanguageContext';
+import { isPromoActive } from '@/lib/promo';
 import { Check } from 'lucide-react';
 import type { AddonInfo } from './useConfigurator';
+
+function discountLabel(label: string): string {
+  return label.replace(/[\d.]+/g, (m) => {
+    const n = parseInt(m.replace(/\./g, ''), 10);
+    return String(Math.round(n * 0.7));
+  });
+}
 
 interface Props {
   addons: AddonInfo[];
@@ -52,7 +60,14 @@ export function AddOnsStep({ addons, selectedSlugs, onToggle }: Props) {
                   <div className="flex items-baseline justify-between gap-2 mb-0.5">
                     <h4 className="font-heading font-semibold text-sm text-foreground">{name}</h4>
                     {!included && (
-                      <span className="text-sm font-bold gradient-text shrink-0">{priceLabel}</span>
+                      isPromoActive() ? (
+                        <span className="flex items-center gap-1.5 shrink-0">
+                          <span className="text-xs text-muted-foreground line-through">{priceLabel}</span>
+                          <span className="text-sm font-bold gradient-text">{discountLabel(priceLabel)}</span>
+                        </span>
+                      ) : (
+                        <span className="text-sm font-bold gradient-text shrink-0">{priceLabel}</span>
+                      )
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground line-clamp-1">{desc}</p>

@@ -1,4 +1,5 @@
 import { useLanguage } from '@/contexts/LanguageContext';
+import { isPromoActive } from '@/lib/promo';
 import { MessageCircle, ChevronRight } from 'lucide-react';
 import type { SummaryLine } from './useConfigurator';
 
@@ -37,6 +38,14 @@ export function ConfigSummary({ summaryLines, totalPrice, monthlyPrice, whatsapp
       </div>
 
       <div className="border-t border-white/10 pt-4 mb-6">
+        {isPromoActive() && (
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full font-bold">-30%</span>
+            <span className="text-xs text-muted-foreground">
+              {language === 'ro' ? 'Reducere aplicată' : 'Discount applied'}
+            </span>
+          </div>
+        )}
         <div className="flex items-center justify-between">
           <span className="font-heading font-bold text-foreground">
             {language === 'ro' ? 'Total unic' : 'One-time total'}

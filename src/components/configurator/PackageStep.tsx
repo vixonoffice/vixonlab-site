@@ -1,8 +1,18 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { ScrollReveal } from '@/components/ScrollReveal';
-import { parsePackageMeta } from '@/lib/configuratorData';
+import { parsePackageMeta, parsePrice } from '@/lib/configuratorData';
+import { isPromoActive } from '@/lib/promo';
 import { Check, Code, Building2, Zap } from 'lucide-react';
 import type { PricingPlanRow } from '@/hooks/useSupabaseData';
+
+/** Apply -30% to price labels like "300€", "700€ — 900€", "1.200€ — 1.600€" */
+function discountLabel(label: string): string {
+  return label.replace(/[\d.]+/g, (m) => {
+    const n = parseInt(m.replace(/\./g, ''), 10);
+    const d = Math.round(n * 0.7);
+    return d >= 1000 ? d.toLocaleString('ro-RO') : String(d);
+  });
+}
 
 const icons = [Code, Building2, Zap];
 const gradients = [
@@ -71,7 +81,15 @@ export function PackageStep({ packages, selectedId, onSelect }: Props) {
                 <h3 className="font-heading font-bold text-lg text-foreground mb-1">{name}</h3>
                 <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{desc}</p>
 
-                <div className="font-heading font-bold text-2xl gradient-text mb-1">{price}</div>
+                {isPromoActive() ? (
+                  <div className="mb-1 flex items-center gap-2 flex-wrap">
+                    <span className="text-sm text-muted-foreground line-through">{price}</span>
+                    <span className="font-heading font-bold text-2xl gradient-text">{discountLabel(price)}</span>
+                    <span className="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full font-bold">-30%</span>
+                  </div>
+                ) : (
+                  <div className="font-heading font-bold text-2xl gradient-text mb-1">{price}</div>
+                )}
                 <p className="text-xs text-muted-foreground mb-5">
                   {meta.max_pages === 1
                     ? (language === 'ro' ? '1 pagină' : '1 page')

@@ -2,6 +2,7 @@ import { useReducer, useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePricingPlans } from '@/hooks/useSupabaseData';
 import { parsePrice, parsePackageMeta, getAddonSlug, EXTRA_PAGE_PRICE } from '@/lib/configuratorData';
+import { isPromoActive } from '@/lib/promo';
 import type { PricingPlanRow } from '@/hooks/useSupabaseData';
 
 const WHATSAPP_NUMBER = '40779383164';
@@ -102,36 +103,39 @@ export function useConfigurator() {
     });
   }, [addonPlans, packageMeta]);
 
-  // Computed totals
+  // Computed totals (apply -30% promo when active)
+  const promo = isPromoActive();
+  const discount = (n: number) => promo ? Math.round(n * 0.7) : n;
+
   const totalPrice = useMemo(() => {
     if (!selectedPkg) return 0;
-    let total = parsePrice(selectedPkg.price_label_ro);
-    total += state.extraPages * EXTRA_PAGE_PRICE;
+    let total = discount(parsePrice(selectedPkg.price_label_ro));
+    total += discount(state.extraPages * EXTRA_PAGE_PRICE);
     for (const slug of state.selectedAddons) {
       const addon = addons.find((a) => a.slug === slug);
       if (addon && !addon.included) {
-        total += addon.price;
+        total += discount(addon.price);
       }
     }
     return total;
-  }, [selectedPkg, state.extraPages, state.selectedAddons, addons]);
+  }, [selectedPkg, state.extraPages, state.selectedAddons, addons, promo]);
 
   const monthlyPrice = useMemo(() => {
     if (!selectedMaintenance) return 0;
-    return parsePrice(selectedMaintenance.price_label_ro);
-  }, [selectedMaintenance]);
+    return discount(parsePrice(selectedMaintenance.price_label_ro));
+  }, [selectedMaintenance, promo]);
 
   // Summary lines for sidebar
   const summaryLines: SummaryLine[] = useMemo(() => {
     if (!selectedPkg) return [];
     const name = language === 'en' ? selectedPkg.name_en : selectedPkg.name_ro;
     const lines: SummaryLine[] = [
-      { label: name, price: `${parsePrice(selectedPkg.price_label_ro)}€`, type: 'package' },
+      { label: name, price: `${discount(parsePrice(selectedPkg.price_label_ro))}€`, type: 'package' },
     ];
 
     if (state.extraPages > 0) {
       const lbl = language === 'ro' ? `${state.extraPages} pagini extra` : `${state.extraPages} extra pages`;
-      lines.push({ label: lbl, price: `${state.extraPages * EXTRA_PAGE_PRICE}€`, type: 'pages' });
+      lines.push({ label: lbl, price: `${discount(state.extraPages * EXTRA_PAGE_PRICE)}€`, type: 'pages' });
     }
 
     for (const slug of state.selectedAddons) {
@@ -140,7 +144,7 @@ export function useConfigurator() {
         const addonName = language === 'en' ? addon.plan.name_en : addon.plan.name_ro;
         lines.push({
           label: addonName,
-          price: addon.included ? (language === 'ro' ? 'Inclus' : 'Included') : `${addon.price}€`,
+          price: addon.included ? (language === 'ro' ? 'Inclus' : 'Included') : `${discount(addon.price)}€`,
           type: 'addon',
         });
       }
@@ -164,15 +168,21 @@ export function useConfigurator() {
     const pkgName = language === 'en' ? selectedPkg.name_en : selectedPkg.name_ro;
 
     const parts: string[] = [];
+    const pkgPrice = discount(parsePrice(selectedPkg.price_label_ro));
     parts.push(language === 'ro'
-      ? `Salut VixonLab! Sunt interesat de pachetul ${pkgName} (${parsePrice(selectedPkg.price_label_ro)}€).`
-      : `Hi VixonLab! I'm interested in the ${pkgName} package (${parsePrice(selectedPkg.price_label_ro)}€).`
+      ? `Salut VixonLab! Sunt interesat de pachetul ${pkgName} (${pkgPrice}€).`
+      : `Hi VixonLab! I'm interested in the ${pkgName} package (${pkgPrice}€).`
     );
 
+    if (promo) {
+      parts.push(language === 'ro' ? '🔥 Reducere -30% aplicată' : '🔥 -30% discount applied');
+    }
+
     if (state.extraPages > 0) {
+      const epPrice = discount(state.extraPages * EXTRA_PAGE_PRICE);
       parts.push(language === 'ro'
-        ? `+ ${state.extraPages} pagini extra (${state.extraPages * EXTRA_PAGE_PRICE}€)`
-        : `+ ${state.extraPages} extra pages (${state.extraPages * EXTRA_PAGE_PRICE}€)`
+        ? `+ ${state.extraPages} pagini extra (${epPrice}€)`
+        : `+ ${state.extraPages} extra pages (${epPrice}€)`
       );
     }
 
@@ -180,7 +190,7 @@ export function useConfigurator() {
       const a = addons.find((x) => x.slug === slug);
       if (!a) return '';
       const n = language === 'en' ? a.plan.name_en : a.plan.name_ro;
-      return a.included ? `${n} (${language === 'ro' ? 'inclus' : 'included'})` : `${n} (${a.price}€)`;
+      return a.included ? `${n} (${language === 'ro' ? 'inclus' : 'included'})` : `${n} (${discount(a.price)}€)`;
     }).filter(Boolean);
 
     if (addonNames.length) {
