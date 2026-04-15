@@ -37,13 +37,22 @@ export const BUSINESS_TYPES: Option[] = [
 // Step 1 — Site type
 export const SITE_TYPES: Option[] = [
   {
+    id: 'landing',
+    ro: 'Landing Page',
+    en: 'Landing Page',
+    desc_ro: 'O singura pagina focusata pe conversie. Ideal pentru campanii.',
+    desc_en: 'Single page focused on conversion. Ideal for campaigns.',
+    price: '300',
+    promoPrice: '200',
+  },
+  {
     id: 'presentation',
     ro: 'Site de prezentare',
     en: 'Presentation Website',
     desc_ro: 'Arata-ti afacerea online. Pagini despre servicii, echipa, contact.',
     desc_en: 'Showcase your business online. Pages about services, team, contact.',
-    price: '500 - 1.200',
-    promoPrice: '350 - 850',
+    price: '700 - 1.600',
+    promoPrice: '500 - 1.150',
   },
   {
     id: 'ecommerce',
@@ -51,17 +60,8 @@ export const SITE_TYPES: Option[] = [
     en: 'Online Store',
     desc_ro: 'Vinde produse online cu cos, plati si gestiune stocuri.',
     desc_en: 'Sell products online with cart, payments and inventory.',
-    price: '1.200 - 3.000',
-    promoPrice: '850 - 2.100',
-  },
-  {
-    id: 'landing',
-    ro: 'Landing Page',
-    en: 'Landing Page',
-    desc_ro: 'O singura pagina focusata pe conversie. Ideal pentru campanii.',
-    desc_en: 'Single page focused on conversion. Ideal for campaigns.',
-    price: '300 - 500',
-    promoPrice: '200 - 350',
+    price: '1.200 - 2.500',
+    promoPrice: '850 - 1.750',
   },
   {
     id: 'webapp',
@@ -70,7 +70,7 @@ export const SITE_TYPES: Option[] = [
     desc_ro: 'Platforma complexa cu functionalitati custom (booking, dashboard, etc.)',
     desc_en: 'Complex platform with custom features (booking, dashboard, etc.)',
     price: 'de la 2.000',
-    promoPrice: 'de la 1.400',
+    promoPrice: 'de la 1.450',
   },
 ];
 
