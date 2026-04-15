@@ -20,49 +20,50 @@ export interface ConfiguratorOptionRow {
   metadata: Record<string, unknown> | null;
 }
 
-/** Correct prices for site types — kept in sync with pricing page */
-const SITE_TYPE_PRICES: Record<string, string> = {
-  landing: '300',
-  presentation: '700 - 1.600',
-  ecommerce: '1.200 - 2.500',
-  webapp: 'de la 2.000',
+/**
+ * Exact prices from pricing page — site type → { price, promoPrice }
+ * Must match promo.ts PROMO_PRICES exactly.
+ */
+const SITE_TYPE_OVERRIDES: Record<string, { price: string; promoPrice: string }> = {
+  landing:      { price: '300',               promoPrice: '200' },
+  presentation: { price: '700 — 900',         promoPrice: '500 — 650' },
+  ecommerce:    { price: '1.200 — 1.600',     promoPrice: '850 — 1.150' },
+  webapp:       { price: 'de la 2.000',        promoPrice: 'de la 1.450' },
 };
 
-/** Apply -30% to numeric values in a price label */
-function calcPromoPrice(label: string): string {
-  return label.replace(/[\d.]+/g, (m) => {
-    const n = parseInt(m.replace(/\./g, ''), 10);
-    const d = Math.round(n * 0.7);
-    return d >= 1000 ? d.toLocaleString('ro-RO') : String(d);
-  });
-}
-
 function rowToOption(row: ConfiguratorOptionRow): Option {
-  const price = (row.option_type === 'site_type' && SITE_TYPE_PRICES[row.option_id])
-    ? SITE_TYPE_PRICES[row.option_id]
-    : (row.price ?? undefined);
+  const override = row.option_type === 'site_type' ? SITE_TYPE_OVERRIDES[row.option_id] : undefined;
   return {
     id: row.option_id,
     ro: row.label_ro,
     en: row.label_en,
     desc_ro: row.description_ro ?? undefined,
     desc_en: row.description_en ?? undefined,
-    price,
-    promoPrice: price ? calcPromoPrice(price) : undefined,
+    price: override?.price ?? (row.price ?? undefined),
+    promoPrice: override?.promoPrice ?? undefined,
   };
 }
+
+/** Maintenance promo prices — must match configuratorConfig.ts */
+const MAINTENANCE_PROMO: Record<string, { ro: string; en: string }> = {
+  basic:   { ro: '15/luna',  en: '15/month' },
+  annual:  { ro: '150/an',   en: '150/year' },
+  pro:     { ro: '30/luna',  en: '30/month' },
+  premium: { ro: '45/luna',  en: '45/month' },
+};
 
 function rowToMaintenance(row: ConfiguratorOptionRow): MaintenancePlan {
   const priceRo = row.price ?? '0';
   const priceEn = priceRo.replace('luna', 'month').replace('an', 'year');
+  const mp = MAINTENANCE_PROMO[row.option_id];
   return {
     id: row.option_id,
     ro: row.label_ro,
     en: row.label_en,
     price_ro: priceRo,
     price_en: priceEn,
-    promoPrice_ro: priceRo !== '0' ? calcPromoPrice(priceRo) : undefined,
-    promoPrice_en: priceEn !== '0' ? calcPromoPrice(priceEn) : undefined,
+    promoPrice_ro: mp?.ro,
+    promoPrice_en: mp?.en,
     desc_ro: row.description_ro ?? '',
     desc_en: row.description_en ?? '',
     features_ro: row.features_ro ?? [],

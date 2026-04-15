@@ -51,8 +51,8 @@ export const SITE_TYPES: Option[] = [
     en: 'Presentation Website',
     desc_ro: 'Arata-ti afacerea online. Pagini despre servicii, echipa, contact.',
     desc_en: 'Showcase your business online. Pages about services, team, contact.',
-    price: '700 - 1.600',
-    promoPrice: '500 - 1.150',
+    price: '700 — 900',
+    promoPrice: '500 — 650',
   },
   {
     id: 'ecommerce',
@@ -60,8 +60,8 @@ export const SITE_TYPES: Option[] = [
     en: 'Online Store',
     desc_ro: 'Vinde produse online cu cos, plati si gestiune stocuri.',
     desc_en: 'Sell products online with cart, payments and inventory.',
-    price: '1.200 - 2.500',
-    promoPrice: '850 - 1.750',
+    price: '1.200 — 1.600',
+    promoPrice: '850 — 1.150',
   },
   {
     id: 'webapp',
