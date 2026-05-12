@@ -4,6 +4,7 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
+import { VideoBackground } from '@/components/VideoBackground';
 import { Check, MessageCircle, Shield, Settings, Flame, ArrowUpRight } from 'lucide-react';
 import { isPromoActive, PROMO_PRICES, PROMO_LABEL_RO, PROMO_LABEL_EN } from '@/lib/promo';
 
@@ -283,11 +284,9 @@ const Pricing = () => {
 
       {/* Final CTA full bleed */}
       <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10">
-        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-50">
-          <source src="/videos/purple-cloud.mp4" type="video/mp4" />
-        </video>
+        <VideoBackground src="/videos/purple-cloud.mp4" opacity={0.5} />
         <div className="absolute inset-0 z-0"
-          style={{ background: 'radial-gradient(ellipse at center, rgba(10,4,24,0.2) 0%, rgba(10,4,24,0.95) 70%)' }} />
+          style={{ background: 'radial-gradient(ellipse at center, rgba(10,4,24,0.55) 0%, rgba(10,4,24,0.95) 70%)' }} />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-8">

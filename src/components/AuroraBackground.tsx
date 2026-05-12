@@ -101,7 +101,7 @@ void main(){
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
+      className="fixed inset-0 pointer-events-none hidden md:block"
       style={{ zIndex: 0, width: '100%', height: '100%' }}
     />
   );

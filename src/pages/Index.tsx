@@ -6,6 +6,7 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { Marquee } from '@/components/Marquee';
+import { VideoBackground } from '@/components/VideoBackground';
 import {
   ChevronDown, Star, ArrowUpRight,
   Utensils, Scissors, HeartPulse, Dumbbell, ShoppingBag, Scale, Car, Home, Laptop, Camera,
@@ -45,13 +46,14 @@ const Index = () => {
   return (
     <PageTransition>
       {/* ────── HERO ────── */}
-      <section className="relative min-h-screen flex items-end section-padding pb-32 pt-32 overflow-hidden">
-        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0">
-          <source src="/videos/purple-ink-slow.mp4" type="video/mp4" />
-        </video>
+      <section className="relative min-h-screen flex items-end section-padding pb-24 md:pb-32 pt-32 overflow-hidden">
+        <VideoBackground src="/videos/purple-ink-slow.mp4" />
 
+        {/* Stronger dark overlay to guarantee text readability through any video frame */}
         <div className="absolute inset-0 z-0"
-          style={{ background: 'linear-gradient(180deg, rgba(10,4,24,0.7) 0%, rgba(10,4,24,0.4) 50%, rgba(10,4,24,0.95) 100%)' }} />
+          style={{ background: 'linear-gradient(180deg, rgba(10,4,24,0.85) 0%, rgba(10,4,24,0.65) 40%, rgba(10,4,24,0.95) 100%)' }} />
+        <div className="absolute inset-0 z-0 md:hidden"
+          style={{ background: 'rgba(10,4,24,0.25)' }} />
 
         <div className="relative z-10 mx-auto max-w-content w-full">
           <motion.div
@@ -68,7 +70,7 @@ const Index = () => {
 
             <motion.h1
               variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.21, 0.47, 0.32, 0.98] } } }}
-              className="font-heading font-bold text-[12vw] sm:text-[10vw] md:text-[8vw] leading-[0.9] tracking-tight mb-8 -ml-1"
+              className="font-heading font-bold text-5xl sm:text-6xl md:text-[8vw] leading-[0.9] tracking-tight mb-8 -ml-1"
             >
               <span className="block text-foreground">{t('hero.title1')}</span>
               <span className="block gradient-text italic">{t('hero.title2')}</span>
@@ -327,11 +329,9 @@ const Index = () => {
 
       {/* ────── FINAL CTA — FULL BLEED VIDEO ────── */}
       <section className="relative section-padding py-32 md:py-48 overflow-hidden border-t border-white/10">
-        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-50">
-          <source src="/videos/purple-cloud.mp4" type="video/mp4" />
-        </video>
+        <VideoBackground src="/videos/purple-cloud.mp4" opacity={0.5} />
         <div className="absolute inset-0 z-0"
-          style={{ background: 'radial-gradient(ellipse at center, rgba(10,4,24,0.2) 0%, rgba(10,4,24,0.95) 70%)' }} />
+          style={{ background: 'radial-gradient(ellipse at center, rgba(10,4,24,0.55) 0%, rgba(10,4,24,0.95) 70%)' }} />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-8">

@@ -22,10 +22,7 @@
 
 html {
   overflow-x: clip;
-  cursor: none;
 }
-
-a, button { cursor: none; }
 
 @layer base {
   :root {
