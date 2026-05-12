@@ -2,10 +2,10 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
-import { SectionWrapper } from '@/components/SectionWrapper';
+import { PageHero } from '@/components/PageHero';
 import { lazy, Suspense } from 'react';
 const ConfiguratorStepper = lazy(() => import('@/components/configurator/ConfiguratorStepper').then(m => ({ default: m.ConfiguratorStepper })));
-import { Check, Clock, Code, Zap } from 'lucide-react';
+import { Check, Clock, Code, Zap, X } from 'lucide-react';
 
 const Services = () => {
   const { t, language } = useLanguage();
@@ -15,133 +15,148 @@ const Services = () => {
 
   return (
     <PageTransition>
-      {/* Hero */}
-      <section className="section-padding pt-32 pb-16">
-        <div className="mx-auto max-w-content">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/5 border border-white/10 px-4 py-1.5 mb-6">
-            <span className="dot-green" />
-            <span className="text-sm text-primary-light">{isRo ? 'Configurator de proiect' : 'Project Configurator'}</span>
-          </div>
-          <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
-            {isRo ? 'Configureaza-ti site-ul ideal' : 'Configure your ideal website'}
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mb-8">
-            {isRo
-              ? 'Raspunde la cateva intrebari si primesti o oferta personalizata in mai putin de 24h. Fara obligatii.'
-              : 'Answer a few questions and get a personalized offer in less than 24h. No obligations.'}
-          </p>
-
-          <div className="flex flex-wrap gap-3">
-            {[
-              { icon: Clock, text: t('sp.delivery') },
-              { icon: Code, text: t('sp.customCode') },
-              { icon: Zap, text: t('sp.allInOne') },
-            ].map((item) => (
-              <div key={item.text} className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-4 py-2">
-                <item.icon className="w-4 h-4 text-primary-light" />
-                <span className="text-sm font-medium text-primary-light">{item.text}</span>
-              </div>
-            ))}
-          </div>
+      <PageHero
+        badge={isRo ? 'Configurator de proiect' : 'Project Configurator'}
+        title={isRo ? 'Configurează-ți' : 'Configure your'}
+        titleAccent={isRo ? 'site-ul ideal' : 'ideal website'}
+        subtitle={isRo
+          ? 'Răspunde la câteva întrebări și primești o ofertă personalizată în mai puțin de 24h. Fără obligații.'
+          : 'Answer a few questions and get a personalized offer in less than 24h. No obligations.'}
+      >
+        <div className="flex flex-wrap gap-3">
+          {[
+            { icon: Clock, text: t('sp.delivery') },
+            { icon: Code,  text: t('sp.customCode') },
+            { icon: Zap,   text: t('sp.allInOne') },
+          ].map((item) => (
+            <div key={item.text}
+              className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-md px-5 py-2.5">
+              <item.icon className="w-4 h-4 text-primary-light" />
+              <span className="text-sm font-medium text-primary-light">{item.text}</span>
+            </div>
+          ))}
         </div>
-      </section>
+      </PageHero>
 
-      {/* Configurator Stepper */}
-      <SectionWrapper className="!pt-8">
+      {/* Configurator */}
+      <section className="section-padding pb-24">
         <div className="max-w-3xl mx-auto">
-          <Suspense fallback={<div className="space-y-4">{[1,2,3].map(i => <div key={i} className="h-48 bg-white/5 rounded-2xl animate-pulse" />)}</div>}>
+          <Suspense fallback={
+            <div className="space-y-4">
+              {[1,2,3].map(i => <div key={i} className="h-48 bg-white/5 rounded-3xl animate-pulse" />)}
+            </div>
+          }>
             <ConfiguratorStepper />
           </Suspense>
         </div>
-      </SectionWrapper>
+      </section>
 
-      {/* Why Custom Code */}
-      <section className="section-padding section-spacing bg-background-alt">
+      {/* Why Custom Code — split layout */}
+      <section className="section-padding section-spacing border-t border-white/10">
         <div className="mx-auto max-w-content">
-          <ScrollReveal>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3">{t('why.label')}</p>
-                <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4">
-                  {t('sp.whyCustom')}
-                </h2>
-                <p className="text-muted-foreground leading-relaxed mb-8">
-                  {t('sp.whyCustomDesc')}
-                </p>
-                <div className="space-y-4">
-                  {[t('sp.whyCustom1'), t('sp.whyCustom2'), t('sp.whyCustom3'), t('sp.whyCustom4')].map((item) => (
-                    <div key={item} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 text-primary-light" />
-                      </div>
-                      <span className="text-foreground">{item}</span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <ScrollReveal className="lg:col-span-7">
+              <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-6">
+                {t('why.label')}
+              </p>
+              <h2 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl leading-[1.05] mb-6">
+                <span className="text-foreground">{t('sp.whyCustom')}</span>
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-10 max-w-2xl">
+                {t('sp.whyCustomDesc')}
+              </p>
+              <div className="space-y-5">
+                {[t('sp.whyCustom1'), t('sp.whyCustom2'), t('sp.whyCustom3'), t('sp.whyCustom4')].map((item, i) => (
+                  <ScrollReveal key={item} delay={i * 0.08}>
+                    <div className="flex items-start gap-4 border-l-2 border-primary/40 pl-5 py-1">
+                      <span className="text-lg text-foreground">{item}</span>
                     </div>
-                  ))}
-                </div>
+                  </ScrollReveal>
+                ))}
               </div>
+            </ScrollReveal>
 
-              <div className="glass-card p-8">
-                <h3 className="font-heading font-bold text-xl text-foreground mb-6">{t('sp.whatYouGet')}</h3>
-                <div className="space-y-4">
-                  {[t('sp.benefit1'), t('sp.benefit2'), t('sp.benefit3'), t('sp.benefit4'), t('sp.benefit5')].map((item) => (
-                    <div key={item} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 text-primary-light" />
+            <ScrollReveal className="lg:col-span-5 lg:pt-16">
+              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-sm p-8 md:p-10">
+                <div className="absolute -top-20 -right-20 w-56 h-56 rounded-full blur-3xl opacity-30 bg-gradient-to-br from-primary to-accent" />
+                <div className="relative">
+                  <h3 className="font-heading font-bold text-2xl text-foreground mb-8">{t('sp.whatYouGet')}</h3>
+                  <div className="space-y-4">
+                    {[t('sp.benefit1'), t('sp.benefit2'), t('sp.benefit3'), t('sp.benefit4'), t('sp.benefit5')].map((item) => (
+                      <div key={item} className="flex items-start gap-3">
+                        <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0 mt-0.5">
+                          <Check className="w-3.5 h-3.5 text-primary-light" />
+                        </div>
+                        <span className="text-foreground">{item}</span>
                       </div>
-                      <span className="text-foreground">{item}</span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          </ScrollReveal>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
-      {/* What's included / What's not — clarity section */}
-      <SectionWrapper>
-        <ScrollReveal>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            <div className="glass-card p-6">
-              <h3 className="font-heading font-bold text-lg text-green-400 mb-4">
-                {isRo ? 'Ce include mentenanta' : 'What maintenance includes'}
-              </h3>
-              <div className="space-y-2.5">
-                {(isRo
-                  ? ['Hosting premium cloud', 'Certificat SSL gratuit', 'Backup zilnic automat', 'Update-uri de securitate', 'Monitorizare 24/7', 'Modificari texte si poze', 'Suport pe email/WhatsApp']
-                  : ['Premium cloud hosting', 'Free SSL certificate', 'Daily automatic backup', 'Security updates', '24/7 monitoring', 'Text and image modifications', 'Email/WhatsApp support']
-                ).map((item) => (
-                  <div key={item} className="flex items-center gap-2.5">
-                    <Check className="w-4 h-4 text-green-400 shrink-0" />
-                    <span className="text-sm text-foreground">{item}</span>
+      {/* What's included / not */}
+      <section className="section-padding section-spacing">
+        <div className="mx-auto max-w-content">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <ScrollReveal>
+              <div className="h-full rounded-3xl border border-green-400/20 bg-green-400/[0.03] backdrop-blur-sm p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-full bg-green-400/20 flex items-center justify-center">
+                    <Check className="w-5 h-5 text-green-400" />
                   </div>
-                ))}
+                  <h3 className="font-heading font-bold text-xl text-green-400">
+                    {isRo ? 'Ce include mentenanța' : 'What maintenance includes'}
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  {(isRo
+                    ? ['Hosting premium cloud','Certificat SSL gratuit','Backup zilnic automat','Update-uri de securitate','Monitorizare 24/7','Modificări texte și poze','Suport pe email/WhatsApp']
+                    : ['Premium cloud hosting','Free SSL certificate','Daily automatic backup','Security updates','24/7 monitoring','Text and image modifications','Email/WhatsApp support']
+                  ).map((item) => (
+                    <div key={item} className="flex items-center gap-3">
+                      <Check className="w-4 h-4 text-green-400 shrink-0" />
+                      <span className="text-foreground">{item}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="glass-card p-6">
-              <h3 className="font-heading font-bold text-lg text-muted-foreground mb-4">
-                {isRo ? 'Ce NU include (se tarifeaza separat)' : 'What is NOT included (charged separately)'}
-              </h3>
-              <div className="space-y-2.5">
-                {(isRo
-                  ? ['Redesign complet al site-ului', 'Functionalitati noi complexe', 'Pagini noi cu design custom', 'Integrari externe noi', 'Migrare la alt domeniu/hosting', 'Campanii de marketing active']
-                  : ['Complete site redesign', 'New complex features', 'New pages with custom design', 'New external integrations', 'Domain/hosting migration', 'Active marketing campaigns']
-                ).map((item) => (
-                  <div key={item} className="flex items-center gap-2.5">
-                    <span className="w-4 h-4 rounded-full border border-white/20 shrink-0" />
-                    <span className="text-sm text-muted-foreground">{item}</span>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.1}>
+              <div className="h-full rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                    <X className="w-5 h-5 text-muted-foreground" />
                   </div>
-                ))}
+                  <h3 className="font-heading font-bold text-xl text-muted-foreground">
+                    {isRo ? 'Ce NU include' : 'What is NOT included'}
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  {(isRo
+                    ? ['Redesign complet al site-ului','Funcționalități noi complexe','Pagini noi cu design custom','Integrări externe noi','Migrare la alt domeniu/hosting','Campanii de marketing active']
+                    : ['Complete site redesign','New complex features','New pages with custom design','New external integrations','Domain/hosting migration','Active marketing campaigns']
+                  ).map((item) => (
+                    <div key={item} className="flex items-center gap-3">
+                      <span className="w-4 h-4 rounded-full border border-white/20 shrink-0" />
+                      <span className="text-muted-foreground">{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-6 italic">
+                  {isRo
+                    ? 'Fiecare modificare majoră se estimează și se aprobă de tine înainte.'
+                    : 'Every major modification is estimated and approved by you first.'}
+                </p>
               </div>
-              <p className="text-xs text-muted-foreground mt-4">
-                {isRo
-                  ? 'Fiecare modificare majora se estimeaza si se aproba de tine inainte.'
-                  : 'Every major modification is estimated and approved by you first.'}
-              </p>
-            </div>
+            </ScrollReveal>
           </div>
-        </ScrollReveal>
-      </SectionWrapper>
+        </div>
+      </section>
     </PageTransition>
   );
 };

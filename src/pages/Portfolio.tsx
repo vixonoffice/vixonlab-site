@@ -4,8 +4,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
-import { SectionWrapper } from '@/components/SectionWrapper';
-import { ExternalLink } from 'lucide-react';
+import { PageHero } from '@/components/PageHero';
+import { ExternalLink, ArrowUpRight } from 'lucide-react';
 import { usePortfolioProjects, type PortfolioProjectRow } from '@/hooks/useSupabaseData';
 
 type Category = 'all' | 'webdev' | 'ecommerce' | 'design';
@@ -19,105 +19,130 @@ const Portfolio = () => {
   const filtered = filter === 'all' ? projects : projects.filter((p) => p.category === filter);
 
   const tabs: { key: Category; label: string }[] = [
-    { key: 'all', label: t('portfolio.all') },
-    { key: 'webdev', label: t('portfolio.webdev') },
+    { key: 'all',       label: t('portfolio.all') },
+    { key: 'webdev',    label: t('portfolio.webdev') },
     { key: 'ecommerce', label: t('portfolio.ecommerce') },
-    { key: 'design', label: t('portfolio.design') },
+    { key: 'design',    label: t('portfolio.design') },
   ];
 
   return (
     <PageTransition>
-      <section className="section-padding pt-32 pb-8">
-        <div className="mx-auto max-w-content">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/5 border border-white/10 px-4 py-1.5 mb-6">
-            <span className="text-sm text-primary-light">{t('portfolio.badge')}</span>
-          </div>
-          <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">{t('portfolio.title')}</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mb-10">{t('portfolio.subtitle')}</p>
+      <PageHero
+        badge={t('portfolio.badge')}
+        title={t('portfolio.title')}
+        subtitle={t('portfolio.subtitle')}
+      >
+        <div className="flex flex-wrap gap-2">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setFilter(tab.key)}
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
+                filter === tab.key
+                  ? 'gradient-primary text-white scale-105'
+                  : 'bg-white/5 backdrop-blur-md text-muted-foreground hover:text-foreground border border-white/10 hover:border-primary/30'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </PageHero>
 
-          <div className="flex flex-wrap gap-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setFilter(tab.key)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  filter === tab.key ? 'gradient-primary text-white' : 'bg-white/5 text-muted-foreground hover:text-foreground border border-white/10'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+      {/* Grid */}
+      <section className="section-padding pb-24">
+        <div className="mx-auto max-w-content">
+          {loading ? (
+            <div className="text-center text-muted-foreground py-12">
+              {language === 'ro' ? 'Se încarcă...' : 'Loading...'}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+              {filtered.map((project, i) => (
+                <ScrollReveal key={project.id} delay={(i % 6) * 0.06}
+                  className={i === 0 ? 'md:col-span-2 md:row-span-2' : ''}>
+                  {project.case_study && project.slug ? (
+                    <Link to={`/portfolio/${project.slug}`} className="block h-full">
+                      <ProjectCard project={project} language={language} featured={i === 0} />
+                    </Link>
+                  ) : (
+                    <div className="h-full">
+                      <ProjectCard project={project} language={language} featured={i === 0} />
+                    </div>
+                  )}
+                </ScrollReveal>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
-      <SectionWrapper className="!pt-8">
-        {loading ? (
-          <div className="text-center text-muted-foreground py-12">Se incarca...</div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((project) => (
-              <ScrollReveal key={project.id}>
-                {project.case_study && project.slug ? (
-                  <Link to={`/portfolio/${project.slug}`} className="block">
-                    <ProjectCard project={project} language={language} />
-                  </Link>
-                ) : (
-                  <div>
-                    <ProjectCard project={project} language={language} />
-                  </div>
-                )}
-              </ScrollReveal>
-            ))}
-          </div>
-        )}
-      </SectionWrapper>
+      {/* CTA full bleed */}
+      <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10">
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-50">
+          <source src="/videos/purple-cloud.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 z-0"
+          style={{ background: 'radial-gradient(ellipse at center, rgba(10,4,24,0.2) 0%, rgba(10,4,24,0.95) 70%)' }} />
 
-      <SectionWrapper>
-        <ScrollReveal>
-          <div className="glass-card p-10 md:p-16 text-center max-w-3xl mx-auto">
-            <h2 className="font-heading font-bold text-3xl md:text-4xl gradient-text mb-4">{t('portfolio.ctaTitle')}</h2>
-            <Link to="/contact" className="gradient-primary text-white font-medium px-8 py-3.5 rounded-2xl inline-block hover:opacity-90 transition-opacity mt-4">
-              {t('portfolio.ctaButton')}
-            </Link>
-          </div>
+        <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
+          <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-10">
+            <span className="text-foreground">{t('portfolio.ctaTitle')}</span>
+          </h2>
+          <Link to="/contact"
+            className="gradient-primary text-white font-medium px-10 py-4 rounded-full inline-flex items-center gap-2 text-lg hover:opacity-90 hover:scale-105 transition-all">
+            {t('portfolio.ctaButton')} <ArrowUpRight className="w-5 h-5" />
+          </Link>
         </ScrollReveal>
-      </SectionWrapper>
+      </section>
     </PageTransition>
   );
 };
 
-function ProjectCard({ project, language }: { project: PortfolioProjectRow; language: string }) {
+function ProjectCard({ project, language, featured = false }: { project: PortfolioProjectRow; language: string; featured?: boolean }) {
   return (
-    <div className="glass-card overflow-hidden group cursor-pointer">
+    <div className={`relative h-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm group cursor-pointer transition-all duration-500 hover:border-primary/40 ${featured ? 'flex flex-col' : ''}`}>
       {project.image_url && (
-        <div className="relative aspect-[16/10] overflow-hidden">
-          <img src={project.image_url} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+        <div className={`relative overflow-hidden ${featured ? 'aspect-[16/10] md:aspect-[16/9]' : 'aspect-[16/10]'}`}>
+          <img
+            src={project.image_url}
+            alt={project.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
           {project.live_url && (
             <a
               href={project.live_url}
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/90 backdrop-blur-sm text-white text-xs font-medium hover:bg-primary transition-colors z-10"
+              className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary backdrop-blur-md text-white text-xs font-medium hover:bg-primary-dark transition-colors z-10"
             >
-              <ExternalLink className="w-3 h-3" />
+              <ExternalLink className="w-3.5 h-3.5" />
               {language === 'en' ? 'View Live' : 'Vezi Live'}
             </a>
           )}
         </div>
       )}
-      <div className="p-5">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-          <span className="text-xs text-muted-foreground">{language === 'en' ? project.subtitle_en : project.subtitle_ro}</span>
+      <div className={`${featured ? 'p-8 md:p-10' : 'p-6'} ${featured ? 'flex-1 flex flex-col justify-end' : ''}`}>
+        <div className="flex items-center gap-2 mb-3">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary-light" />
+          <span className="text-xs uppercase tracking-widest text-muted-foreground">
+            {language === 'en' ? project.subtitle_en : project.subtitle_ro}
+          </span>
         </div>
-        <h2 className="font-heading font-semibold text-lg text-foreground mb-2">{project.title}</h2>
-        <p className="text-sm text-muted-foreground mb-4">{language === 'en' ? project.description_en : project.description_ro}</p>
+        <h2 className={`font-heading font-semibold text-foreground mb-3 leading-tight ${featured ? 'text-3xl md:text-4xl' : 'text-xl'}`}>
+          {project.title}
+        </h2>
+        <p className={`text-muted-foreground mb-5 leading-relaxed ${featured ? 'text-base md:text-lg' : 'text-sm'}`}>
+          {language === 'en' ? project.description_en : project.description_ro}
+        </p>
         <div className="flex flex-wrap gap-2">
           {project.tags.map((tag) => (
-            <span key={tag} className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-muted-foreground">{tag}</span>
+            <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-muted-foreground">
+              {tag}
+            </span>
           ))}
         </div>
       </div>

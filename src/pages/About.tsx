@@ -3,8 +3,9 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
-import { SectionWrapper } from '@/components/SectionWrapper';
-import { Ban, DollarSign, Cpu, HeadphonesIcon } from 'lucide-react';
+import { PageHero } from '@/components/PageHero';
+import { Marquee } from '@/components/Marquee';
+import { Ban, DollarSign, Cpu, HeadphonesIcon, ArrowUpRight } from 'lucide-react';
 import { useStats, useTechStack } from '@/hooks/useSupabaseData';
 
 const About = () => {
@@ -15,68 +16,82 @@ const About = () => {
   const { data: techStack } = useTechStack();
 
   const principles = [
-    { icon: Ban, title: t('about.p1.title'), desc: t('about.p1.desc') },
-    { icon: DollarSign, title: t('about.p2.title'), desc: t('about.p2.desc') },
-    { icon: Cpu, title: t('about.p3.title'), desc: t('about.p3.desc') },
+    { icon: Ban,            title: t('about.p1.title'), desc: t('about.p1.desc') },
+    { icon: DollarSign,     title: t('about.p2.title'), desc: t('about.p2.desc') },
+    { icon: Cpu,            title: t('about.p3.title'), desc: t('about.p3.desc') },
     { icon: HeadphonesIcon, title: t('about.p4.title'), desc: t('about.p4.desc') },
   ];
 
   return (
     <PageTransition>
-      {/* Hero */}
-      <section className="section-padding pt-32 pb-16">
-        <div className="mx-auto max-w-content">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/5 border border-white/10 px-4 py-1.5 mb-6">
-            <span className="text-sm text-primary-light">{t('about.badge')}</span>
-          </div>
-          <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">{t('about.title')}</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">{t('about.subtitle')}</p>
-        </div>
-      </section>
+      <PageHero
+        badge={t('about.badge')}
+        title={t('about.title')}
+        subtitle={t('about.subtitle')}
+      />
 
-      {/* Story */}
-      <SectionWrapper>
-        <ScrollReveal>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3">{t('about.storyLabel')}</p>
-              <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-6">{t('about.storyTitle')}</h2>
-              {t('about.storyText').split('\n\n').map((para, i) => (
-                <p key={i} className="text-muted-foreground leading-relaxed mb-4">{para}</p>
-              ))}
-            </div>
-            <div className="glass-card p-8 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5" />
-              <div className="grid grid-cols-2 gap-6 relative z-10">
-                {stats.map((stat) => (
-                  <div key={stat.id} className="text-center">
-                    <div className="font-heading font-bold text-3xl gradient-text mb-1">{stat.value}</div>
-                    <div className="text-xs text-muted-foreground">{language === 'en' ? stat.label_en : stat.label_ro}</div>
-                  </div>
+      {/* Story split */}
+      <section className="section-padding section-spacing border-t border-white/10">
+        <div className="mx-auto max-w-content">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <ScrollReveal className="lg:col-span-7">
+              <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-6">
+                {t('about.storyLabel')}
+              </p>
+              <h2 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl leading-[1.05] mb-8">
+                <span className="text-foreground">{t('about.storyTitle')}</span>
+              </h2>
+              <div className="space-y-5 text-lg text-muted-foreground leading-relaxed max-w-2xl">
+                {t('about.storyText').split('\n\n').map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+            </ScrollReveal>
+
+            <div className="lg:col-span-5 lg:pt-12">
+              <div className="grid grid-cols-2 gap-x-6 gap-y-10">
+                {stats.map((stat, i) => (
+                  <ScrollReveal key={stat.id} delay={i * 0.08}>
+                    <div className="border-l-2 border-primary/40 pl-4">
+                      <div className="font-heading font-bold text-4xl md:text-5xl gradient-text mb-2 leading-none">
+                        {stat.value}
+                      </div>
+                      <div className="text-xs uppercase tracking-widest text-muted-foreground">
+                        {language === 'en' ? stat.label_en : stat.label_ro}
+                      </div>
+                    </div>
+                  </ScrollReveal>
                 ))}
               </div>
             </div>
           </div>
-        </ScrollReveal>
-      </SectionWrapper>
+        </div>
+      </section>
 
-      {/* Principles */}
-      <section className="section-padding section-spacing bg-background-alt">
+      {/* Principles — bento grid */}
+      <section className="section-padding section-spacing">
         <div className="mx-auto max-w-content">
           <ScrollReveal>
-            <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3">{t('about.principlesLabel')}</p>
-            <h2 className="font-heading font-bold text-3xl md:text-4xl gradient-text mb-12">{t('about.principlesTitle')}</h2>
+            <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-6">
+              {t('about.principlesLabel')}
+            </p>
+            <h2 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl leading-[0.95] mb-16">
+              <span className="gradient-text italic">{t('about.principlesTitle')}</span>
+            </h2>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {principles.map((p) => (
-              <ScrollReveal key={p.title}>
-                <div className="glass-card p-6">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                    <p.icon className="w-6 h-6 text-primary-light" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+            {principles.map((p, i) => (
+              <ScrollReveal key={p.title} delay={i * 0.1}>
+                <div className="relative h-full group overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.03] to-white/[0.01] backdrop-blur-sm p-8 hover:border-primary/40 transition-all duration-500">
+                  <div className="absolute -top-20 -right-20 w-56 h-56 rounded-full blur-3xl opacity-20 bg-gradient-to-br from-primary to-accent group-hover:opacity-50 transition-opacity duration-700" />
+                  <div className="relative">
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                      <p.icon className="w-7 h-7 text-primary-light" />
+                    </div>
+                    <h3 className="font-heading font-semibold text-2xl text-foreground mb-3">{p.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{p.desc}</p>
                   </div>
-                  <h3 className="font-heading font-semibold text-foreground mb-2">{p.title}</h3>
-                  <p className="text-sm text-muted-foreground">{p.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -84,30 +99,46 @@ const About = () => {
         </div>
       </section>
 
-      {/* Tech Stack */}
-      <SectionWrapper>
-        <ScrollReveal>
-          <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3">{t('servicesPage.techLabel')}</p>
-          <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-10">{t('servicesPage.techTitle')}</h2>
-          <div className="flex flex-wrap gap-3">
-            {techStack.map((tech) => (
-              <span key={tech.id} className="glass-card px-5 py-2.5 text-sm font-medium text-foreground">{tech.name}</span>
-            ))}
-          </div>
-        </ScrollReveal>
-      </SectionWrapper>
+      {/* Tech stack — marquee */}
+      <section className="section-padding pt-16 pb-12 border-y border-white/10 bg-background-secondary/40 backdrop-blur-sm">
+        <div className="mx-auto max-w-content mb-8">
+          <ScrollReveal>
+            <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3">
+              {t('servicesPage.techLabel')}
+            </p>
+            <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground">
+              {t('servicesPage.techTitle')}
+            </h2>
+          </ScrollReveal>
+        </div>
+        <Marquee speed={40}>
+          {techStack.map((tech) => (
+            <span key={tech.id}
+              className="px-6 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-base md:text-lg font-medium text-foreground">
+              {tech.name}
+            </span>
+          ))}
+        </Marquee>
+      </section>
 
-      {/* CTA */}
-      <SectionWrapper>
-        <ScrollReveal>
-          <div className="glass-card p-10 md:p-16 text-center max-w-3xl mx-auto">
-            <h2 className="font-heading font-bold text-3xl md:text-4xl gradient-text mb-4">{t('about.ctaTitle')}</h2>
-            <Link to="/contact" className="gradient-primary text-white font-medium px-8 py-3.5 rounded-2xl inline-block hover:opacity-90 transition-opacity mt-4">
-              {t('about.ctaButton')}
-            </Link>
-          </div>
+      {/* CTA full bleed */}
+      <section className="relative section-padding py-32 md:py-44 overflow-hidden">
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-50">
+          <source src="/videos/purple-cloud.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 z-0"
+          style={{ background: 'radial-gradient(ellipse at center, rgba(10,4,24,0.2) 0%, rgba(10,4,24,0.95) 70%)' }} />
+
+        <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
+          <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-10">
+            <span className="text-foreground">{t('about.ctaTitle')}</span>
+          </h2>
+          <Link to="/contact"
+            className="gradient-primary text-white font-medium px-10 py-4 rounded-full inline-flex items-center gap-2 text-lg hover:opacity-90 hover:scale-105 transition-all">
+            {t('about.ctaButton')} <ArrowUpRight className="w-5 h-5" />
+          </Link>
         </ScrollReveal>
-      </SectionWrapper>
+      </section>
     </PageTransition>
   );
 };

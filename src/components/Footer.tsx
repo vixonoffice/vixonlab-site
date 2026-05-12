@@ -1,48 +1,55 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, Mail, MapPin, ArrowUpRight } from 'lucide-react';
 
 export function Footer() {
   const { t } = useLanguage();
 
   return (
-    <footer className="border-t border-white/5 bg-background">
-      <div className="mx-auto max-w-content section-padding py-12 md:py-16">
-        {/* Top: Logo & description — full width */}
-        <div className="mb-10">
-          <Link to="/" className="text-xl font-bold font-heading inline-block mb-3">
+    <footer className="relative border-t border-white/10 mt-32 overflow-hidden">
+      {/* subtle gradient */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-50"
+        style={{ background: 'radial-gradient(ellipse 800px 400px at 50% 0%, hsl(263 83% 58% / 0.15) 0%, transparent 70%)' }}
+      />
+
+      <div className="relative mx-auto max-w-content section-padding pt-20 md:pt-28 pb-10">
+        {/* ─── Massive brand mark ─── */}
+        <div className="mb-16">
+          <h2 className="font-heading font-bold text-[15vw] md:text-[14vw] leading-[0.85] tracking-tight">
             <span className="text-foreground">VIXON</span>
-            <span className="gradient-text">&nbsp;LAB</span>
-          </Link>
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-md mb-4">
-            {t('footer.description')}
-          </p>
-          <a
-            href="https://wa.me/40779383164"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary-light transition-colors"
-          >
-            <MessageCircle className="w-4 h-4" />
-            WhatsApp
-          </a>
+            <span className="gradient-text italic">LAB</span>
+          </h2>
         </div>
 
-        {/* Links grid — 2 cols on mobile, 3 on desktop */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-          {/* Quick links */}
+        {/* ─── 4-col grid ─── */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-6 border-t border-white/10 pt-12">
+          {/* About */}
+          <div className="col-span-2 md:col-span-1">
+            <p className="text-sm uppercase tracking-widest text-primary-light mb-4">{t('footer.quickLinks')}</p>
+            <p className="text-muted-foreground leading-relaxed mb-5 max-w-xs">{t('footer.description')}</p>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary-light transition-colors group"
+            >
+              {t('cta.button')}
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+          </div>
+
+          {/* Sitemap */}
           <div>
-            <h3 className="font-heading font-semibold text-sm mb-3 text-foreground">{t('footer.quickLinks')}</h3>
-            <div className="flex flex-col gap-2">
+            <p className="text-sm uppercase tracking-widest text-primary-light mb-4">Sitemap</p>
+            <div className="flex flex-col gap-3">
               {[
-                { label: t('nav.home'), path: '/' },
-                { label: t('nav.about'), path: '/about' },
+                { label: t('nav.home'),      path: '/' },
+                { label: t('nav.services'),  path: '/services' },
                 { label: t('nav.portfolio'), path: '/portfolio' },
-                { label: t('nav.blog'), path: '/blog' },
-                { label: t('nav.contact'), path: '/contact' },
-              ].map((link) => (
-                <Link key={link.path} to={link.path} className="text-sm text-muted-foreground hover:text-primary-light transition-colors">
-                  {link.label}
+                { label: t('nav.about'),     path: '/about' },
+                { label: t('nav.blog'),      path: '/blog' },
+              ].map((l) => (
+                <Link key={l.path} to={l.path} className="text-base text-foreground/80 hover:text-primary-light transition-colors">
+                  {l.label}
                 </Link>
               ))}
             </div>
@@ -50,38 +57,51 @@ export function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="font-heading font-semibold text-sm mb-3 text-foreground">{t('footer.services')}</h3>
-            <div className="flex flex-col gap-2">
-              {[
-                { label: 'Essential', path: '/pricing' },
-                { label: 'Business', path: '/pricing' },
-                { label: 'Ecosistem', path: '/pricing' },
-                { label: 'Vixon Care', path: '/pricing' },
-                { label: t('nav.pricing'), path: '/pricing' },
-              ].map((link) => (
-                <Link key={link.label} to={link.path} className="text-sm text-muted-foreground hover:text-primary-light transition-colors">
-                  {link.label}
+            <p className="text-sm uppercase tracking-widest text-primary-light mb-4">{t('footer.services')}</p>
+            <div className="flex flex-col gap-3">
+              {['Essential', 'Business', 'Ecosistem', 'Vixon Care', t('nav.pricing')].map((label) => (
+                <Link key={label} to="/pricing" className="text-base text-foreground/80 hover:text-primary-light transition-colors">
+                  {label}
                 </Link>
               ))}
             </div>
           </div>
 
-          {/* Legal */}
+          {/* Contact */}
           <div>
-            <h3 className="font-heading font-semibold text-sm mb-3 text-foreground">{t('footer.legal')}</h3>
-            <div className="flex flex-col gap-2">
-              <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary-light transition-colors">
+            <p className="text-sm uppercase tracking-widest text-primary-light mb-4">{t('nav.contact')}</p>
+            <div className="flex flex-col gap-3 mb-6">
+              <a href="https://wa.me/40779383164" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-foreground/80 hover:text-primary-light transition-colors">
+                <MessageCircle className="w-4 h-4" /> WhatsApp
+              </a>
+              <a href="mailto:contact@vixonlab.ro"
+                className="inline-flex items-center gap-2 text-foreground/80 hover:text-primary-light transition-colors">
+                <Mail className="w-4 h-4" /> contact@vixonlab.ro
+              </a>
+              <span className="inline-flex items-center gap-2 text-foreground/80">
+                <MapPin className="w-4 h-4" /> România
+              </span>
+            </div>
+
+            <div className="flex gap-2">
+              <Link to="/privacy" className="text-xs text-muted-foreground hover:text-primary-light transition-colors">
                 {t('footer.privacy')}
               </Link>
-              <Link to="/terms" className="text-sm text-muted-foreground hover:text-primary-light transition-colors">
+              <span className="text-xs text-muted-foreground">·</span>
+              <Link to="/terms" className="text-xs text-muted-foreground hover:text-primary-light transition-colors">
                 {t('footer.terms')}
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-white/5 mt-10 pt-6 text-center">
+        {/* ─── Bottom strip ─── */}
+        <div className="border-t border-white/10 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-xs text-muted-foreground">{t('footer.copyright')}</p>
+          <p className="text-xs text-muted-foreground italic">
+            Crafted with care in Romania
+          </p>
         </div>
       </div>
     </footer>

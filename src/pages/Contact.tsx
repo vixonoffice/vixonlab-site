@@ -3,7 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
-import { SectionWrapper } from '@/components/SectionWrapper';
+import { PageHero } from '@/components/PageHero';
 import { Mail, Phone, Clock, MessageCircle, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
@@ -29,9 +29,7 @@ const Contact = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
 
-  const isValid = useMemo(() => {
-    return contactSchema.safeParse(form).success && !honeypot;
-  }, [form, honeypot]);
+  const isValid = useMemo(() => contactSchema.safeParse(form).success && !honeypot, [form, honeypot]);
 
   const whatsappUrl = useMemo(() => {
     if (!isValid) return '';
@@ -47,7 +45,6 @@ const Contact = () => {
       `${t('contact.details')}:`,
       form.details,
     ].filter(Boolean);
-
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
   }, [form, isValid, language, t]);
 
@@ -56,9 +53,7 @@ const Contact = () => {
     const result = contactSchema.safeParse(form);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
-      result.error.issues.forEach((issue) => {
-        fieldErrors[issue.path[0] as string] = issue.message;
-      });
+      result.error.issues.forEach((issue) => { fieldErrors[issue.path[0] as string] = issue.message; });
       setErrors(fieldErrors);
       return;
     }
@@ -66,14 +61,9 @@ const Contact = () => {
   };
 
   const handleSendWhatsApp = () => {
-    // Save to Supabase as backup (fire and forget)
     supabase.from('contact_submissions').insert({
-      name: form.name,
-      email: form.email,
-      phone: form.phone || null,
-      project_type: form.projectType,
-      budget: form.budget,
-      details: form.details,
+      name: form.name, email: form.email, phone: form.phone || null,
+      project_type: form.projectType, budget: form.budget, details: form.details,
     });
     setSubmitted(true);
   };
@@ -81,162 +71,159 @@ const Contact = () => {
   const projectTypes = t('contact.projectTypes').split('|');
   const budgets = t('contact.budgets').split('|');
 
-  const inputClass = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors";
+  const inputClass = "w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:bg-white/[0.07] transition-all";
 
   return (
     <PageTransition>
-      <section className="section-padding pt-32 pb-16">
+      <PageHero
+        badge={t('contact.badge')}
+        title={t('contact.title')}
+        subtitle={t('contact.subtitle')}
+      />
+
+      <section className="section-padding pb-24">
         <div className="mx-auto max-w-content">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/5 border border-white/10 px-4 py-1.5 mb-6">
-            <span className="text-sm text-primary-light">{t('contact.badge')}</span>
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
+            {/* Form */}
+            <div className="lg:col-span-3">
+              <ScrollReveal>
+                <div className="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-sm p-6 md:p-10">
+                  <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-8">{t('contact.formTitle')}</h2>
+
+                  {submitted ? (
+                    <div className="text-center py-16">
+                      <div className="w-16 h-16 rounded-full bg-green-400/10 flex items-center justify-center mx-auto mb-5">
+                        <MessageCircle className="w-8 h-8 text-green-400" />
+                      </div>
+                      <p className="text-2xl text-foreground font-heading font-semibold">{t('contact.success')}</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-5">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                          <label className="text-sm text-muted-foreground mb-2 block">{t('contact.name')}</label>
+                          <input className={inputClass} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} onBlur={handleValidation} />
+                          {errors.name && <p className="text-xs text-accent mt-1.5">{errors.name}</p>}
+                        </div>
+                        <div>
+                          <label className="text-sm text-muted-foreground mb-2 block">{t('contact.email')}</label>
+                          <input type="email" className={inputClass} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} onBlur={handleValidation} />
+                          {errors.email && <p className="text-xs text-accent mt-1.5">{errors.email}</p>}
+                        </div>
+                      </div>
+
+                      <div className="absolute opacity-0 top-0 left-0 h-0 w-0 -z-10" aria-hidden="true">
+                        <label htmlFor="website">Website</label>
+                        <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off"
+                          value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+                      </div>
+
+                      <div>
+                        <label className="text-sm text-muted-foreground mb-2 block">{t('contact.phone')}</label>
+                        <input className={inputClass} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                          <label className="text-sm text-muted-foreground mb-2 block">{t('contact.projectType')}</label>
+                          <Select value={form.projectType} onValueChange={(val) => setForm({ ...form, projectType: val })}>
+                            <SelectTrigger className="w-full bg-white/5 border-white/10 rounded-2xl px-5 py-3.5 h-auto text-base text-foreground focus:border-primary/50">
+                              <SelectValue placeholder={t('contact.selectPlaceholder')} />
+                            </SelectTrigger>
+                            <SelectContent className="bg-background border-white/10 z-50">
+                              {projectTypes.map((pt) => <SelectItem key={pt} value={pt}>{pt}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
+                          {errors.projectType && <p className="text-xs text-accent mt-1.5">{errors.projectType}</p>}
+                        </div>
+                        <div>
+                          <label className="text-sm text-muted-foreground mb-2 block">{t('contact.budget')}</label>
+                          <Select value={form.budget} onValueChange={(val) => setForm({ ...form, budget: val })}>
+                            <SelectTrigger className="w-full bg-white/5 border-white/10 rounded-2xl px-5 py-3.5 h-auto text-base text-foreground focus:border-primary/50">
+                              <SelectValue placeholder={t('contact.selectPlaceholder')} />
+                            </SelectTrigger>
+                            <SelectContent className="bg-background border-white/10 z-50">
+                              {budgets.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
+                          {errors.budget && <p className="text-xs text-accent mt-1.5">{errors.budget}</p>}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-sm text-muted-foreground mb-2 block">{t('contact.details')}</label>
+                        <textarea className={`${inputClass} min-h-[140px] resize-none`} value={form.details}
+                          onChange={(e) => setForm({ ...form, details: e.target.value })} onBlur={handleValidation} />
+                        {errors.details && <p className="text-xs text-accent mt-1.5">{errors.details}</p>}
+                      </div>
+
+                      {isValid ? (
+                        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" onClick={handleSendWhatsApp}
+                          className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold py-4 rounded-2xl text-lg transition-all hover:scale-[1.02]">
+                          <MessageCircle className="w-5 h-5" />
+                          {t('contact.submit')}
+                          <ChevronRight className="w-5 h-5" />
+                        </a>
+                      ) : (
+                        <button type="button" onClick={handleValidation}
+                          className="w-full inline-flex items-center justify-center gap-3 bg-white/10 text-muted-foreground font-medium py-4 rounded-2xl text-lg cursor-pointer hover:bg-white/15 transition-all">
+                          <MessageCircle className="w-5 h-5" />
+                          {t('contact.submit')}
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </ScrollReveal>
+            </div>
+
+            {/* Info sidebar */}
+            <div className="lg:col-span-2 space-y-5">
+              <ScrollReveal delay={0.1}>
+                <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-sm p-7">
+                  <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full blur-3xl opacity-30 bg-gradient-to-br from-primary to-accent" />
+                  <div className="relative">
+                    <h3 className="font-heading font-bold text-xl text-foreground mb-6">{t('contact.infoTitle')}</h3>
+                    <div className="space-y-5">
+                      <a href="mailto:vixonoffice@gmail.com" className="flex items-center gap-4 group">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                          <Mail className="w-4 h-4 text-primary-light" />
+                        </div>
+                        <span className="text-foreground group-hover:text-primary-light transition-colors">{t('contact.emailAddress')}</span>
+                      </a>
+                      <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 group">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                          <Phone className="w-4 h-4 text-primary-light" />
+                        </div>
+                        <div>
+                          <span className="text-foreground group-hover:text-primary-light transition-colors block">{t('contact.phoneNumber')}</span>
+                          <span className="text-xs text-muted-foreground">{t('contact.whatsapp')}</span>
+                        </div>
+                      </a>
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                          <Clock className="w-4 h-4 text-primary-light" />
+                        </div>
+                        <span className="text-foreground">{t('contact.schedule')}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal delay={0.2}>
+                <div className="rounded-3xl border border-green-400/20 bg-green-400/[0.03] backdrop-blur-sm p-7">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="dot-green" />
+                    <h3 className="font-heading font-bold text-lg text-foreground">{t('contact.fastResponse')}</h3>
+                  </div>
+                  <p className="text-muted-foreground leading-relaxed">{t('contact.fastResponseDesc')}</p>
+                </div>
+              </ScrollReveal>
+            </div>
           </div>
-          <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">{t('contact.title')}</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">{t('contact.subtitle')}</p>
         </div>
       </section>
-
-      <SectionWrapper className="!pt-8">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* Form — 3/5 */}
-          <div className="lg:col-span-3">
-            <ScrollReveal>
-              <div className="glass-card p-6 md:p-8">
-                <h2 className="font-heading font-semibold text-xl text-foreground mb-6">{t('contact.formTitle')}</h2>
-
-                {submitted ? (
-                  <div className="text-center py-12">
-                    <MessageCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
-                    <p className="text-lg text-primary-light font-medium">{t('contact.success')}</p>
-                  </div>
-                ) : (
-                  <div className="space-y-5">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <div>
-                        <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.name')}</label>
-                        <input className={inputClass} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} onBlur={handleValidation} />
-                        {errors.name && <p className="text-xs text-accent mt-1">{errors.name}</p>}
-                      </div>
-                      <div>
-                        <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.email')}</label>
-                        <input type="email" className={inputClass} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} onBlur={handleValidation} />
-                        {errors.email && <p className="text-xs text-accent mt-1">{errors.email}</p>}
-                      </div>
-                    </div>
-                    {/* Honeypot field - hidden from real users */}
-                    <div className="absolute opacity-0 top-0 left-0 h-0 w-0 -z-10" aria-hidden="true">
-                      <label htmlFor="website">Website</label>
-                      <input
-                        type="text"
-                        id="website"
-                        name="website"
-                        tabIndex={-1}
-                        autoComplete="off"
-                        value={honeypot}
-                        onChange={(e) => setHoneypot(e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.phone')}</label>
-                      <input className={inputClass} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <div>
-                        <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.projectType')}</label>
-                        <Select value={form.projectType} onValueChange={(val) => setForm({ ...form, projectType: val })}>
-                          <SelectTrigger className="w-full bg-white/5 border-white/10 rounded-xl px-4 py-3 h-auto text-sm text-foreground focus:border-primary/50">
-                            <SelectValue placeholder={t('contact.selectPlaceholder')} />
-                          </SelectTrigger>
-                          <SelectContent className="bg-background border-white/10 z-50">
-                            {projectTypes.map((pt) => <SelectItem key={pt} value={pt}>{pt}</SelectItem>)}
-                          </SelectContent>
-                        </Select>
-                        {errors.projectType && <p className="text-xs text-accent mt-1">{errors.projectType}</p>}
-                      </div>
-                      <div>
-                        <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.budget')}</label>
-                        <Select value={form.budget} onValueChange={(val) => setForm({ ...form, budget: val })}>
-                          <SelectTrigger className="w-full bg-white/5 border-white/10 rounded-xl px-4 py-3 h-auto text-sm text-foreground focus:border-primary/50">
-                            <SelectValue placeholder={t('contact.selectPlaceholder')} />
-                          </SelectTrigger>
-                          <SelectContent className="bg-background border-white/10 z-50">
-                            {budgets.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
-                          </SelectContent>
-                        </Select>
-                        {errors.budget && <p className="text-xs text-accent mt-1">{errors.budget}</p>}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-sm text-muted-foreground mb-1.5 block">{t('contact.details')}</label>
-                      <textarea className={`${inputClass} min-h-[120px]`} value={form.details} onChange={(e) => setForm({ ...form, details: e.target.value })} onBlur={handleValidation} />
-                      {errors.details && <p className="text-xs text-accent mt-1">{errors.details}</p>}
-                    </div>
-
-                    {/* WhatsApp send button - direct link like Services page */}
-                    {isValid ? (
-                      <a
-                        href={whatsappUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={handleSendWhatsApp}
-                        className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold py-3.5 rounded-2xl text-lg transition-all hover:scale-[1.02]"
-                      >
-                        <MessageCircle className="w-5 h-5" />
-                        {t('contact.submit')}
-                        <ChevronRight className="w-5 h-5" />
-                      </a>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={handleValidation}
-                        className="w-full inline-flex items-center justify-center gap-3 bg-white/10 text-muted-foreground font-medium py-3.5 rounded-2xl text-lg cursor-pointer hover:bg-white/15 transition-all"
-                      >
-                        <MessageCircle className="w-5 h-5" />
-                        {t('contact.submit')}
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            </ScrollReveal>
-          </div>
-
-          {/* Info — 2/5 */}
-          <div className="lg:col-span-2 space-y-6">
-            <ScrollReveal>
-              <div className="glass-card p-6">
-                <h3 className="font-heading font-semibold text-foreground mb-4">{t('contact.infoTitle')}</h3>
-                <div className="space-y-4">
-                  <a href="mailto:vixonoffice@gmail.com" className="flex items-center gap-3 group">
-                    <Mail className="w-5 h-5 text-primary-light shrink-0" />
-                    <span className="text-sm text-muted-foreground group-hover:text-primary-light transition-colors">{t('contact.emailAddress')}</span>
-                  </a>
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 group">
-                    <Phone className="w-5 h-5 text-primary-light shrink-0 mt-0.5" />
-                    <div>
-                      <span className="text-sm text-muted-foreground group-hover:text-primary-light transition-colors block">{t('contact.phoneNumber')}</span>
-                      <span className="text-xs text-muted-foreground">{t('contact.whatsapp')}</span>
-                    </div>
-                  </a>
-                  <div className="flex items-center gap-3">
-                    <Clock className="w-5 h-5 text-primary-light shrink-0" />
-                    <span className="text-sm text-muted-foreground">{t('contact.schedule')}</span>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal>
-              <div className="glass-card p-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="dot-green" />
-                  <h3 className="font-heading font-semibold text-foreground">{t('contact.fastResponse')}</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">{t('contact.fastResponseDesc')}</p>
-              </div>
-            </ScrollReveal>
-          </div>
-        </div>
-      </SectionWrapper>
     </PageTransition>
   );
 };
