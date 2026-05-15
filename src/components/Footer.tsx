@@ -72,14 +72,14 @@ export function Footer() {
             <p className="text-sm uppercase tracking-widest text-primary-light mb-4">{t('nav.contact')}</p>
             <div className="flex flex-col gap-3 mb-6">
               <a href="https://wa.me/40779383164" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-foreground/80 hover:text-primary-light transition-colors">
+                className="inline-flex items-center gap-2 text-base text-foreground/80 hover:text-primary-light transition-colors">
                 <MessageCircle className="w-4 h-4" /> WhatsApp
               </a>
               <a href="mailto:contact@vixonlab.ro"
-                className="inline-flex items-center gap-2 text-foreground/80 hover:text-primary-light transition-colors">
+                className="inline-flex items-center gap-2 text-base text-foreground/80 hover:text-primary-light transition-colors">
                 <Mail className="w-4 h-4" /> contact@vixonlab.ro
               </a>
-              <span className="inline-flex items-center gap-2 text-foreground/80">
+              <span className="inline-flex items-center gap-2 text-base text-foreground/80">
                 <MapPin className="w-4 h-4" /> România
               </span>
             </div>
