@@ -265,9 +265,9 @@ export const translations = {
 
     // SaaS Pricing Tiers (rebrand 2026-05) — site gratuit + abonament lunar
     'tier.badge': 'Prețuri SaaS · transparente',
-    'tier.title1': 'Site profesional.',
-    'tier.title2': '0€ acum, de la 9€/lună.',
-    'tier.subtitle': 'Îl construim noi, îl găzduim noi, îl modificăm oricând. Tu plătești doar mentenanța.',
+    'tier.title1': 'Construim site-ul tău.',
+    'tier.title2': 'Tu plătești doar mentenanța.',
+    'tier.subtitle': 'Site profesional complet inclus în abonament. Mentenanță de la 9€/lună — modificări, hosting, SSL, domeniu, e-Factura. Totul în preț, fără surprize.',
     'tier.monthly': 'Lunar',
     'tier.annual': 'Anual',
     'tier.annualBadge': '-20% primul an',
@@ -283,19 +283,19 @@ export const translations = {
     'tier.cta': 'Vreau acest plan',
 
     'tier.promo.name': 'Promo',
-    'tier.promo.tagline': 'Pentru campanii, evenimente, landing-uri',
+    'tier.promo.tagline': 'Perfect pentru lansări, evenimente sau campanii scurte',
     'tier.promo.features': 'Site one-pager (max 5 secțiuni)|Hosting + SSL + backup zilnic|Domeniu .ro inclus|Formular contact + Google Maps|1 modificare/lună|Răspuns în 72h|e-Factura automată ANAF',
 
     'tier.start.name': 'Start',
-    'tier.start.tagline': 'Pentru PFA-uri și mic business',
+    'tier.start.tagline': 'Ideal pentru afaceri locale care intră serios online',
     'tier.start.features': 'Tot din Promo|Site one-pager (până la 8 secțiuni)|SEO de bază|Google Analytics|3 modificări/lună|Răspuns în 48h',
 
     'tier.plus.name': 'Plus',
-    'tier.plus.tagline': 'Pentru firme cu servicii, multi-page',
+    'tier.plus.tagline': 'Pentru firme cu mai multe servicii și prezență complexă',
     'tier.plus.features': 'Tot din Start|Site multi-page (până la 10 pagini)|Blog integrat|Multilingv (RO + EN)|Raport lunar trafic|6 modificări/lună|Răspuns în 24-48h|Suport prioritar WhatsApp',
 
     'tier.premium.name': 'Premium',
-    'tier.premium.tagline': 'Pentru brand-uri și firme cu pretenții',
+    'tier.premium.tagline': 'Pentru branduri ambițioase care vor cel mai bun',
     'tier.premium.features': 'Tot din Plus|Site multi-page (nelimitat)|Design custom premium|Animații avansate|Integrări custom (calendar, CRM, newsletter)|12 modificări/lună|Răspuns în 24h|Suport prioritar WhatsApp + telefon',
 
     'tier.commonTitle': 'Toate planurile includ:',
@@ -326,9 +326,9 @@ export const translations = {
 
     // Offer landing page (social media)
     'offer.badge': 'Ofertă specială · Disponibilă acum',
-    'offer.title1': 'Site web profesional',
-    'offer.title2': '0€ acum, de la 9€/lună',
-    'offer.subtitle': 'Tu nu plătești site-ul. Plătești doar mentenanța lunară. Noi îl construim, îl găzduim, îl modificăm oricând.',
+    'offer.title1': 'Site web profesional,',
+    'offer.title2': 'fără investiție inițială.',
+    'offer.subtitle': 'Îți construim site-ul. Tu plătești doar mentenanța lunară — de la 9€. Hosting, modificări, e-Factura, suport — totul inclus. Fără cost de pornire, fără surprize.',
     'offer.cta': 'Vreau site gratuit',
     'offer.ctaSecondary': 'Vezi planurile',
     'offer.discountBadge': '-20% primul an · plată anuală',
@@ -626,9 +626,9 @@ export const translations = {
 
     // SaaS Pricing Tiers (rebrand 2026-05) — free site + monthly subscription
     'tier.badge': 'SaaS Pricing · transparent',
-    'tier.title1': 'Professional website.',
-    'tier.title2': '0€ now, from 9€/month.',
-    'tier.subtitle': 'We build it, we host it, we update it anytime. You only pay maintenance.',
+    'tier.title1': 'We build your site.',
+    'tier.title2': 'You only pay maintenance.',
+    'tier.subtitle': 'Complete professional site included in your subscription. Maintenance from 9€/month — edits, hosting, SSL, domain, e-Invoice. All-inclusive, no surprises.',
     'tier.monthly': 'Monthly',
     'tier.annual': 'Annual',
     'tier.annualBadge': '-20% first year',
@@ -644,19 +644,19 @@ export const translations = {
     'tier.cta': 'I want this plan',
 
     'tier.promo.name': 'Promo',
-    'tier.promo.tagline': 'For campaigns, events, landing pages',
+    'tier.promo.tagline': 'Perfect for launches, events or short campaigns',
     'tier.promo.features': 'One-pager site (max 5 sections)|Hosting + SSL + daily backup|.ro domain included|Contact form + Google Maps|1 edit/month|Response in 72h|Automatic e-Invoice (ANAF)',
 
     'tier.start.name': 'Start',
-    'tier.start.tagline': 'For freelancers and small businesses',
+    'tier.start.tagline': 'Ideal for local businesses going seriously online',
     'tier.start.features': 'Everything in Promo|One-pager site (up to 8 sections)|Basic SEO|Google Analytics|3 edits/month|Response in 48h',
 
     'tier.plus.name': 'Plus',
-    'tier.plus.tagline': 'For service firms, multi-page',
+    'tier.plus.tagline': 'For firms with multiple services and complex needs',
     'tier.plus.features': 'Everything in Start|Multi-page site (up to 10 pages)|Integrated blog|Multilingual (RO + EN)|Monthly traffic report|6 edits/month|Response in 24-48h|Priority WhatsApp support',
 
     'tier.premium.name': 'Premium',
-    'tier.premium.tagline': 'For brands and demanding firms',
+    'tier.premium.tagline': 'For ambitious brands wanting the best',
     'tier.premium.features': 'Everything in Plus|Multi-page site (unlimited)|Premium custom design|Advanced animations|Custom integrations (calendar, CRM, newsletter)|12 edits/month|Response in 24h|Priority WhatsApp + phone support',
 
     'tier.commonTitle': 'All plans include:',
@@ -687,9 +687,9 @@ export const translations = {
 
     // Offer landing page (social media)
     'offer.badge': 'Special offer · Available now',
-    'offer.title1': 'Professional website',
-    'offer.title2': '0€ now, from 9€/month',
-    'offer.subtitle': 'You don\'t pay for the site. You only pay monthly maintenance. We build it, we host it, we update it anytime.',
+    'offer.title1': 'Professional website,',
+    'offer.title2': 'no upfront cost.',
+    'offer.subtitle': 'We build your site. You only pay monthly maintenance — from 9€. Hosting, edits, e-Invoice, support — all included. No setup fee, no surprises.',
     'offer.cta': 'I want a free site',
     'offer.ctaSecondary': 'See plans',
     'offer.discountBadge': '-20% first year · annual billing',

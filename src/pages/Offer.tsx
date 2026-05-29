@@ -123,10 +123,10 @@ const Offer = () => {
                   <a
                     href={buildTierWaUrl(tier.key, 'annual', language as 'ro' | 'en')}
                     target="_blank" rel="noopener noreferrer"
-                    className={`block rounded-2xl border p-5 transition-all hover:scale-[1.02] ${
+                    className={`block rounded-2xl border p-5 transition-all hover:scale-[1.02] backdrop-blur-md ${
                       tier.popular
-                        ? 'border-primary/50 bg-gradient-to-b from-primary/10 to-white/[0.02] shadow-[0_0_30px_-10px_rgba(124,58,237,0.4)]'
-                        : 'border-white/10 bg-white/[0.02] hover:border-primary/30'
+                        ? 'border-primary/50 bg-gradient-to-b from-primary/15 via-white/[0.05] to-white/[0.03] shadow-[0_0_30px_-10px_rgba(124,58,237,0.4)]'
+                        : 'border-white/15 bg-gradient-to-b from-white/[0.08] to-white/[0.03] hover:border-primary/40'
                     }`}
                   >
                     {tier.popular && (
@@ -167,7 +167,7 @@ const Offer = () => {
               const Icon = b.icon;
               return (
                 <ScrollReveal key={i} delay={(i % 2) * 0.08}>
-                  <div className="h-full rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm p-7 hover:border-primary/30 transition-colors">
+                  <div className="h-full rounded-3xl border border-white/15 bg-gradient-to-b from-white/[0.08] to-white/[0.03] backdrop-blur-md p-7 hover:border-primary/40 transition-colors">
                     <div className={`inline-flex w-12 h-12 rounded-2xl border items-center justify-center mb-5 ${b.color}`}>
                       <Icon className="w-6 h-6" />
                     </div>
@@ -195,7 +195,7 @@ const Offer = () => {
               const Icon = s.icon;
               return (
                 <ScrollReveal key={i} delay={i * 0.06}>
-                  <div className="h-full rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm p-7 text-center">
+                  <div className="h-full rounded-3xl border border-white/15 bg-gradient-to-b from-white/[0.08] to-white/[0.03] backdrop-blur-md p-7 text-center">
                     <div className="inline-flex w-14 h-14 rounded-full gradient-primary items-center justify-center mb-5 mx-auto shadow-[0_0_30px_-5px_rgba(124,58,237,0.6)]">
                       <Icon className="w-7 h-7 text-white" />
                     </div>

@@ -26,8 +26,8 @@ export const TIERS: Tier[] = [
     modificariPerMonth: 1,
     responseTime: { ro: '72h', en: '72h' },
     recommendedFor: {
-      ro: 'Landing page promo, eveniment, campanie',
-      en: 'Promo landing, event, campaign',
+      ro: 'Landing-uri, evenimente, campanii sezoniere',
+      en: 'Landing pages, events, seasonal campaigns',
     },
   },
   {
@@ -36,8 +36,8 @@ export const TIERS: Tier[] = [
     modificariPerMonth: 3,
     responseTime: { ro: '48h', en: '48h' },
     recommendedFor: {
-      ro: 'PFA, restaurant, salon, mic business',
-      en: 'Freelancer, restaurant, salon, small business',
+      ro: 'Antreprenori, restaurante, saloane, ateliere',
+      en: 'Entrepreneurs, restaurants, salons, workshops',
     },
   },
   {
@@ -47,8 +47,8 @@ export const TIERS: Tier[] = [
     responseTime: { ro: '24-48h', en: '24-48h' },
     popular: true,
     recommendedFor: {
-      ro: 'Firme servicii, cabinete, ateliere',
-      en: 'Service firms, clinics, workshops',
+      ro: 'Firme de servicii, cabinete, afaceri în creștere',
+      en: 'Service firms, clinics, growing businesses',
     },
   },
   {
@@ -57,8 +57,8 @@ export const TIERS: Tier[] = [
     modificariPerMonth: 12,
     responseTime: { ro: '24h', en: '24h' },
     recommendedFor: {
-      ro: 'Brand-uri, firme cu pretenții, agenții',
-      en: 'Brands, demanding firms, agencies',
+      ro: 'Branduri ambițioase, agenții, firme care vor cel mai bun',
+      en: 'Ambitious brands, agencies, top-tier firms',
     },
   },
 ];

@@ -6,7 +6,7 @@ import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
 import { VideoBackground } from '@/components/VideoBackground';
-import { Check, MessageCircle, Shield, Sparkles, ArrowUpRight } from 'lucide-react';
+import { Check, MessageCircle, Shield, Sparkles, ArrowUpRight, Zap, Rocket, TrendingUp, Crown, type LucideIcon } from 'lucide-react';
 import {
   TIERS,
   ANNUAL_DISCOUNT_PCT,
@@ -19,10 +19,17 @@ import {
 } from '@/lib/tiers';
 
 const tierColorClass: Record<Tier['key'], string> = {
-  promo: 'from-slate-500 to-slate-400',
-  start: 'from-purple-600 to-violet-500',
-  plus: 'from-primary to-accent',
-  premium: 'from-amber-500 to-orange-500',
+  promo: 'from-cyan-400 to-blue-500',
+  start: 'from-emerald-400 to-green-500',
+  plus: 'from-fuchsia-500 via-primary to-accent',
+  premium: 'from-amber-400 via-orange-500 to-rose-600',
+};
+
+const tierIcon: Record<Tier['key'], LucideIcon> = {
+  promo: Zap,
+  start: Rocket,
+  plus: TrendingUp,
+  premium: Crown,
 };
 
 const Pricing = () => {
@@ -109,10 +116,10 @@ const Pricing = () => {
 
               return (
                 <ScrollReveal key={tier.key} delay={i * 0.08}>
-                  <div className={`relative h-full flex flex-col rounded-3xl border backdrop-blur-sm p-7 overflow-hidden transition-all duration-500 ${
+                  <div className={`relative h-full flex flex-col rounded-3xl border backdrop-blur-md p-7 overflow-hidden transition-all duration-500 ${
                     isPopular
-                      ? 'border-primary/50 bg-gradient-to-b from-primary/10 to-white/[0.02] shadow-[0_0_60px_-15px_rgba(124,58,237,0.4)]'
-                      : 'border-white/10 bg-white/[0.02] hover:border-primary/30'
+                      ? 'border-primary/50 bg-gradient-to-b from-primary/15 via-white/[0.05] to-white/[0.03] shadow-[0_0_60px_-15px_rgba(124,58,237,0.4)]'
+                      : 'border-white/15 bg-gradient-to-b from-white/[0.08] to-white/[0.03] hover:border-primary/40 hover:from-primary/[0.08]'
                   }`}>
                     {isPopular && (
                       <>
@@ -126,9 +133,16 @@ const Pricing = () => {
                     )}
 
                     <div className="relative flex flex-col h-full">
-                      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${tierColorClass[tier.key]} mb-5`} />
+                      {(() => {
+                        const Icon = tierIcon[tier.key];
+                        return (
+                          <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${tierColorClass[tier.key]} mb-5 flex items-center justify-center shadow-lg ring-1 ring-white/20`}>
+                            <Icon className="w-7 h-7 text-white drop-shadow-md" />
+                          </div>
+                        );
+                      })()}
                       <h3 className="font-heading font-bold text-2xl text-foreground mb-2">{name}</h3>
-                      <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{tagline}</p>
+                      <p className="text-sm text-muted-foreground mb-6 leading-relaxed min-h-[2.5rem]">{tagline}</p>
 
                       {/* Price */}
                       <div className="mb-2">
