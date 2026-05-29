@@ -15,6 +15,7 @@ const STATIC_URLS = [
   { loc: 'https://vixonlab.ro/services',  priority: '0.9', changefreq: 'monthly', lastmod: TODAY },
   { loc: 'https://vixonlab.ro/portfolio', priority: '0.8', changefreq: 'weekly',  lastmod: TODAY },
   { loc: 'https://vixonlab.ro/pricing',   priority: '0.9', changefreq: 'monthly', lastmod: TODAY },
+  { loc: 'https://vixonlab.ro/oferta',    priority: '0.95', changefreq: 'weekly',  lastmod: TODAY },
   { loc: 'https://vixonlab.ro/blog',      priority: '0.8', changefreq: 'weekly',  lastmod: TODAY },
   { loc: 'https://vixonlab.ro/about',     priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
   { loc: 'https://vixonlab.ro/contact',   priority: '0.8', changefreq: 'monthly', lastmod: TODAY },

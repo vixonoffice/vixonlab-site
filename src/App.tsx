@@ -21,6 +21,7 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Preview = lazy(() => import("./pages/Preview"));
+const Offer = lazy(() => import("./pages/Offer"));
 
 // Admin pages - lazy loaded
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
@@ -61,6 +62,8 @@ const App = () => (
               <Route path="/portfolio/:slug" element={<Layout><CaseStudy /></Layout>} />
               <Route path="/about" element={<Layout><About /></Layout>} />
               <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
+              <Route path="/oferta" element={<Layout><Offer /></Layout>} />
+              <Route path="/offer" element={<Layout><Offer /></Layout>} />
               <Route path="/contact" element={<Layout><Contact /></Layout>} />
               <Route path="/blog" element={<Layout><Blog /></Layout>} />
               <Route path="/blog/:slug" element={<Layout><BlogPost /></Layout>} />
