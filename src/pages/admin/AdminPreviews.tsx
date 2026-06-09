@@ -4,9 +4,26 @@ import { supabase } from '@/integrations/supabase/client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Copy, ExternalLink, Eye, Star, Phone, MapPin, Check, EyeOff } from 'lucide-react';
+import { Copy, ExternalLink, Eye, Star, Phone, MapPin, Check, EyeOff, MessageCircle, Sparkles } from 'lucide-react';
 
 const CATEGORIES = ['Toate', 'restaurant', 'pizzerie', 'service auto', 'salon coafura', 'frizerie', 'gym sala fitness', 'cabinet stomatologic', 'florarie', 'cofetarie', 'pensiune', 'constructor', 'instalator', 'brutarie', 'patiserie', 'farmacie', 'cabinet contabilitate', 'hotel', 'firma curatenie'];
+
+// ─── Filtru "leaduri bune" (intentie mare de cumparare) ──────────────────────
+const EXCLUDED_CATEGORIES = new Set(['service auto', 'farmacie', 'brutarie', 'firma curatenie']);
+const JUNK_KEYWORDS = ['vulcanizare', 'itp', 'tractari', 'anvelope', 'dezmembrari', 'auto dez', 'autodez', 'spalatorie', 'depozit', 'aprozar', 'piata', 'amanet', 'funerare', 'salubri', 'abator', 'rovinieta'];
+const deDia = (s: string) => s.toLowerCase().replace(/[ăâ]/g, 'a').replace(/î/g, 'i').replace(/[șş]/g, 's').replace(/[țţ]/g, 't');
+const normPhone = (phone: string | null) => (phone || '').replace(/\D/g, '').replace(/^0/, '40');
+const isMobile = (phone: string | null) => normPhone(phone).startsWith('407');
+
+// ─── Mesaje rotative (anti-spam: WhatsApp flag-uieste mesaje identice in masa) ─
+const MESSAGE_VARIANTS: ((n: string) => string)[] = [
+  (n) => `Salut! Sunteți interesați de un website pentru ${n}? Mulțumesc și scuze de deranj :)`,
+  (n) => `Bună ziua! V-ar interesa un site web pentru ${n}? Dacă nu, scuze de deranj!`,
+  (n) => `Salut! Fac site-uri pentru afaceri locale — ar fi util unul pentru ${n}? Numai bine!`,
+  (n) => `Bună! Aveți cumva nevoie de un website pentru ${n}? Dacă nu, vă rog să mă scuzați.`,
+  (n) => `Salut! Vă pot ajuta cu un site web pentru ${n}, dacă vă interesează. Mulțumesc!`,
+  (n) => `Bună ziua! Caut afaceri locale care ar vrea un site. ${n} ar fi interesat? Scuze de deranj :)`,
+];
 
 const SITE_STATUS_COLORS: Record<string, string> = {
   'Nu': 'bg-red-500/20 text-red-400',
@@ -25,6 +42,19 @@ function getContactedIds(): Set<number> {
 
 function saveContactedIds(ids: Set<number>) {
   localStorage.setItem(CONTACTED_KEY, JSON.stringify([...ids]));
+}
+
+function isQualityLead(p: { phone: string | null; nr_recenzii: number | null; category: string; business_name: string }): boolean {
+  if (!isMobile(p.phone)) return false;
+  if ((p.nr_recenzii ?? 0) < 10) return false;
+  if (EXCLUDED_CATEGORIES.has(p.category)) return false;
+  const n = deDia(p.business_name);
+  if (JUNK_KEYWORDS.some((k) => n.includes(k))) return false;
+  return true;
+}
+
+function messageFor(p: { id: number; business_name: string }): string {
+  return MESSAGE_VARIANTS[p.id % MESSAGE_VARIANTS.length](p.business_name);
 }
 
 interface Preview {
@@ -51,6 +81,7 @@ const AdminPreviews = () => {
   const [search, setSearch] = useState('');
   const [contactedIds, setContactedIds] = useState<Set<number>>(getContactedIds);
   const [hideContacted, setHideContacted] = useState(false);
+  const [onlyQuality, setOnlyQuality] = useState(true);
 
   const { data: previews = [], isLoading } = useQuery({
     queryKey: ['previews'],
@@ -102,7 +133,8 @@ const AdminPreviews = () => {
       const matchCat = categoryFilter === 'Toate' || p.category === categoryFilter;
       const matchSearch = p.business_name.toLowerCase().includes(search.toLowerCase());
       const matchContacted = !hideContacted || !contactedIds.has(p.id);
-      return matchCat && matchSearch && matchContacted;
+      const matchQuality = !onlyQuality || isQualityLead(p);
+      return matchCat && matchSearch && matchContacted && matchQuality;
     })
     .sort((a, b) => {
       // Contacted go to bottom
@@ -122,13 +154,22 @@ const AdminPreviews = () => {
   const previewUrl = (slug: string) => `${window.location.origin}/preview/${slug}`;
 
   const openWhatsapp = (phone: string, msg: string) => {
-    const cleaned = phone.replace(/\D/g, '').replace(/^0/, '40');
+    const cleaned = normPhone(phone);
     const url = `https://wa.me/${cleaned}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
   };
 
+  const sendWhatsapp = (p: Preview, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (!p.phone) return;
+    openWhatsapp(p.phone, messageFor(p));
+    if (!contactedIds.has(p.id)) toggleContacted(p.id);
+  };
+
   const totalViewed = previews.filter((p) => p.views > 0).length;
   const totalContacted = contactedIds.size;
+  const qualityLeads = previews.filter(isQualityLead);
+  const qualityContacted = qualityLeads.filter((p) => contactedIds.has(p.id)).length;
 
   if (isLoading) return <div className="text-muted-foreground">Se incarca...</div>;
 
@@ -138,7 +179,9 @@ const AdminPreviews = () => {
         <div>
           <h1 className="text-2xl font-heading font-bold text-foreground">Preview-uri Leaduri</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {previews.length} business-uri · {totalViewed} vizionate · {totalContacted} contactate · {previews.length - totalContacted} ramase
+            {onlyQuality
+              ? <>{qualityLeads.length} leaduri bune · {qualityContacted} contactate · {qualityLeads.length - qualityContacted} ramase</>
+              : <>{previews.length} business-uri · {totalViewed} vizionate · {totalContacted} contactate · {previews.length - totalContacted} ramase</>}
           </p>
         </div>
       </div>
@@ -164,6 +207,17 @@ const AdminPreviews = () => {
               ))}
             </select>
             <button
+              onClick={() => setOnlyQuality(!onlyQuality)}
+              className={`px-3 py-2 rounded-xl border text-sm shrink-0 transition-colors ${
+                onlyQuality
+                  ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
+                  : 'bg-white/5 border-white/10 text-muted-foreground'
+              }`}
+              title={onlyQuality ? 'Arată toate business-urile' : 'Doar leaduri bune'}
+            >
+              <Sparkles className="w-4 h-4" />
+            </button>
+            <button
               onClick={() => setHideContacted(!hideContacted)}
               className={`px-3 py-2 rounded-xl border text-sm shrink-0 transition-colors ${
                 hideContacted
@@ -178,10 +232,13 @@ const AdminPreviews = () => {
 
           <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-1">
             {filtered.map((p) => (
-              <button
+              <div
                 key={p.id}
+                role="button"
+                tabIndex={0}
                 onClick={() => setSelectedId(p.id)}
-                className={`w-full text-left glass-card p-3 transition-all ${selectedId === p.id ? 'border-primary/50' : ''} ${contactedIds.has(p.id) ? 'opacity-50' : ''}`}
+                onKeyDown={(e) => { if (e.key === 'Enter') setSelectedId(p.id); }}
+                className={`w-full text-left glass-card p-3 transition-all cursor-pointer ${selectedId === p.id ? 'border-primary/50' : ''} ${contactedIds.has(p.id) ? 'opacity-50' : ''}`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <span className="text-sm font-medium text-foreground leading-tight">
@@ -197,12 +254,21 @@ const AdminPreviews = () => {
                   {p.rating && <span className="flex items-center gap-0.5"><Star className="w-3 h-3" />{p.rating}</span>}
                   {p.nr_recenzii != null && <span>{p.nr_recenzii} recenzii</span>}
                 </div>
-                <div className="flex items-center gap-2 mt-1.5 text-xs">
+                <div className="flex items-center justify-between gap-2 mt-2 text-xs">
                   <span className={p.views > 0 ? 'text-green-400' : 'text-muted-foreground'}>
                     <Eye className="w-3 h-3 inline mr-0.5" />{p.views} views
                   </span>
+                  {p.phone && isMobile(p.phone) && (
+                    <button
+                      onClick={(e) => sendWhatsapp(p, e)}
+                      className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-green-600 hover:bg-green-700 text-white font-medium transition-colors shrink-0"
+                      title={`Trimite WhatsApp la ${p.phone}`}
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
+                    </button>
+                  )}
                 </div>
-              </button>
+              </div>
             ))}
             {filtered.length === 0 && (
               <p className="text-sm text-muted-foreground text-center py-4">Niciun rezultat</p>
@@ -297,40 +363,32 @@ const AdminPreviews = () => {
                 >
                   <Copy className="w-4 h-4 mr-1.5" /> Copiaza Link
                 </Button>
-                {selected.phone && selected.whatsapp_mesaj && (
+                {selected.phone && isMobile(selected.phone) && (
                   <Button
                     size="sm"
                     className="bg-green-600 hover:bg-green-700 text-white"
-                    onClick={() => {
-                      openWhatsapp(selected.phone!, selected.whatsapp_mesaj!);
-                      // Auto-mark as contacted when WhatsApp is opened
-                      if (!contactedIds.has(selected.id)) {
-                        toggleContacted(selected.id);
-                      }
-                    }}
+                    onClick={() => sendWhatsapp(selected)}
                   >
-                    WhatsApp
+                    <MessageCircle className="w-4 h-4 mr-1.5" /> WhatsApp
                   </Button>
                 )}
               </div>
 
-              {/* WhatsApp message */}
-              {selected.whatsapp_mesaj && (
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Mesaj WhatsApp</span>
-                    <button
-                      onClick={() => copyWhatsapp(selected.whatsapp_mesaj!)}
-                      className="text-xs text-primary-light hover:underline flex items-center gap-1"
-                    >
-                      <Copy className="w-3 h-3" /> Copiaza
-                    </button>
-                  </div>
-                  <pre className="bg-white/5 rounded-xl p-4 text-sm text-foreground whitespace-pre-wrap font-sans leading-relaxed">
-                    {selected.whatsapp_mesaj}
-                  </pre>
+              {/* WhatsApp message (varianta rotativa anti-spam) */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Mesaj WhatsApp (varianta {(selected.id % MESSAGE_VARIANTS.length) + 1}/{MESSAGE_VARIANTS.length})</span>
+                  <button
+                    onClick={() => copyWhatsapp(messageFor(selected))}
+                    className="text-xs text-primary-light hover:underline flex items-center gap-1"
+                  >
+                    <Copy className="w-3 h-3" /> Copiaza
+                  </button>
                 </div>
-              )}
+                <pre className="bg-white/5 rounded-xl p-4 text-sm text-foreground whitespace-pre-wrap font-sans leading-relaxed">
+                  {messageFor(selected)}
+                </pre>
+              </div>
             </div>
           ) : (
             <div className="glass-card p-8 text-center text-muted-foreground">
