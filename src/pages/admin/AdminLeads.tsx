@@ -33,14 +33,37 @@ const CATEGORII = [
   'service auto',
 ];
 
-function buildMessage(lead: Lead): string {
-  return (
+const MESSAGE_TEMPLATES: ((name: string) => string)[] = [
+  (name) =>
     `Bună ziua! Vă scriu din partea Vixon Lab (vixonlab.ro) — construim site-uri pentru afaceri locale. ` +
-    `Am observat că ${lead.business_name} nu are încă un site propriu. ` +
+    `Am observat că ${name} nu are încă un site propriu. ` +
     `Noi îl construim complet, fără investiție inițială — plătiți doar mentenanța, de la 9€/lună, ` +
     `cu găzduire, modificări și suport incluse. ` +
-    `Dacă vă interesează, vă trimit cu drag câteva exemple de site-uri realizate de noi. O zi bună!`
-  );
+    `Dacă vă interesează, vă trimit cu drag câteva exemple de site-uri realizate de noi. O zi bună!`,
+  (name) =>
+    `Bună ziua! Reprezint Vixon Lab (vixonlab.ro). Am căutat online site-ul ${name} și nu am găsit unul — ` +
+    `iar tot mai mulți clienți aleg după ce caută pe internet. ` +
+    `Noi realizăm site-ul complet, fără niciun cost la început; plătiți doar mentenanța, de la 9€/lună, ` +
+    `cu găzduire, modificări și suport incluse. Vă pot arăta câteva exemple din portofoliu, dacă doriți. O zi frumoasă!`,
+  (name) =>
+    `Bună ziua! Vă contactez de la Vixon Lab (vixonlab.ro), o agenție web din România. ` +
+    `Am văzut că ${name} nu apare momentan cu un site propriu. ` +
+    `Îl construim noi de la zero, fără avans — rămâne doar abonamentul de mentenanță, de la 9€/lună, ` +
+    `în care intră găzduirea, modificările și suportul. ` +
+    `Dacă vă sună interesant, vă trimit linkuri către site-uri făcute de noi. Toate cele bune!`,
+  (name) =>
+    `Bună ziua! Sunt de la Vixon Lab (vixonlab.ro) — facem site-uri pentru firme locale. ` +
+    `${name} nu are încă un site, iar o prezență online serioasă aduce clienți noi în fiecare lună. ` +
+    `Construim noi site-ul, fără investiție inițială; dumneavoastră plătiți doar mentenanța lunară, de la 9€, ` +
+    `cu tot ce trebuie inclus: găzduire, modificări, suport. ` +
+    `Vă pot trimite exemple concrete, dacă vă interesează. O zi bună!`,
+];
+
+function buildMessage(lead: Lead): string {
+  // varianta e aleasa determinist din id, ca acelasi lead sa primeasca mereu acelasi text
+  let hash = 0;
+  for (const ch of lead.id) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+  return MESSAGE_TEMPLATES[hash % MESSAGE_TEMPLATES.length](lead.business_name);
 }
 
 function waPhone(phone: string): string {
