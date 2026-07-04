@@ -35,11 +35,11 @@ const CATEGORII = [
 
 function buildMessage(lead: Lead): string {
   return (
-    `Bună ziua! Sunt Cuba de la Vixon Lab (vixonlab.ro). ` +
-    `Vă scriu direct, fără povești: am văzut că ${lead.business_name} nu are site propriu. ` +
-    `Noi construim site-ul complet, fără investiție inițială — plătiți doar mentenanța lunară, ` +
-    `de la 9€/lună, cu găzduire, modificări și suport incluse. ` +
-    `Dacă vă interesează, vă trimit exemple de site-uri făcute de noi. Dacă nu, nicio problemă. O zi bună!`
+    `Bună ziua! Vă scriu din partea Vixon Lab (vixonlab.ro) — construim site-uri pentru afaceri locale. ` +
+    `Am observat că ${lead.business_name} nu are încă un site propriu. ` +
+    `Noi îl construim complet, fără investiție inițială — plătiți doar mentenanța, de la 9€/lună, ` +
+    `cu găzduire, modificări și suport incluse. ` +
+    `Dacă vă interesează, vă trimit cu drag câteva exemple de site-uri realizate de noi. O zi bună!`
   );
 }
 
