@@ -107,6 +107,48 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          address: string | null
+          business_name: string
+          category: string | null
+          city: string | null
+          county: string | null
+          created_at: string
+          id: string
+          phone: string
+          priority: string | null
+          rating: number | null
+          reviews: number | null
+        }
+        Insert: {
+          address?: string | null
+          business_name: string
+          category?: string | null
+          city?: string | null
+          county?: string | null
+          created_at?: string
+          id?: string
+          phone: string
+          priority?: string | null
+          rating?: number | null
+          reviews?: number | null
+        }
+        Update: {
+          address?: string | null
+          business_name?: string
+          category?: string | null
+          city?: string | null
+          county?: string | null
+          created_at?: string
+          id?: string
+          phone?: string
+          priority?: string | null
+          rating?: number | null
+          reviews?: number | null
+        }
+        Relationships: []
+      }
       portfolio_projects: {
         Row: {
           case_study: Json | null
