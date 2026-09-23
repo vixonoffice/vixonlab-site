@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { label } from '../configuratorConfig';
+import { label, maintenancePriceLabel } from '../configuratorConfig';
 import type { Option, MaintenancePlan } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
@@ -88,8 +88,7 @@ export function SummaryStep({ state, setField, lang, whatsappUrl, budgetOptions,
     if (state.maintenancePlan) {
       const plan = options.maintenance.find((p) => p.id === state.maintenancePlan);
       if (plan) {
-        const price = isRo ? plan.price_ro : plan.price_en;
-        const planLabel = `${isRo ? plan.ro : plan.en} (${price === '0' ? (isRo ? 'Gratuit' : 'Free') : price + '\u20AC'})`;
+        const planLabel = `${isRo ? plan.ro : plan.en} (${maintenancePriceLabel(plan.id, state.siteType, lang)})`;
         result.push({ title: isRo ? 'Mentenanta' : 'Maintenance', items: [planLabel] });
       }
     }
@@ -233,8 +232,8 @@ export function SummaryStep({ state, setField, lang, whatsappUrl, budgetOptions,
 
       <p className="text-xs text-center text-muted-foreground">
         {isRo
-          ? 'Raspundem in maxim 24h cu o oferta personalizata. Fara obligatii.'
-          : 'We respond within 24h with a personalized offer. No obligations.'}
+          ? 'Îți răspundem în maxim 2 zile lucrătoare cu o ofertă personalizată. Fără obligații.'
+          : 'We reply within 2 business days with a personalized offer. No obligations.'}
       </p>
     </div>
   );

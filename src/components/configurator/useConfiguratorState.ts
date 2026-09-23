@@ -1,7 +1,6 @@
 import { useReducer, useMemo } from 'react';
 import {
-  WHATSAPP_NUMBER, label,
-} from './configuratorConfig';
+  WHATSAPP_NUMBER, label, siteTypePriceLabel, maintenancePriceLabel } from './configuratorConfig';
 import type { Option, MaintenancePlan } from './configuratorConfig';
 import type { Language } from '@/lib/translations';
 
@@ -176,7 +175,7 @@ export function useConfiguratorState() {
     if (s.businessName) lines.push(`${isRo ? 'Afacere' : 'Business'}: ${s.businessName}`);
     if (s.businessType) lines.push(`${isRo ? 'Domeniu' : 'Industry'}: ${findLabel(o.businessTypes, s.businessType, lang)}`);
     if (s.hasWebsite === 'yes' && s.currentWebsiteUrl) lines.push(`${isRo ? 'Site actual' : 'Current site'}: ${s.currentWebsiteUrl}`);
-    if (s.siteType) lines.push(`${isRo ? 'Tip site' : 'Site type'}: ${findLabel(o.siteTypes, s.siteType, lang)}`);
+    if (s.siteType) lines.push(`${isRo ? 'Pachet' : 'Package'}: ${findLabel(o.siteTypes, s.siteType, lang)} (${siteTypePriceLabel(s.siteType, lang)})`);
 
     const allPages = [...s.pages.map((id) => findLabel(o.pages, id, lang)), ...s.customPages];
     if (allPages.length) lines.push(`\n${isRo ? 'Pagini' : 'Pages'}: ${allPages.join(', ')}`);
@@ -202,8 +201,7 @@ export function useConfiguratorState() {
       const plan = o.maintenance.find((p) => p.id === s.maintenancePlan);
       if (plan) {
         const pName = lang === 'ro' ? plan.ro : plan.en;
-        const pPrice = lang === 'ro' ? plan.price_ro : plan.price_en;
-        lines.push(`\n${isRo ? 'Mentenanta' : 'Maintenance'}: ${pName} (${pPrice}${pPrice !== '0' ? '\u20AC' : ''})`);
+        lines.push(`\n${isRo ? 'Mentenanta' : 'Maintenance'}: ${pName} (${maintenancePriceLabel(plan.id, s.siteType, lang)})`);
       }
     }
 

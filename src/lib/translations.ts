@@ -105,7 +105,7 @@ export const translations = {
     'sp.badge': 'Servicii & Prețuri',
     'sp.title': 'Configurează-ți site-ul ideal',
     'sp.subtitle': 'Alege pachetul, adaugă funcționalitățile dorite și trimite-ne mesaj pe WhatsApp. Discutăm gratuit și îți facem o ofertă personalizată.',
-    'sp.delivery': 'Livrare în 3-7 zile',
+    'sp.delivery': 'Livrare în 1–3 săptămâni',
     'sp.customCode': 'Cod Custom — fără WordPress',
     'sp.allInOne': 'Digital All-in-One',
 
@@ -469,7 +469,7 @@ export const translations = {
     'sp.badge': 'Services & Pricing',
     'sp.title': 'Configure your ideal website',
     'sp.subtitle': 'Choose a package, add the features you want and message us on WhatsApp. We discuss for free and give you a personalized offer.',
-    'sp.delivery': 'Delivery in 3-7 days',
+    'sp.delivery': 'Delivery in 1–3 weeks',
     'sp.customCode': 'Custom Code — no WordPress',
     'sp.allInOne': 'Digital All-in-One',
 

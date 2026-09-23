@@ -20,8 +20,8 @@ const Services = () => {
         title={isRo ? 'Configurează-ți' : 'Configure your'}
         titleAccent={isRo ? 'site-ul ideal' : 'ideal website'}
         subtitle={isRo
-          ? 'Răspunde la câteva întrebări și primești o ofertă personalizată în mai puțin de 24h. Fără obligații.'
-          : 'Answer a few questions and get a personalized offer in less than 24h. No obligations.'}
+          ? 'Alege pachetul, spune-ne ce îți trebuie și trimite totul pe WhatsApp. Îți răspundem cu oferta în maxim 2 zile lucrătoare.'
+          : 'Pick a package, tell us what you need and send it on WhatsApp. We reply with an offer within 2 business days.'}
       >
         <div className="flex flex-wrap gap-3">
           {[
@@ -113,8 +113,8 @@ const Services = () => {
                 </div>
                 <div className="space-y-3">
                   {(isRo
-                    ? ['Hosting premium cloud','Certificat SSL gratuit','Backup zilnic automat','Update-uri de securitate','Monitorizare 24/7','Modificări texte și poze','Suport pe email/WhatsApp']
-                    : ['Premium cloud hosting','Free SSL certificate','Daily automatic backup','Security updates','24/7 monitoring','Text and image modifications','Email/WhatsApp support']
+                    ? ['Hosting + certificat SSL','Reînnoirea domeniului','Backup și update-uri de securitate','1 oră de modificări pe lună (2 la Custom)','Suport pe WhatsApp, răspuns în 2 zile lucrătoare','Modificări peste ora inclusă: 25€/oră']
+                    : ['Hosting + SSL certificate','Domain renewal','Backups and security updates','1 hour of edits per month (2 on Custom)','WhatsApp support, reply within 2 business days','Edits beyond the included hour: 25€/hour']
                   ).map((item) => (
                     <div key={item} className="flex items-center gap-3">
                       <Check className="w-4 h-4 text-green-400 shrink-0" />

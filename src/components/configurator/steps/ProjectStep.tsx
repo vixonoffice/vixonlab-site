@@ -1,14 +1,14 @@
-import { label, desc, isPromoActive } from '../configuratorConfig';
+import { label, desc, siteTypePriceLabel, maintenancePriceLabel } from '../configuratorConfig';
 import type { Option } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
-import { Globe, ShoppingCart, Zap, Layout } from 'lucide-react';
+import { Globe, Zap, Briefcase, Wand2, Wrench } from 'lucide-react';
 
 const siteIcons: Record<string, typeof Globe> = {
-  presentation: Globe,
-  ecommerce: ShoppingCart,
-  landing: Zap,
-  webapp: Layout,
+  presentation: Zap,
+  business: Briefcase,
+  experience: Wand2,
+  custom: Wrench,
 };
 
 interface Props {
@@ -76,7 +76,7 @@ export function ProjectStep({ state, setField, lang, businessTypes, siteTypes }:
                   : 'bg-white/5 border border-white/10 text-foreground hover:bg-white/10'
               }`}
             >
-              {val === 'yes' ? 'Da' : 'Nu'}
+              {val === 'yes' ? (isRo ? 'Da' : 'Yes') : (isRo ? 'Nu' : 'No')}
             </button>
           ))}
         </div>
@@ -123,15 +123,12 @@ export function ProjectStep({ state, setField, lang, businessTypes, siteTypes }:
                   <div className="min-w-0">
                     <div className="font-medium text-foreground text-sm">{label(st, lang)}</div>
                     <div className="text-xs text-muted-foreground mt-0.5">{desc(st, lang)}</div>
-                    {isPromoActive() && st.promoPrice ? (
-                      <div className="flex items-center gap-2 mt-1.5">
-                        <span className="text-xs text-muted-foreground line-through">{st.price}&euro;</span>
-                        <span className="text-xs text-primary-light font-medium">{st.promoPrice}&euro;</span>
-                        <span className="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full font-bold">-30%</span>
-                      </div>
-                    ) : (
-                      <div className="text-xs text-primary-light mt-1.5 font-medium">{st.price}&euro;</div>
-                    )}
+                    <div className="mt-1.5 text-sm font-semibold text-foreground">
+                      {siteTypePriceLabel(st.id, lang)}
+                      <span className="ml-1 text-xs font-normal text-muted-foreground">
+                        + {maintenancePriceLabel('monthly', st.id, lang)} {isRo ? 'mentenanță' : 'maintenance'}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </button>

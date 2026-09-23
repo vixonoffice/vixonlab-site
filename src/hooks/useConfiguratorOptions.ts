@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import type { Option, MaintenancePlan } from '@/components/configurator/configuratorConfig';
+import type { Option } from '@/components/configurator/configuratorConfig';
 import * as defaults from '@/components/configurator/configuratorConfig';
 
 // Raw row from Supabase
@@ -20,56 +20,14 @@ export interface ConfiguratorOptionRow {
   metadata: Record<string, unknown> | null;
 }
 
-/**
- * Exact prices from pricing page — site type → { price, promoPrice }
- * Must match promo.ts PROMO_PRICES exactly.
- */
-const SITE_TYPE_OVERRIDES: Record<string, { price: string; promoPrice: string }> = {
-  landing:      { price: '300',               promoPrice: '200' },
-  presentation: { price: '700 — 900',         promoPrice: '500 — 650' },
-  ecommerce:    { price: '1.200 — 1.600',     promoPrice: '850 — 1.150' },
-  webapp:       { price: 'de la 2.000',        promoPrice: 'de la 1.450' },
-};
-
 function rowToOption(row: ConfiguratorOptionRow): Option {
-  const override = row.option_type === 'site_type' ? SITE_TYPE_OVERRIDES[row.option_id] : undefined;
   return {
     id: row.option_id,
     ro: row.label_ro,
     en: row.label_en,
     desc_ro: row.description_ro ?? undefined,
     desc_en: row.description_en ?? undefined,
-    price: override?.price ?? (row.price ?? undefined),
-    promoPrice: override?.promoPrice ?? undefined,
-  };
-}
-
-/** Maintenance promo prices — must match configuratorConfig.ts */
-const MAINTENANCE_PROMO: Record<string, { ro: string; en: string }> = {
-  basic:   { ro: '15/luna',  en: '15/month' },
-  annual:  { ro: '150/an',   en: '150/year' },
-  pro:     { ro: '30/luna',  en: '30/month' },
-  premium: { ro: '45/luna',  en: '45/month' },
-};
-
-function rowToMaintenance(row: ConfiguratorOptionRow): MaintenancePlan {
-  const priceRo = row.price ?? '0';
-  const priceEn = priceRo.replace('luna', 'month').replace('an', 'year');
-  const mp = MAINTENANCE_PROMO[row.option_id];
-  return {
-    id: row.option_id,
-    ro: row.label_ro,
-    en: row.label_en,
-    price_ro: priceRo,
-    price_en: priceEn,
-    promoPrice_ro: mp?.ro,
-    promoPrice_en: mp?.en,
-    desc_ro: row.description_ro ?? '',
-    desc_en: row.description_en ?? '',
-    features_ro: row.features_ro ?? [],
-    features_en: row.features_en ?? [],
-    popular: row.is_popular,
-    annual: row.option_id === 'annual',
+    price: row.price ?? undefined,
   };
 }
 
@@ -115,16 +73,17 @@ export function useConfiguratorOptions() {
 
     return {
       businessTypes: byType('business_type').map(rowToOption),
-      siteTypes: byType('site_type').map(rowToOption),
+      // Site types and maintenance always come from src/lib/tiers.ts, never from the DB (prices must not drift).
+      siteTypes: defaults.SITE_TYPES,
       pages: byType('page').map(rowToOption),
-      features: byType('feature').map(rowToOption),
+      features: byType('feature').map(rowToOption).filter((o) => o.id !== 'ecommerce'),
       designStyles: byType('design_style').map(rowToOption),
       brandExtras: byType('brand_extra').map(rowToOption),
       logoStatus: byType('logo_status').map(rowToOption),
       textStatus: byType('text_status').map(rowToOption),
       photoStatus: byType('photo_status').map(rowToOption),
       marketing: byType('marketing').map(rowToOption),
-      maintenance: byType('maintenance').map(rowToMaintenance),
+      maintenance: defaults.MAINTENANCE_PLANS,
       budget: byType('budget').map(rowToOption),
       timeline: byType('timeline').map(rowToOption),
     };

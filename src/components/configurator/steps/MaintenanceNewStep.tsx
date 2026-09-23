@@ -1,5 +1,5 @@
 import type { MaintenancePlan } from '../configuratorConfig';
-import { isPromoActive } from '../configuratorConfig';
+import { maintenancePriceLabel, maintenanceIncludes } from '../configuratorConfig';
 import type { ConfigState } from '../useConfiguratorState';
 import type { Language } from '@/lib/translations';
 import { Check, Star } from 'lucide-react';
@@ -18,8 +18,8 @@ export function MaintenanceNewStep({ state, setField, lang, plans }: Props) {
     <div>
       <p className="text-sm text-muted-foreground mb-2">
         {isRo
-          ? 'Dupa ce site-ul e gata, tu alegi: il gestionezi singur sau ne ocupam noi.'
-          : 'After the site is ready, you choose: manage it yourself or let us handle it.'}
+          ? 'Mentenanța e inclusă la orice pachet (contract minim 12 luni). Alegi doar cum plătești.'
+          : 'Maintenance comes with every package (12-month minimum). You only choose how to pay.'}
       </p>
       <p className="text-xs text-muted-foreground mb-5">
         {isRo
@@ -30,10 +30,8 @@ export function MaintenanceNewStep({ state, setField, lang, plans }: Props) {
       <div className="space-y-3">
         {plans.map((plan) => {
           const selected = state.maintenancePlan === plan.id;
-          const features = isRo ? plan.features_ro : plan.features_en;
-          const price = isRo ? plan.price_ro : plan.price_en;
-          const promoPrice = isRo ? plan.promoPrice_ro : plan.promoPrice_en;
-          const showPromo = isPromoActive() && !!promoPrice;
+          const features = maintenanceIncludes(state.siteType, lang);
+          const price = maintenancePriceLabel(plan.id, state.siteType, lang);
 
           return (
             <button
@@ -48,7 +46,7 @@ export function MaintenanceNewStep({ state, setField, lang, plans }: Props) {
               {plan.popular && (
                 <span className="absolute -top-2.5 right-3 inline-flex items-center gap-1 bg-primary px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white uppercase tracking-wider">
                   <Star className="w-3 h-3" />
-                  {isRo ? 'Recomandat' : 'Recommended'}
+                  {isRo ? '2 luni gratis' : '2 months free'}
                 </span>
               )}
 
@@ -78,19 +76,9 @@ export function MaintenanceNewStep({ state, setField, lang, plans }: Props) {
                   )}
                 </div>
                 <div className="text-right shrink-0">
-                  {showPromo ? (
-                    <div className="flex flex-col items-end gap-0.5">
-                      <span className="text-xs text-muted-foreground line-through">{price}&euro;</span>
-                      <div className={`font-bold text-lg ${selected ? 'text-primary-light' : 'text-foreground'}`}>
-                        {promoPrice}&euro;
-                      </div>
-                      <span className="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full font-bold">-30%</span>
-                    </div>
-                  ) : (
-                    <div className={`font-bold text-lg ${selected ? 'text-primary-light' : 'text-foreground'}`}>
-                      {price === '0' ? (isRo ? 'Gratuit' : 'Free') : `${price}\u20AC`}
-                    </div>
-                  )}
+                  <div className={`font-bold text-lg whitespace-nowrap ${selected ? 'text-primary-light' : 'text-foreground'}`}>
+                    {price}
+                  </div>
                 </div>
               </div>
             </button>

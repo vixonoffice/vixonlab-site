@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------------------
 
 export { isPromoActive } from '@/lib/promo';
+import { TIERS, ANNUAL_PAID_MONTHS, EXTRA_HOURLY_EUR, type Tier } from '@/lib/tiers';
 
 export const WHATSAPP_NUMBER = '40779383164';
 
@@ -34,45 +35,51 @@ export const BUSINESS_TYPES: Option[] = [
   { id: 'other', ro: 'Altele', en: 'Other' },
 ];
 
-// Step 1 — Site type
-export const SITE_TYPES: Option[] = [
-  {
-    id: 'landing',
-    ro: 'Landing Page',
-    en: 'Landing Page',
-    desc_ro: 'O singura pagina focusata pe conversie. Ideal pentru campanii.',
-    desc_en: 'Single page focused on conversion. Ideal for campaigns.',
-    price: '300',
-    promoPrice: '200',
+// Step 1 — Site type. Derived from the pricing tiers (single source of truth: src/lib/tiers.ts).
+const SITE_TYPE_TEXT: Record<Tier['key'], Pick<Option, 'ro' | 'en' | 'desc_ro' | 'desc_en'>> = {
+  presentation: {
+    ro: 'Prezentare', en: 'Presentation',
+    desc_ro: 'Site de o pagină: contact, hartă, buton WhatsApp.',
+    desc_en: 'One-page site: contact, map, WhatsApp button.',
   },
-  {
-    id: 'presentation',
-    ro: 'Site de prezentare',
-    en: 'Presentation Website',
-    desc_ro: 'Arata-ti afacerea online. Pagini despre servicii, echipa, contact.',
-    desc_en: 'Showcase your business online. Pages about services, team, contact.',
-    price: '700 — 900',
-    promoPrice: '500 — 650',
+  business: {
+    ro: 'Business', en: 'Business',
+    desc_ro: 'Site complet de 4–6 pagini, SEO local, Google Business.',
+    desc_en: 'Full 4–6 page site, local SEO, Google Business.',
   },
-  {
-    id: 'ecommerce',
-    ro: 'Magazin online',
-    en: 'Online Store',
-    desc_ro: 'Vinde produse online cu cos, plati si gestiune stocuri.',
-    desc_en: 'Sell products online with cart, payments and inventory.',
-    price: '1.200 — 1.600',
-    promoPrice: '850 — 1.150',
+  experience: {
+    ro: 'Experiență', en: 'Experience',
+    desc_ro: 'Design 100% custom, animații, secțiuni interactive.',
+    desc_en: '100% custom design, animation, interactive sections.',
   },
-  {
-    id: 'webapp',
-    ro: 'Aplicatie web',
-    en: 'Web Application',
-    desc_ro: 'Platforma complexa cu functionalitati custom (booking, dashboard, etc.)',
-    desc_en: 'Complex platform with custom features (booking, dashboard, etc.)',
-    price: 'de la 2.000',
-    promoPrice: 'de la 1.450',
+  custom: {
+    ro: 'Custom', en: 'Custom',
+    desc_ro: 'Rezervări online, calendar real, panou de administrare.',
+    desc_en: 'Online bookings, live calendar, admin panel.',
   },
-];
+};
+
+function eurNumber(n: number): string {
+  return n >= 1000 ? n.toLocaleString('ro-RO') : String(n);
+}
+
+export const SITE_TYPES: Option[] = TIERS.map((t) => ({
+  id: t.key,
+  ...SITE_TYPE_TEXT[t.key],
+  price: eurNumber(t.setupEur),
+}));
+
+export function tierForSiteType(siteType: string): Tier | undefined {
+  return TIERS.find((t) => t.key === siteType);
+}
+
+/** "2.000€" / "de la 2.000€" for the selected site type, in the given language. */
+export function siteTypePriceLabel(siteType: string, lang: Lang): string {
+  const t = tierForSiteType(siteType);
+  if (!t) return '';
+  const from = t.startingFrom ? (lang === 'ro' ? 'de la ' : 'from ') : '';
+  return `${from}${eurNumber(t.setupEur)}€`;
+}
 
 // Step 2 — Pages
 export const PAGE_OPTIONS: Option[] = [
@@ -108,7 +115,6 @@ export const FEATURE_OPTIONS: Option[] = [
   { id: 'multilingual', ro: 'Suport multilingv (RO/EN)', en: 'Multilingual Support (RO/EN)', desc_ro: 'Site disponibil in mai multe limbi', desc_en: 'Site available in multiple languages' },
   { id: 'price_calculator', ro: 'Calculator de preturi', en: 'Price Calculator', desc_ro: 'Clientii pot calcula costul serviciilor online', desc_en: 'Clients can calculate service costs online' },
   { id: 'members_area', ro: 'Zona membri / login clienti', en: 'Members Area / Client Login', desc_ro: 'Cont de client cu acces la continut exclusiv', desc_en: 'Client account with access to exclusive content' },
-  { id: 'ecommerce', ro: 'E-commerce (cos, plati)', en: 'E-commerce (cart, payments)', desc_ro: 'Magazin online complet cu Stripe/PayPal', desc_en: 'Complete online store with Stripe/PayPal' },
   { id: 'admin_panel', ro: 'Admin Panel custom', en: 'Custom Admin Panel', desc_ro: 'Panou de administrare ca sa editezi singur continutul', desc_en: 'Admin panel so you can edit content yourself' },
   { id: 'animations', ro: 'Animatii premium', en: 'Premium Animations', desc_ro: 'Animatii la scroll, tranzitii fluide, efecete vizuale', desc_en: 'Scroll animations, smooth transitions, visual effects' },
   { id: 'analytics', ro: 'Google Analytics + Search Console', en: 'Google Analytics + Search Console', desc_ro: 'Tracking complet vizitatori si performanta', desc_en: 'Complete visitor and performance tracking' },
@@ -173,129 +179,50 @@ export interface MaintenancePlan {
   annual?: boolean;
 }
 
+/** Maintenance is mandatory (12-month contract); only the billing period is a choice. Prices follow the selected tier. */
 export const MAINTENANCE_PLANS: MaintenancePlan[] = [
   {
-    id: 'none',
-    ro: 'Fara mentenanta',
-    en: 'No Maintenance',
-    price_ro: '0',
-    price_en: '0',
-    desc_ro: 'Primesti codul sursa si documentatie. Te descurci singur cu hosting-ul.',
-    desc_en: 'You receive the source code and documentation. You handle hosting yourself.',
-    features_ro: ['Cod sursa complet', 'Documentatie tehnica', 'Training de utilizare'],
-    features_en: ['Complete source code', 'Technical documentation', 'Usage training'],
-  },
-  {
-    id: 'basic',
-    ro: 'Vixon Care',
-    en: 'Vixon Care',
-    price_ro: '20/luna',
-    price_en: '20/month',
-    promoPrice_ro: '15/luna',
-    promoPrice_en: '15/month',
-    desc_ro: 'Ne ocupam de hosting, securitate si modificari minore. Tu te concentrezi pe afacere.',
-    desc_en: 'We handle hosting, security and minor modifications. You focus on your business.',
-    features_ro: [
-      'Hosting Premium Cloud',
-      'Certificat SSL gratuit',
-      'Backup zilnic automat',
-      'Update-uri de securitate',
-      'Monitorizare uptime 24/7',
-      'Modificari minore incluse (texte, poze)',
-      'Suport pe email',
-      'Timp de raspuns < 24h',
-    ],
-    features_en: [
-      'Premium Cloud Hosting',
-      'Free SSL Certificate',
-      'Daily Automatic Backup',
-      'Security Updates',
-      '24/7 Uptime Monitoring',
-      'Minor modifications included (text, images)',
-      'Email support',
-      'Response time < 24h',
-    ],
+    id: 'monthly',
+    ro: 'Mentenanță lunară',
+    en: 'Monthly maintenance',
+    price_ro: '',
+    price_en: '',
+    desc_ro: 'Plătești lună de lună. Contract minim 12 luni.',
+    desc_en: 'Pay month by month. 12-month minimum contract.',
+    features_ro: [],
+    features_en: [],
   },
   {
     id: 'annual',
-    ro: 'Vixon Care Anual',
-    en: 'Vixon Care Annual',
-    price_ro: '200/an',
-    price_en: '200/year',
-    promoPrice_ro: '150/an',
-    promoPrice_en: '150/year',
-    desc_ro: 'Tot din Vixon Care + domeniu inclus. Economisesti 40 fata de plata lunara.',
-    desc_en: 'Everything in Vixon Care + domain included. Save 40 compared to monthly.',
-    features_ro: [
-      'Tot din Vixon Care',
-      'Domeniu .ro / .com inclus',
-      'Economisesti 40/an',
-      'Plata o data pe an',
-    ],
-    features_en: [
-      'Everything in Vixon Care',
-      '.ro / .com domain included',
-      'Save 40/year',
-      'Pay once per year',
-    ],
+    ro: 'Mentenanță anuală',
+    en: 'Annual maintenance',
+    price_ro: '',
+    price_en: '',
+    desc_ro: `Plătești ${ANNUAL_PAID_MONTHS} luni, primești 12 (2 luni gratis).`,
+    desc_en: `Pay for ${ANNUAL_PAID_MONTHS} months, get 12 (2 months free).`,
+    features_ro: [],
+    features_en: [],
     popular: true,
     annual: true,
   },
-  {
-    id: 'pro',
-    ro: 'Vixon Care Pro',
-    en: 'Vixon Care Pro',
-    price_ro: '40/luna',
-    price_en: '40/month',
-    promoPrice_ro: '30/luna',
-    promoPrice_en: '30/month',
-    desc_ro: 'Modificari nelimitate, suport prioritar si raport lunar de performanta.',
-    desc_en: 'Unlimited modifications, priority support and monthly performance report.',
-    features_ro: [
-      'Tot din Vixon Care',
-      'Domeniu .ro / .com inclus',
-      'Modificari nelimitate (texte, poze, sectiuni)',
-      'Suport prioritar WhatsApp',
-      'Raport lunar performanta',
-      'Timp de raspuns < 12h',
-    ],
-    features_en: [
-      'Everything in Vixon Care',
-      '.ro / .com domain included',
-      'Unlimited modifications (text, images, sections)',
-      'Priority WhatsApp support',
-      'Monthly performance report',
-      'Response time < 12h',
-    ],
-  },
-  {
-    id: 'premium',
-    ro: 'Vixon Care Premium',
-    en: 'Vixon Care Premium',
-    price_ro: '60/luna',
-    price_en: '60/month',
-    promoPrice_ro: '45/luna',
-    promoPrice_en: '45/month',
-    desc_ro: 'Protectie completa: modificari design, SEO ongoing, suport telefonic dedicat.',
-    desc_en: 'Complete protection: design modifications, ongoing SEO, dedicated phone support.',
-    features_ro: [
-      'Tot din Vixon Care Pro',
-      'Modificari design incluse',
-      'Optimizare SEO continua',
-      'Optimizare performanta lunara',
-      'Suport telefonic dedicat',
-      'SLA raspuns < 4 ore',
-    ],
-    features_en: [
-      'Everything in Vixon Care Pro',
-      'Design modifications included',
-      'Ongoing SEO optimization',
-      'Monthly performance optimization',
-      'Dedicated phone support',
-      'Response SLA < 4 hours',
-    ],
-  },
 ];
+
+/** What every maintenance plan includes (hours depend on the tier). */
+export function maintenanceIncludes(siteType: string, lang: Lang): string[] {
+  const hours = tierForSiteType(siteType)?.hoursPerMonth ?? 1;
+  return lang === 'ro'
+    ? ['Hosting + SSL', 'Reînnoire domeniu', 'Backup + update-uri', `${hours} ${hours === 1 ? 'oră' : 'ore'} de modificări/lună`, 'Răspuns în 2 zile lucrătoare', `Peste: ${EXTRA_HOURLY_EUR}€/oră`]
+    : ['Hosting + SSL', 'Domain renewal', 'Backups + updates', `${hours} ${hours === 1 ? 'hour' : 'hours'} of edits/month`, 'Reply within 2 business days', `Extra: ${EXTRA_HOURLY_EUR}€/hour`];
+}
+
+/** "25€/lună" or "250€/an" for the selected site type and billing plan. */
+export function maintenancePriceLabel(planId: string, siteType: string, lang: Lang): string {
+  const t = tierForSiteType(siteType);
+  if (!t) return '';
+  const from = t.startingFrom ? (lang === 'ro' ? 'de la ' : 'from ') : '';
+  if (planId === 'annual') return `${from}${t.monthlyEur * ANNUAL_PAID_MONTHS}€${lang === 'ro' ? '/an' : '/year'}`;
+  return `${from}${t.monthlyEur}€${lang === 'ro' ? '/lună' : '/month'}`;
+}
 
 // Step 7 — Budget
 export const BUDGET_OPTIONS: Option[] = [
