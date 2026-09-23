@@ -80,7 +80,7 @@ const Offer = () => {
                 <a
                   href={mainWaUrl}
                   target="_blank" rel="noopener noreferrer"
-                  className="bg-foreground text-background font-semibold px-10 py-4 rounded-lg inline-flex items-center gap-3 text-lg hover:opacity-90 transition-all"
+                  className="btn-primary font-semibold px-10 py-4 rounded-full inline-flex items-center gap-3 text-lg hover:opacity-90 transition-all"
                 >
                   <MessageCircle className="w-5 h-5" />
                   {t('offer.cta')}
@@ -88,7 +88,7 @@ const Offer = () => {
                 </a>
                 <Link
                   to="/pricing"
-                  className="border border-white/15 bg-white/5 backdrop-blur-md text-foreground font-medium px-8 py-4 rounded-lg inline-flex items-center gap-2 hover:bg-white/10 hover:border-white/25 transition-all"
+                  className="border border-white/15 bg-white/5 backdrop-blur-md text-foreground font-medium px-8 py-4 rounded-full inline-flex items-center gap-2 hover:bg-white/10 hover:border-white/25 transition-all"
                 >
                   {t('offer.ctaSecondary')}
                   <ArrowRight className="w-4 h-4" />
@@ -119,12 +119,12 @@ const Offer = () => {
                     target="_blank" rel="noopener noreferrer"
                     className={`block rounded-2xl border p-5 transition-all backdrop-blur-md ${
                       tier.popular
-                        ? 'border-primary-light/40 bg-card-hover'
-                        : 'border-white/15 bg-card hover:border-white/25'
+                        ? 'popular-ring border-transparent bg-card-hover'
+                        : 'spot-card border-white/15 bg-card/90 hover:border-white/25'
                     }`}
                   >
                     {tier.popular && (
-                      <span className="inline-block mb-2 px-2 py-0.5 rounded-full bg-foreground text-background text-[10px] font-bold uppercase tracking-wider">
+                      <span className="inline-block mb-2 px-2 py-0.5 rounded-full btn-primary text-[10px] font-bold uppercase tracking-wider">
                         {t('tier.popular')}
                       </span>
                     )}
@@ -161,7 +161,7 @@ const Offer = () => {
               const Icon = b.icon;
               return (
                 <ScrollReveal key={i} delay={(i % 2) * 0.08}>
-                  <div className="h-full rounded-2xl border border-white/15 bg-card p-7 hover:border-white/25 transition-colors">
+                  <div className="h-full rounded-2xl border border-white/15 bg-card p-7 hover:border-white/25 transition-colors spot-card">
                     <div className={`inline-flex w-12 h-12 rounded-2xl border items-center justify-center mb-5 ${b.color}`}>
                       <Icon className="w-6 h-6" />
                     </div>
@@ -189,9 +189,9 @@ const Offer = () => {
               const Icon = s.icon;
               return (
                 <ScrollReveal key={i} delay={i * 0.06}>
-                  <div className="h-full rounded-2xl border border-white/15 bg-card p-7 text-center">
-                    <div className="inline-flex w-14 h-14 rounded-full bg-white/[0.05] border border-white/10 items-center justify-center mb-5 mx-auto">
-                      <Icon className="w-6 h-6 text-primary-light" />
+                  <div className="h-full rounded-2xl border border-white/15 bg-card p-7 text-center spot-card">
+                    <div className="inline-flex w-14 h-14 rounded-full icon-tile items-center justify-center mb-5 mx-auto">
+                      <Icon className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="font-heading font-bold text-lg text-foreground mb-3">{s.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
@@ -213,7 +213,7 @@ const Offer = () => {
             <p className="text-muted-foreground mb-8">{t('offer.proofSubtitle')}</p>
             <Link
               to="/portfolio"
-              className="inline-flex items-center gap-2 text-sm text-foreground border border-white/15 bg-white/5 backdrop-blur-md rounded-lg px-6 py-3 hover:bg-primary/10 hover:border-white/25 transition-all"
+              className="inline-flex items-center gap-2 text-sm text-foreground border border-white/15 bg-white/5 backdrop-blur-md rounded-full px-6 py-3 hover:bg-primary/10 hover:border-white/25 transition-all"
             >
               {isRo ? 'Vezi portofoliul' : 'See portfolio'}
               <ArrowUpRight className="w-4 h-4" />
@@ -223,7 +223,7 @@ const Offer = () => {
       </section>
 
       {/* FINAL CTA */}
-      <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10">
+      <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10 cta-glow">
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-8">
@@ -236,7 +236,7 @@ const Offer = () => {
           <a
             href={mainWaUrl}
             target="_blank" rel="noopener noreferrer"
-            className="bg-foreground text-background font-semibold px-10 py-4 rounded-lg inline-flex items-center gap-3 text-lg hover:opacity-90 transition-all"
+            className="btn-primary font-semibold px-10 py-4 rounded-full inline-flex items-center gap-3 text-lg hover:opacity-90 transition-all"
           >
             <MessageCircle className="w-5 h-5" />
             {t('offer.finalCtaButton')}

@@ -6,9 +6,11 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { Marquee } from '@/components/Marquee';
+import { ShowcaseStack } from '@/components/ShowcaseStack';
+import { PriceFinder } from '@/components/PriceFinder';
 import {
-  ChevronDown, Star, ArrowUpRight,
-  Utensils, Scissors, HeartPulse, Dumbbell, ShoppingBag, Scale, Car, Home, Laptop, Camera,
+  Star, ArrowUpRight,
+  Utensils, Scissors, HeartPulse, Dumbbell, PartyPopper, Scale, Car, Home, Laptop, Camera,
 } from 'lucide-react';
 import {
   resolveIcon, STATIC_STATS, STATIC_SERVICES, STATIC_PROCESS_STEPS, STATIC_TESTIMONIALS,
@@ -34,7 +36,7 @@ const Index = () => {
     { icon: Scissors,    label: language === 'ro' ? 'Saloane Beauty'  : 'Beauty Salons' },
     { icon: HeartPulse,  label: language === 'ro' ? 'Cabinete Medicale': 'Medical Clinics' },
     { icon: Dumbbell,    label: language === 'ro' ? 'Fitness & Gym'   : 'Fitness & Gym' },
-    { icon: ShoppingBag, label: language === 'ro' ? 'Magazine Online' : 'Online Stores' },
+    { icon: PartyPopper, label: language === 'ro' ? 'Săli de evenimente' : 'Event Venues' },
     { icon: Scale,       label: language === 'ro' ? 'Avocatură'       : 'Law Firms' },
     { icon: Car,         label: language === 'ro' ? 'Auto & Service'  : 'Auto & Service' },
     { icon: Home,        label: language === 'ro' ? 'Imobiliare'      : 'Real Estate' },
@@ -45,58 +47,72 @@ const Index = () => {
   return (
     <PageTransition>
       {/* ────── HERO ────── */}
-      <section className="relative min-h-screen flex items-end section-padding pb-24 md:pb-32 pt-32 overflow-hidden">
-
-
-        <div className="relative z-10 mx-auto max-w-content w-full">
+      <section className="relative min-h-[100svh] flex items-center section-padding pt-28 pb-20 md:pt-32 lg:pb-24">
+        <div className="relative z-10 mx-auto max-w-content w-full grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-8 items-center">
           <motion.div
+            className="lg:col-span-6"
             initial="hidden" animate="visible"
-            variants={{ visible: { transition: { staggerChildren: 0.15, delayChildren: 0.2 } } }}
+            variants={{ visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } } }}
           >
             <motion.div
-              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-              className="inline-flex items-center gap-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 px-4 py-1.5 mb-10"
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+              className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] backdrop-blur-md border border-white/15 px-4 py-1.5 mb-8"
             >
               <span className="dot-green" />
-              <span className="text-sm text-muted-foreground">{t('hero.badge')}</span>
+              <span className="text-sm text-foreground/90">{t('hero.badge')}</span>
             </motion.div>
 
             <motion.h1
-              variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.21, 0.47, 0.32, 0.98] } } }}
-              className="font-heading font-bold text-5xl sm:text-6xl md:text-[8vw] leading-[0.9] tracking-tight mb-8 -ml-1"
+              variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.21, 0.47, 0.32, 0.98] } } }}
+              className="font-heading font-bold text-[2.75rem] leading-[1] sm:text-6xl xl:text-7xl tracking-tight mb-7"
             >
               <span className="block text-foreground">{t('hero.title1')}</span>
-              <span className="block gradient-text">{t('hero.title2')}</span>
+              <span className="block gradient-text pb-1">{t('hero.title2')}</span>
             </motion.h1>
 
-            <motion.div
-              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8 } } }}
-              className="flex flex-col md:flex-row md:items-end justify-between gap-8 mt-12"
+            <motion.p
+              variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+              className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed mb-10"
             >
-              <p className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
-                {t('hero.subtitle')}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-                <Link to="/services"
-                  className="bg-foreground text-background font-medium px-7 py-3.5 rounded-lg text-center hover:opacity-90 transition-all inline-flex items-center justify-center gap-2">
-                  {t('hero.cta1')} <ArrowUpRight className="w-4 h-4" />
-                </Link>
-                <Link to="/portfolio"
-                  className="backdrop-blur-md border border-white/15 bg-white/5 text-foreground font-medium px-7 py-3.5 rounded-lg text-center hover:bg-white/10 transition-all">
-                  {t('hero.cta2')}
-                </Link>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
+              {t('hero.subtitle')}
+            </motion.p>
 
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
-          <ChevronDown className="w-5 h-5 text-muted-foreground scroll-indicator" />
+            <motion.div
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+              className="flex flex-col sm:flex-row gap-3"
+            >
+              <Link to="/pricing"
+                className="btn-primary font-medium px-7 py-3.5 rounded-full text-center inline-flex items-center justify-center gap-2">
+                {language === 'ro' ? 'Vezi cât costă' : 'See pricing'} <ArrowUpRight className="w-4 h-4" />
+              </Link>
+              <Link to="/portfolio"
+                className="backdrop-blur-md border border-white/15 bg-white/5 text-foreground font-medium px-7 py-3.5 rounded-full text-center hover:bg-white/10 hover:border-white/30 transition-all">
+                {t('hero.cta2')}
+              </Link>
+            </motion.div>
+
+            <motion.p
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.8 } } }}
+              className="mt-10 text-sm text-muted-foreground"
+            >
+              {language === 'ro' ? 'Proiecte recente:' : 'Recent work:'}{' '}
+              <span className="text-foreground/90">Nuța Events · La Piazza · DentPro · SIZ Detailing</span>
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            className="lg:col-span-6"
+            initial={{ opacity: 0, y: 40, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <ShowcaseStack />
+          </motion.div>
         </div>
       </section>
 
       {/* ────── MARQUEE — INDUSTRIES SCROLLING ────── */}
-      <section className="border-y border-white/10 bg-background-secondary/40 backdrop-blur-sm py-8">
+      <section className="border-y border-white/10 bg-white/[0.03] backdrop-blur-sm py-8">
         <Marquee speed={45}>
           {industries.map((item, i) => (
             <div key={i} className="flex items-center gap-4 text-2xl md:text-3xl font-heading">
@@ -115,7 +131,7 @@ const Index = () => {
             {stats.map((stat, i) => (
               <ScrollReveal key={stat.id} delay={i * 0.08}>
                 <div className="px-2 md:px-8 text-left">
-                  <div className="font-heading font-bold text-5xl md:text-6xl lg:text-7xl text-foreground mb-3 leading-none">
+                  <div className="font-heading font-bold text-5xl md:text-6xl lg:text-7xl gradient-text mb-3 leading-none">
                     {stat.value}
                   </div>
                   <div className="text-sm md:text-base text-muted-foreground uppercase tracking-widest">
@@ -125,6 +141,24 @@ const Index = () => {
               </ScrollReveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ────── PRICE FINDER — INTERACTIVE ────── */}
+      <section className="section-padding pb-24 md:pb-32">
+        <div className="mx-auto max-w-content">
+          <ScrollReveal>
+            <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3">
+              {language === 'ro' ? 'Calculator' : 'Calculator'}
+            </p>
+            <h2 className="font-heading font-bold text-4xl md:text-6xl leading-[1] mb-12">
+              <span className="text-foreground">{language === 'ro' ? 'Află în 10 secunde ' : 'Find out in 10 seconds '}</span>
+              <span className="gradient-text">{language === 'ro' ? 'cât costă site-ul tău.' : 'what your site costs.'}</span>
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <PriceFinder />
+          </ScrollReveal>
         </div>
       </section>
 
@@ -157,12 +191,25 @@ const Index = () => {
                 <ScrollReveal key={service.id} delay={i * 0.1} className={layouts[i] || 'md:col-span-3'}>
                   <Link
                     to={`/services#${service.anchor || service.id}`}
-                    className="relative group h-full block overflow-hidden rounded-2xl border border-white/10 bg-card p-8 hover:border-white/25 transition-all duration-500"
+                    className="relative group h-full block overflow-hidden rounded-2xl border border-white/10 bg-card p-8 hover:border-white/25 transition-all duration-500 spot-card"
                   >
 
+                    {i === 0 && (
+                      <div aria-hidden className="pointer-events-none absolute -right-8 top-8 hidden w-[72%] md:block">
+                        <img
+                          src="/portfolio/lapiazza.webp"
+                          alt=""
+                          width={800}
+                          height={500}
+                          loading="lazy"
+                          className="rounded-xl border border-white/15 shadow-2xl transition-transform duration-700 [transform:perspective(1200px)_rotateY(-12deg)_rotateX(6deg)] group-hover:[transform:perspective(1200px)_rotateY(-4deg)_rotateX(2deg)]"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 h-2/3 rounded-b-xl bg-gradient-to-t from-card via-card/80 to-transparent" />
+                      </div>
+                    )}
                     <div className="relative h-full flex flex-col justify-between">
-                      <div className={`w-14 h-14 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center mb-6`}>
-                        <Icon className="w-6 h-6 text-primary-light" />
+                      <div className={`w-14 h-14 rounded-2xl icon-tile flex items-center justify-center mb-6`}>
+                        <Icon className="w-6 h-6 text-white" />
                       </div>
 
                       <div>
@@ -239,7 +286,7 @@ const Index = () => {
               <ScrollReveal key={item.id} delay={i * 0.08}>
                 <div className="grid grid-cols-12 gap-6 items-baseline py-8 border-t border-white/10 group hover:border-white/20 transition-colors">
                   <div className="col-span-12 md:col-span-2">
-                    <span className="font-heading font-bold text-7xl md:text-8xl text-foreground leading-none">
+                    <span className="font-heading font-bold text-7xl md:text-8xl text-outline leading-none">
                       {String(item.step_number).padStart(2, '0')}
                     </span>
                   </div>
@@ -320,7 +367,7 @@ const Index = () => {
       </section>
 
       {/* ────── FINAL CTA — FULL BLEED VIDEO ────── */}
-      <section className="relative section-padding py-32 md:py-48 overflow-hidden border-t border-white/10">
+      <section className="relative section-padding py-32 md:py-48 overflow-hidden border-t border-white/10 cta-glow">
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-8">
@@ -330,7 +377,7 @@ const Index = () => {
             {t('cta.subtitle')}
           </p>
           <Link to="/contact"
-            className="bg-foreground text-background font-medium px-10 py-4 rounded-lg inline-flex items-center gap-2 text-lg hover:opacity-90 transition-all">
+            className="btn-primary font-medium px-10 py-4 rounded-full inline-flex items-center gap-2 text-lg hover:opacity-90 transition-all">
             {t('cta.button')} <ArrowUpRight className="w-5 h-5" />
           </Link>
         </ScrollReveal>

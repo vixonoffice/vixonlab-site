@@ -1,10 +1,11 @@
 import type { LucideIcon } from 'lucide-react';
-import { Code, ShoppingCart, Palette, BarChart3 } from 'lucide-react';
+import { Code, ShoppingCart, Palette, BarChart3, CalendarCheck } from 'lucide-react';
 import type { StatRow, ServiceRow, ProcessStepRow, TestimonialRow } from '@/hooks/useSupabaseData';
 
 const iconMap: Record<string, LucideIcon> = {
   code: Code,
   'shopping-cart': ShoppingCart,
+  'calendar-check': CalendarCheck,
   palette: Palette,
   'bar-chart-3': BarChart3,
 };
@@ -17,7 +18,7 @@ export const STATIC_STATS: StatRow[] = [
   { id: '1', sort_order: 1, value: '50+', label_ro: 'Proiecte livrate', label_en: 'Projects delivered' },
   { id: '2', sort_order: 2, value: '99%', label_ro: 'Clienți mulțumiți', label_en: 'Happy clients' },
   { id: '3', sort_order: 3, value: '3+', label_ro: 'Ani experiență', label_en: 'Years experience' },
-  { id: '4', sort_order: 4, value: '24h', label_ro: 'Timp de răspuns', label_en: 'Response time' },
+  { id: '4', sort_order: 4, value: '48h', label_ro: 'Timp de răspuns', label_en: 'Response time' },
 ];
 
 export const STATIC_SERVICES: ServiceRow[] = [
@@ -32,24 +33,24 @@ export const STATIC_SERVICES: ServiceRow[] = [
     description_en: 'Presentation websites that load fast and look great on any screen. Google-optimized from the start.',
     features_ro: ['Site-uri de prezentare moderne', 'Landing pages optimizate', 'Aplicații web complexe', 'SEO avansat', 'Optimizare performanță', 'Design responsive', 'Mentenanță post-lansare'],
     features_en: ['Modern presentation websites', 'Optimized landing pages', 'Complex web applications', 'Advanced SEO', 'Performance optimization', 'Responsive design', 'Post-launch maintenance'],
-    price_label_ro: 'De la 1.500 RON',
-    price_label_en: 'From 1,500 RON',
+    price_label_ro: 'De la 350€',
+    price_label_en: 'From 350€',
     anchor: 'web-development',
   },
   {
-    id: 'ecommerce',
+    id: 'interactive',
     sort_order: 2,
-    icon: 'shopping-cart',
+    icon: 'calendar-check',
     icon_gradient: 'from-pink-600 to-rose-500',
-    title_ro: 'Magazine Online',
-    title_en: 'Online Stores',
-    description_ro: 'Vinde online fără bătăi de cap. Plăți integrate, gestionare stocuri, și un design care convertește vizitatori în clienți.',
-    description_en: 'Sell online hassle-free. Integrated payments, inventory management, and a design that converts visitors into customers.',
-    features_ro: ['Catalog produse complet', 'Coș de cumpărături avansat', 'Integrare plăți (Stripe)', 'Gestionare stocuri automată', 'Panou admin intuitiv', 'Email marketing', 'Statistici vânzări'],
-    features_en: ['Complete product catalog', 'Advanced shopping cart', 'Payment integration (Stripe)', 'Automated inventory management', 'Intuitive admin panel', 'Email marketing', 'Sales statistics'],
-    price_label_ro: 'De la 3.500 RON',
-    price_label_en: 'From 3,500 RON',
-    anchor: 'ecommerce',
+    title_ro: 'Rezervări & Configuratoare',
+    title_en: 'Bookings & Configurators',
+    description_ro: 'Clientul verifică singur data liberă, își alege opțiunile și vede prețul pe loc. Tu primești cererea gata completată pe WhatsApp.',
+    description_en: 'Clients check availability, pick their options and see the price instantly. You get the finished request on WhatsApp.',
+    features_ro: ['Calendar de disponibilitate', 'Configurator pas cu pas', 'Estimare de preț live', 'Trimitere pe WhatsApp', 'Panou de administrare', 'Design adaptat pe mobil'],
+    features_en: ['Availability calendar', 'Step-by-step configurator', 'Live price estimate', 'WhatsApp hand-off', 'Admin panel', 'Mobile-first design'],
+    price_label_ro: 'De la 1.200€',
+    price_label_en: 'From 1,200€',
+    anchor: 'interactive',
   },
   {
     id: 'design',

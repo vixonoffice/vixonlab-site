@@ -239,7 +239,7 @@ const BlogPost = () => {
             </h2>
             <Link
               to="/contact"
-              className="bg-foreground text-background font-medium px-8 py-3.5 rounded-2xl inline-block hover:opacity-90 transition-opacity"
+              className="btn-primary font-medium px-8 py-3.5 rounded-full inline-block hover:opacity-90 transition-opacity"
             >
               {isEn ? 'Contact Us' : 'Contacteaza-ne'}
             </Link>

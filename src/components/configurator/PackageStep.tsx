@@ -61,14 +61,14 @@ export function PackageStep({ packages, selectedId, onSelect }: Props) {
               >
                 {pkg.is_popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-foreground text-background text-xs font-medium px-4 py-1 rounded-lg">
+                    <span className="btn-primary text-xs font-medium px-4 py-1 rounded-full">
                       {t('sp.popular')}
                     </span>
                   </div>
                 )}
 
                 <div className="flex items-start justify-between mb-4">
-                  <div className={`w-11 h-11 rounded-xl bg-white/[0.05] border border-white/10 flex items-center justify-center`}>
+                  <div className={`w-11 h-11 rounded-xl icon-tile flex items-center justify-center`}>
                     <Icon className="w-5 h-5 text-white" />
                   </div>
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${

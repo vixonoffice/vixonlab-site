@@ -213,7 +213,7 @@ export function ConfiguratorStepper() {
             disabled={!canProceed[currentStep]}
             className={`inline-flex items-center gap-2 font-semibold px-7 py-3 rounded-2xl text-sm transition-all ${
               canProceed[currentStep]
-                ? 'bg-foreground text-background hover:opacity-90'
+                ? 'btn-primary hover:opacity-90'
                 : 'bg-white/10 text-muted-foreground cursor-not-allowed'
             }`}
           >

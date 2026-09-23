@@ -5,6 +5,7 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
+import { PriceFinder } from '@/components/PriceFinder';
 import { Check, MessageCircle, Shield, Sparkles, ArrowUpRight, Zap, Briefcase, Wand2, Wrench, type LucideIcon } from 'lucide-react';
 import {
   TIERS,
@@ -64,7 +65,7 @@ const Pricing = () => {
             onClick={() => setBilling('monthly')}
             className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
               billing === 'monthly'
-                ? 'bg-foreground text-background shadow-lg'
+                ? 'btn-primary shadow-lg'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
@@ -74,7 +75,7 @@ const Pricing = () => {
             onClick={() => setBilling('annual')}
             className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all ${
               billing === 'annual'
-                ? 'bg-foreground text-background shadow-lg'
+                ? 'btn-primary shadow-lg'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
@@ -92,6 +93,15 @@ const Pricing = () => {
         )}
       </PageHero>
 
+      {/* Interactive package picker */}
+      <section className="section-padding pb-20">
+        <div className="mx-auto max-w-content">
+          <ScrollReveal>
+            <PriceFinder showAllLink={false} />
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* Tier cards */}
       <section className="section-padding pb-16">
         <div className="mx-auto max-w-content">
@@ -107,15 +117,15 @@ const Pricing = () => {
 
               return (
                 <ScrollReveal key={tier.key} delay={i * 0.08}>
-                  <div className={`relative h-full flex flex-col rounded-2xl border backdrop-blur-md p-7 overflow-hidden transition-all duration-500 ${
+                  <div className={`relative h-full flex flex-col rounded-2xl border backdrop-blur-md p-7 transition-all duration-500 ${
                     isPopular
-                      ? 'border-primary-light/40 bg-card-hover'
-                      : 'border-white/15 bg-card hover:border-white/25'
+                      ? 'popular-ring border-transparent bg-card-hover'
+                      : 'spot-card border-white/15 bg-card/90 hover:border-white/25'
                   }`}>
                     {isPopular && (
                       <>
                         <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap z-10">
-                          <span className="bg-foreground text-background text-xs font-bold px-4 py-1.5 rounded-lg">
+                          <span className="btn-primary text-xs font-bold px-4 py-1.5 rounded-full">
                             {t('tier.popular')}
                           </span>
                         </div>
@@ -126,8 +136,8 @@ const Pricing = () => {
                       {(() => {
                         const Icon = tierIcon[tier.key];
                         return (
-                          <div className={`w-14 h-14 rounded-2xl bg-white/[0.05] border border-white/10 mb-5 flex items-center justify-center`}>
-                            <Icon className="w-6 h-6 text-primary-light" />
+                          <div className={`w-14 h-14 rounded-2xl icon-tile mb-5 flex items-center justify-center`}>
+                            <Icon className="w-6 h-6 text-white" />
                           </div>
                         );
                       })()}
@@ -183,7 +193,7 @@ const Pricing = () => {
                         rel="noopener noreferrer"
                         className={`flex items-center justify-center gap-2 font-medium px-6 py-3.5 rounded-lg transition-all text-center ${
                           isPopular
-                            ? 'bg-foreground text-background hover:opacity-90'
+                            ? 'btn-primary hover:opacity-90'
                             : 'border border-white/15 bg-white/5 text-foreground hover:bg-white/10'
                         }`}
                       >
@@ -253,7 +263,7 @@ const Pricing = () => {
       </section>
 
       {/* Final CTA full bleed */}
-      <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10">
+      <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10 cta-glow">
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-8">
@@ -265,7 +275,7 @@ const Pricing = () => {
           </p>
           <Link
             to="/contact"
-            className="bg-foreground text-background font-medium px-10 py-4 rounded-lg inline-flex items-center gap-3 text-lg hover:opacity-90 transition-all"
+            className="btn-primary font-medium px-10 py-4 rounded-full inline-flex items-center gap-3 text-lg hover:opacity-90 transition-all"
           >
             <MessageCircle className="w-5 h-5" />
             {t('tier.ctaButton')}

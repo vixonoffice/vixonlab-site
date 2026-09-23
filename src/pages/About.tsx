@@ -83,7 +83,7 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
             {principles.map((p, i) => (
               <ScrollReveal key={p.title} delay={i * 0.1}>
-                <div className="relative h-full group overflow-hidden rounded-2xl border border-white/10 bg-card p-8 hover:border-white/25 transition-all duration-500">
+                <div className="relative h-full group overflow-hidden rounded-2xl border border-white/10 bg-card p-8 hover:border-white/25 transition-all duration-500 spot-card">
                   <div className="relative">
                     <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
                       <p.icon className="w-7 h-7 text-primary-light" />
@@ -121,14 +121,14 @@ const About = () => {
       </section>
 
       {/* CTA full bleed */}
-      <section className="relative section-padding py-32 md:py-44 overflow-hidden">
+      <section className="relative section-padding py-32 md:py-44 overflow-hidden cta-glow">
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-10">
             <span className="text-foreground">{t('about.ctaTitle')}</span>
           </h2>
           <Link to="/contact"
-            className="bg-foreground text-background font-medium px-10 py-4 rounded-lg inline-flex items-center gap-2 text-lg hover:opacity-90 transition-all">
+            className="btn-primary font-medium px-10 py-4 rounded-full inline-flex items-center gap-2 text-lg hover:opacity-90 transition-all">
             {t('about.ctaButton')} <ArrowUpRight className="w-5 h-5" />
           </Link>
         </ScrollReveal>

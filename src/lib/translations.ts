@@ -27,7 +27,7 @@ export const translations = {
     'hero.badge': 'Acceptăm proiecte noi',
     'hero.title1': 'Facem site-uri pe care',
     'hero.title2': 'clienții tăi le folosesc',
-    'hero.subtitle': 'Nu mai pierzi vizitatori cu un site lent sau învechit. Construim site-uri rapide, magazine online funcționale și identități vizuale care te diferențiază.',
+    'hero.subtitle': 'Nu mai pierzi clienți cu un site lent sau învechit. Construim site-uri rapide, cu design custom, rezervări și configuratoare care îți aduc cereri direct pe WhatsApp.',
     'hero.cta1': 'Vezi serviciile',
     'hero.cta2': 'Vezi portofoliul',
 
@@ -397,7 +397,7 @@ export const translations = {
     'hero.badge': 'Accepting new projects',
     'hero.title1': 'We build websites that',
     'hero.title2': 'your clients actually use',
-    'hero.subtitle': 'Stop losing visitors with a slow or outdated website. We build fast websites, functional online stores, and visual identities that set you apart.',
+    'hero.subtitle': 'Stop losing clients to a slow or outdated website. We build fast, custom-designed sites with bookings and configurators that send requests straight to your WhatsApp.',
     'hero.cta1': 'View services',
     'hero.cta2': 'View portfolio',
 

@@ -100,7 +100,7 @@ export function Navbar() {
 
             <Link
               to="/contact"
-              className="bg-foreground text-background text-sm font-medium pl-5 pr-2 py-2 rounded-lg hover:opacity-90 transition-all inline-flex items-center gap-2"
+              className="btn-primary text-sm font-medium pl-5 pr-2 py-2 rounded-full hover:opacity-90 transition-all inline-flex items-center gap-2"
             >
               {t('nav.contact')}
               <span className="bg-white/20 rounded-full p-1.5">
@@ -150,7 +150,7 @@ export function Navbar() {
         ))}
         <Link
           to="/contact"
-          className="bg-foreground text-background text-lg font-medium px-8 py-3.5 rounded-lg mt-4 inline-flex items-center gap-2"
+          className="btn-primary text-lg font-medium px-8 py-3.5 rounded-full mt-4 inline-flex items-center gap-2"
         >
           {t('nav.contact')} <ArrowUpRight className="w-4 h-4" />
         </Link>

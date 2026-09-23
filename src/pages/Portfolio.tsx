@@ -39,7 +39,7 @@ const Portfolio = () => {
               onClick={() => setFilter(tab.key)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
                 filter === tab.key
-                  ? 'bg-foreground text-background'
+                  ? 'btn-primary'
                   : 'bg-white/5 backdrop-blur-md text-muted-foreground hover:text-foreground border border-white/10 hover:border-white/20'
               }`}
             >
@@ -78,14 +78,14 @@ const Portfolio = () => {
       </section>
 
       {/* CTA full bleed */}
-      <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10">
+      <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10 cta-glow">
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-10">
             <span className="text-foreground">{t('portfolio.ctaTitle')}</span>
           </h2>
           <Link to="/contact"
-            className="bg-foreground text-background font-medium px-10 py-4 rounded-lg inline-flex items-center gap-2 text-lg hover:opacity-90 transition-all">
+            className="btn-primary font-medium px-10 py-4 rounded-full inline-flex items-center gap-2 text-lg hover:opacity-90 transition-all">
             {t('portfolio.ctaButton')} <ArrowUpRight className="w-5 h-5" />
           </Link>
         </ScrollReveal>

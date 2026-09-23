@@ -90,7 +90,7 @@ const CaseStudy = () => {
               href={project.live_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-6 bg-foreground text-background font-medium px-6 py-3 rounded-2xl hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 mt-6 btn-primary font-medium px-6 py-3 rounded-2xl hover:opacity-90 transition-opacity"
             >
               <ExternalLink className="w-4 h-4" />
               {isEn ? 'Visit Live Site' : 'Vezi Site-ul Live'}
@@ -265,7 +265,7 @@ const CaseStudy = () => {
             </p>
             <Link
               to="/contact"
-              className="bg-foreground text-background font-medium px-8 py-3.5 rounded-2xl inline-block hover:opacity-90 transition-opacity"
+              className="btn-primary font-medium px-8 py-3.5 rounded-full inline-block hover:opacity-90 transition-opacity"
             >
               {isEn ? 'Contact Us' : 'Contacteaza-ne'}
             </Link>
