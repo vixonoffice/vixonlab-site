@@ -5,23 +5,22 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
-import { Check, MessageCircle, Shield, Sparkles, ArrowUpRight, Zap, Rocket, TrendingUp, Crown, type LucideIcon } from 'lucide-react';
+import { Check, MessageCircle, Shield, Sparkles, ArrowUpRight, Zap, Briefcase, Wand2, Wrench, type LucideIcon } from 'lucide-react';
 import {
   TIERS,
-  ANNUAL_DISCOUNT_PCT,
   getAnnualPrice,
-  getMonthlyEquivalent,
   getAnnualSavings,
+  formatEur,
   buildTierWaUrl,
   type BillingPeriod,
   type Tier,
 } from '@/lib/tiers';
 
 const tierIcon: Record<Tier['key'], LucideIcon> = {
-  promo: Zap,
-  start: Rocket,
-  plus: TrendingUp,
-  premium: Crown,
+  presentation: Zap,
+  business: Briefcase,
+  experience: Wand2,
+  custom: Wrench,
 };
 
 const Pricing = () => {
@@ -30,10 +29,10 @@ const Pricing = () => {
   const [billing, setBilling] = useState<BillingPeriod>('annual');
 
   usePageSEO({
-    title: isRo ? 'Prețuri · Site gratuit + mentenanță lunară' : 'Pricing · Free site + monthly maintenance',
+    title: isRo ? 'Prețuri · Site-uri de la 350€ + mentenanță' : 'Pricing · Websites from 350€ + maintenance',
     description: isRo
-      ? 'Site profesional 0€ acum, de la 9€/lună. Modificări incluse, hosting, SSL, e-Factura. Anulezi după 12 luni — site rămâne online cât plătești.'
-      : 'Professional website 0€ now, from 9€/month. Edits included, hosting, SSL, e-invoice. Cancel after 12 months.',
+      ? 'Site profesional de la 350€, plătit o singură dată, plus mentenanță de la 15€/lună: hosting, SSL, domeniu, backup și modificări incluse.'
+      : 'Professional website from 350€, paid once, plus maintenance from 15€/month: hosting, SSL, domain, backups and edits included.',
   });
 
   const commonItems = [
@@ -58,7 +57,8 @@ const Pricing = () => {
         titleAccent={t('tier.title2')}
         subtitle={t('tier.subtitle')}
       >
-        {/* Monthly / Annual toggle */}
+        {/* Monthly / Annual toggle (maintenance billing) */}
+        <p className="text-sm text-muted-foreground mb-3">{isRo ? 'Plata mentenanței:' : 'Maintenance billing:'}</p>
         <div className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/5 backdrop-blur-md p-1">
           <button
             onClick={() => setBilling('monthly')}
@@ -80,14 +80,14 @@ const Pricing = () => {
           >
             {t('tier.annual')}
             <span className="absolute -top-2 -right-2 px-2 py-0.5 rounded-full bg-green-500 text-white text-[10px] font-bold whitespace-nowrap">
-              -{ANNUAL_DISCOUNT_PCT}%
+              {t('tier.annualBadge')}
             </span>
           </button>
         </div>
         {billing === 'annual' && (
           <p className="mt-4 text-sm text-green-400 flex items-center gap-2">
             <Sparkles className="w-4 h-4" />
-            {t('tier.annualBadge')} · {isRo ? 'plată anuală upfront' : 'paid annually upfront'}
+            {isRo ? 'Plătești 10 luni de mentenanță, primești 12' : 'Pay for 10 months of maintenance, get 12'}
           </p>
         )}
       </PageHero>
@@ -98,7 +98,6 @@ const Pricing = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch">
             {TIERS.map((tier, i) => {
               const annualPrice = getAnnualPrice(tier.monthlyEur);
-              const monthlyEquiv = getMonthlyEquivalent(tier.monthlyEur);
               const savings = getAnnualSavings(tier.monthlyEur);
               const featuresKey = `tier.${tier.key}.features` as const;
               const features = t(featuresKey).split('|');
@@ -135,43 +134,33 @@ const Pricing = () => {
                       <h3 className="font-heading font-bold text-2xl text-foreground mb-2">{name}</h3>
                       <p className="text-sm text-muted-foreground mb-6 leading-relaxed min-h-[2.5rem]">{tagline}</p>
 
-                      {/* Price */}
-                      <div className="mb-2">
-                        {billing === 'monthly' ? (
-                          <div className="flex items-baseline gap-1">
-                            <span className="font-heading font-bold text-5xl text-foreground leading-none">
-                              {tier.monthlyEur}€
-                            </span>
-                            <span className="text-sm text-muted-foreground">{t('tier.month')}</span>
-                          </div>
-                        ) : (
-                          <div className="flex flex-col gap-1">
-                            <div className="flex items-baseline gap-1">
-                              <span className="font-heading font-bold text-5xl text-foreground leading-none">
-                                {annualPrice}€
-                              </span>
-                              <span className="text-sm text-muted-foreground">{t('tier.year')}</span>
-                            </div>
-                            <span className="text-xs text-muted-foreground">
-                              {t('tier.equivMonthly').replace('{x}', monthlyEquiv)}
-                            </span>
+                      {/* Price: site (one-time) + maintenance */}
+                      <div className="flex items-baseline gap-1.5">
+                        {tier.startingFrom && (
+                          <span className="text-sm text-muted-foreground">{t('tier.from')}</span>
+                        )}
+                        <span className="font-heading font-bold text-5xl text-foreground leading-none">
+                          {formatEur(tier.setupEur)}
+                        </span>
+                      </div>
+                      <span className="text-xs text-muted-foreground mt-2 mb-4">{t('tier.setupFree')}</span>
+
+                      <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-3 mb-6">
+                        <div className="text-sm">
+                          <span className="text-muted-foreground">{t('tier.plusMaintenance')} </span>
+                          <span className="font-semibold text-foreground whitespace-nowrap">
+                            {tier.startingFrom ? `${t('tier.from')} ` : ''}
+                            {billing === 'monthly'
+                              ? `${tier.monthlyEur}€${t('tier.month')}`
+                              : `${annualPrice}€${t('tier.year')}`}
+                          </span>
+                        </div>
+                        {billing === 'annual' && savings > 0 && (
+                          <div className="text-xs text-emerald-400 mt-1">
+                            {t('tier.savePerYear').replace('{x}', String(savings))}
                           </div>
                         )}
                       </div>
-
-                      {/* Savings badge for annual */}
-                      {billing === 'annual' && savings > 0 && (
-                        <span className="self-start inline-flex items-center gap-1 mb-4 px-2 py-1 rounded-full bg-green-500/15 border border-green-500/30 text-green-400 text-[10px] font-bold uppercase tracking-wider">
-                          <Sparkles className="w-3 h-3" />
-                          {t('tier.savePerYear').replace('{x}', String(savings))}
-                        </span>
-                      )}
-
-                      {/* Setup free badge */}
-                      <span className="inline-flex items-center gap-1.5 mb-5 text-[11px] text-green-400 font-medium">
-                        <Check className="w-3.5 h-3.5" />
-                        {t('tier.setupFree')}
-                      </span>
 
                       {/* Features */}
                       <ul className="space-y-3 mb-7 flex-1">
@@ -192,7 +181,7 @@ const Pricing = () => {
                         href={buildTierWaUrl(tier.key, billing, language as 'ro' | 'en')}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`flex items-center justify-center gap-2 font-medium px-6 py-3.5 rounded-full transition-all text-center ${
+                        className={`flex items-center justify-center gap-2 font-medium px-6 py-3.5 rounded-lg transition-all text-center ${
                           isPopular
                             ? 'bg-foreground text-background hover:opacity-90'
                             : 'border border-white/15 bg-white/5 text-foreground hover:bg-white/10'

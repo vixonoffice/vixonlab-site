@@ -5,14 +5,13 @@ import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import {
   Check, MessageCircle, Sparkles, ArrowUpRight, ArrowRight,
-  Wallet, Edit3, Code2, ShieldOff,
-  MessageSquare, Hammer, CreditCard, MessagesSquare,
+  Wallet, Edit3, Code2, ShieldCheck,
+  MessageSquare, Hammer, Rocket, MessagesSquare,
 } from 'lucide-react';
 import {
   TIERS,
-  ANNUAL_DISCOUNT_PCT,
-  getAnnualPrice,
   buildTierWaUrl,
+  formatEur,
   WHATSAPP_NUMBER,
 } from '@/lib/tiers';
 
@@ -22,30 +21,30 @@ const Offer = () => {
 
   usePageSEO({
     title: isRo
-      ? 'Site gratuit + mentenanță lunară · Ofertă Vixon Lab'
-      : 'Free site + monthly maintenance · Vixon Lab Offer',
+      ? 'Site profesional de la 350€ · Ofertă Vixon Lab'
+      : 'Professional website from 350€ · Vixon Lab Offer',
     description: isRo
-      ? 'Site profesional 0€ acum, de la 9€/lună. Modificări incluse, hosting, SSL, e-Factura. -20% primul an dacă plătești anual.'
-      : 'Professional website 0€ now, from 9€/month. Edits included, hosting, SSL, e-invoice. -20% first year if paid annually.',
+      ? 'Site de la 350€, plătit o singură dată, plus mentenanță de la 15€/lună. Hosting, domeniu, SSL, backup și modificări incluse.'
+      : 'Website from 350€, paid once, plus maintenance from 15€/month. Hosting, domain, SSL, backups and edits included.',
   });
 
   const benefits = [
-    { icon: Wallet, title: t('offer.benefit1.title'), desc: t('offer.benefit1.desc'), color: 'text-green-400 bg-green-500/15 border-green-500/30' },
-    { icon: Edit3, title: t('offer.benefit2.title'), desc: t('offer.benefit2.desc'), color: 'text-primary-light bg-primary/15 border-primary/30' },
-    { icon: Code2, title: t('offer.benefit3.title'), desc: t('offer.benefit3.desc'), color: 'text-amber-400 bg-amber-500/15 border-amber-500/30' },
-    { icon: ShieldOff, title: t('offer.benefit4.title'), desc: t('offer.benefit4.desc'), color: 'text-cyan-400 bg-cyan-500/15 border-cyan-500/30' },
+    { icon: Wallet, title: t('offer.benefit1.title'), desc: t('offer.benefit1.desc'), color: 'text-primary-light bg-white/[0.05] border-white/10' },
+    { icon: Edit3, title: t('offer.benefit2.title'), desc: t('offer.benefit2.desc'), color: 'text-primary-light bg-white/[0.05] border-white/10' },
+    { icon: Code2, title: t('offer.benefit3.title'), desc: t('offer.benefit3.desc'), color: 'text-primary-light bg-white/[0.05] border-white/10' },
+    { icon: ShieldCheck, title: t('offer.benefit4.title'), desc: t('offer.benefit4.desc'), color: 'text-primary-light bg-white/[0.05] border-white/10' },
   ];
 
   const steps = [
     { icon: MessageSquare, title: t('offer.how1.title'), desc: t('offer.how1.desc') },
     { icon: Hammer, title: t('offer.how2.title'), desc: t('offer.how2.desc') },
-    { icon: CreditCard, title: t('offer.how3.title'), desc: t('offer.how3.desc') },
+    { icon: Rocket, title: t('offer.how3.title'), desc: t('offer.how3.desc') },
     { icon: MessagesSquare, title: t('offer.how4.title'), desc: t('offer.how4.desc') },
   ];
 
   const mainWaMsg = isRo
-    ? 'Bună! Am văzut oferta de pe social media (site gratuit + abonament lunar). Vreau să discutăm.'
-    : 'Hi! I saw the social media offer (free site + monthly subscription). Let\'s talk.';
+    ? 'Bună! Am văzut oferta Vixon Lab și aș vrea un site. Putem discuta?'
+    : 'Hi! I saw the Vixon Lab offer and I would like a website. Can we talk?';
   const mainWaUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mainWaMsg)}`;
 
   return (
@@ -112,12 +111,11 @@ const Offer = () => {
         <div className="mx-auto max-w-content">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {TIERS.map((tier, i) => {
-              const annual = getAnnualPrice(tier.monthlyEur);
               const name = t(`tier.${tier.key}.name` as const);
               return (
                 <ScrollReveal key={tier.key} delay={i * 0.05}>
                   <a
-                    href={buildTierWaUrl(tier.key, 'annual', language as 'ro' | 'en')}
+                    href={buildTierWaUrl(tier.key, 'monthly', language as 'ro' | 'en')}
                     target="_blank" rel="noopener noreferrer"
                     className={`block rounded-2xl border p-5 transition-all backdrop-blur-md ${
                       tier.popular
@@ -132,11 +130,11 @@ const Offer = () => {
                     )}
                     <div className="font-heading font-bold text-lg text-foreground mb-1">{name}</div>
                     <div className="flex items-baseline gap-1 mb-1">
-                      <span className="font-heading font-bold text-3xl text-foreground leading-none">{tier.monthlyEur}€</span>
-                      <span className="text-xs text-muted-foreground">{t('tier.month')}</span>
+                      {tier.startingFrom && <span className="text-xs text-muted-foreground">{t('tier.from')}</span>}
+                      <span className="font-heading font-bold text-3xl text-foreground leading-none">{formatEur(tier.setupEur)}</span>
                     </div>
-                    <div className="text-[11px] text-green-400 mb-3">
-                      {isRo ? `sau ${annual}€/an (-20%)` : `or ${annual}€/yr (-20%)`}
+                    <div className="text-xs text-muted-foreground mb-3">
+                      {t('tier.plusMaintenance')} {tier.startingFrom ? `${t('tier.from')} ` : ''}{tier.monthlyEur}€{t('tier.month')}
                     </div>
                     <div className="text-[11px] text-muted-foreground">
                       {isRo ? tier.recommendedFor.ro : tier.recommendedFor.en}
@@ -192,8 +190,8 @@ const Offer = () => {
               return (
                 <ScrollReveal key={i} delay={i * 0.06}>
                   <div className="h-full rounded-2xl border border-white/15 bg-card p-7 text-center">
-                    <div className="inline-flex w-14 h-14 rounded-full gradient-primary items-center justify-center mb-5 mx-auto">
-                      <Icon className="w-7 h-7 text-white" />
+                    <div className="inline-flex w-14 h-14 rounded-full bg-white/[0.05] border border-white/10 items-center justify-center mb-5 mx-auto">
+                      <Icon className="w-6 h-6 text-primary-light" />
                     </div>
                     <h3 className="font-heading font-bold text-lg text-foreground mb-3">{s.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
