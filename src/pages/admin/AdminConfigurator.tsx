@@ -219,7 +219,7 @@ const AdminConfigurator = () => {
             </div>
           )}
 
-          <Button onClick={handleSave} className="gradient-primary text-white border-0 rounded-2xl">
+          <Button onClick={handleSave} className="bg-foreground text-background border-0 rounded-2xl">
             <Save className="w-4 h-4 mr-2" /> Salveaza
           </Button>
         </div>
@@ -265,7 +265,7 @@ const AdminConfigurator = () => {
 
       {/* Add new button */}
       {filter !== 'all' && (
-        <Button onClick={() => newItem(filter)} size="sm" className="gradient-primary text-white border-0 rounded-2xl mb-4">
+        <Button onClick={() => newItem(filter)} size="sm" className="bg-foreground text-background border-0 rounded-2xl mb-4">
           <Plus className="w-4 h-4 mr-1" /> Adauga in {TYPE_LABELS[filter] || filter}
         </Button>
       )}

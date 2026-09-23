@@ -5,7 +5,6 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
-import { VideoBackground } from '@/components/VideoBackground';
 import { Check, MessageCircle, Shield, Sparkles, ArrowUpRight, Zap, Rocket, TrendingUp, Crown, type LucideIcon } from 'lucide-react';
 import {
   TIERS,
@@ -17,13 +16,6 @@ import {
   type BillingPeriod,
   type Tier,
 } from '@/lib/tiers';
-
-const tierColorClass: Record<Tier['key'], string> = {
-  promo: 'from-cyan-400 to-blue-500',
-  start: 'from-emerald-400 to-green-500',
-  plus: 'from-fuchsia-500 via-primary to-accent',
-  premium: 'from-amber-400 via-orange-500 to-rose-600',
-};
 
 const tierIcon: Record<Tier['key'], LucideIcon> = {
   promo: Zap,
@@ -72,7 +64,7 @@ const Pricing = () => {
             onClick={() => setBilling('monthly')}
             className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
               billing === 'monthly'
-                ? 'gradient-primary text-white shadow-lg'
+                ? 'bg-foreground text-background shadow-lg'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
@@ -82,7 +74,7 @@ const Pricing = () => {
             onClick={() => setBilling('annual')}
             className={`relative px-5 py-2 rounded-full text-sm font-medium transition-all ${
               billing === 'annual'
-                ? 'gradient-primary text-white shadow-lg'
+                ? 'bg-foreground text-background shadow-lg'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
@@ -116,19 +108,18 @@ const Pricing = () => {
 
               return (
                 <ScrollReveal key={tier.key} delay={i * 0.08}>
-                  <div className={`relative h-full flex flex-col rounded-3xl border backdrop-blur-md p-7 overflow-hidden transition-all duration-500 ${
+                  <div className={`relative h-full flex flex-col rounded-2xl border backdrop-blur-md p-7 overflow-hidden transition-all duration-500 ${
                     isPopular
-                      ? 'border-primary/50 bg-gradient-to-b from-primary/15 via-white/[0.05] to-white/[0.03] shadow-[0_0_60px_-15px_rgba(124,58,237,0.4)]'
-                      : 'border-white/15 bg-gradient-to-b from-white/[0.08] to-white/[0.03] hover:border-primary/40 hover:from-primary/[0.08]'
+                      ? 'border-primary-light/40 bg-card-hover'
+                      : 'border-white/15 bg-card hover:border-white/25'
                   }`}>
                     {isPopular && (
                       <>
                         <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap z-10">
-                          <span className="gradient-primary text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                          <span className="bg-foreground text-background text-xs font-bold px-4 py-1.5 rounded-lg">
                             {t('tier.popular')}
                           </span>
                         </div>
-                        <div className="absolute -top-24 -right-24 w-56 h-56 rounded-full blur-3xl opacity-30 bg-gradient-to-br from-primary to-accent" />
                       </>
                     )}
 
@@ -136,8 +127,8 @@ const Pricing = () => {
                       {(() => {
                         const Icon = tierIcon[tier.key];
                         return (
-                          <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${tierColorClass[tier.key]} mb-5 flex items-center justify-center shadow-lg ring-1 ring-white/20`}>
-                            <Icon className="w-7 h-7 text-white drop-shadow-md" />
+                          <div className={`w-14 h-14 rounded-2xl bg-white/[0.05] border border-white/10 mb-5 flex items-center justify-center`}>
+                            <Icon className="w-6 h-6 text-primary-light" />
                           </div>
                         );
                       })()}
@@ -148,7 +139,7 @@ const Pricing = () => {
                       <div className="mb-2">
                         {billing === 'monthly' ? (
                           <div className="flex items-baseline gap-1">
-                            <span className="font-heading font-bold text-5xl gradient-text leading-none">
+                            <span className="font-heading font-bold text-5xl text-foreground leading-none">
                               {tier.monthlyEur}€
                             </span>
                             <span className="text-sm text-muted-foreground">{t('tier.month')}</span>
@@ -156,7 +147,7 @@ const Pricing = () => {
                         ) : (
                           <div className="flex flex-col gap-1">
                             <div className="flex items-baseline gap-1">
-                              <span className="font-heading font-bold text-5xl gradient-text leading-none">
+                              <span className="font-heading font-bold text-5xl text-foreground leading-none">
                                 {annualPrice}€
                               </span>
                               <span className="text-sm text-muted-foreground">{t('tier.year')}</span>
@@ -201,9 +192,9 @@ const Pricing = () => {
                         href={buildTierWaUrl(tier.key, billing, language as 'ro' | 'en')}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`flex items-center justify-center gap-2 font-medium px-6 py-3.5 rounded-full transition-all hover:scale-105 text-center ${
+                        className={`flex items-center justify-center gap-2 font-medium px-6 py-3.5 rounded-full transition-all text-center ${
                           isPopular
-                            ? 'gradient-primary text-white hover:opacity-90'
+                            ? 'bg-foreground text-background hover:opacity-90'
                             : 'border border-white/15 bg-white/5 text-foreground hover:bg-white/10'
                         }`}
                       >
@@ -223,7 +214,7 @@ const Pricing = () => {
       <section className="section-padding section-spacing border-t border-white/10">
         <div className="mx-auto max-w-content">
           <ScrollReveal>
-            <div className="rounded-3xl border border-green-400/20 bg-green-400/[0.03] backdrop-blur-sm p-8 md:p-12">
+            <div className="rounded-2xl border border-green-400/20 bg-green-400/[0.03] backdrop-blur-sm p-8 md:p-12">
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
                   <Shield className="w-5 h-5 text-green-400" />
@@ -262,7 +253,7 @@ const Pricing = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {faqs.map((item, i) => (
               <ScrollReveal key={i} delay={(i % 4) * 0.06}>
-                <div className="rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm p-7 h-full hover:border-primary/30 transition-colors">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm p-7 h-full hover:border-white/20 transition-colors">
                   <h3 className="font-heading font-bold text-xl text-foreground mb-3">{item.q}</h3>
                   <p className="text-muted-foreground leading-relaxed">{item.a}</p>
                 </div>
@@ -274,21 +265,18 @@ const Pricing = () => {
 
       {/* Final CTA full bleed */}
       <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10">
-        <VideoBackground src="/videos/purple-cloud.mp4" opacity={0.5} />
-        <div className="absolute inset-0 z-0"
-          style={{ background: 'radial-gradient(ellipse at center, rgba(10,4,24,0.55) 0%, rgba(10,4,24,0.95) 70%)' }} />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-8">
             <span className="text-foreground">{t('tier.ctaTitle1')} </span>
-            <span className="gradient-text italic">{t('tier.ctaTitle2')}</span>
+            <span className="gradient-text">{t('tier.ctaTitle2')}</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
             {t('tier.ctaSubtitle')}
           </p>
           <Link
             to="/contact"
-            className="gradient-primary text-white font-medium px-10 py-4 rounded-full inline-flex items-center gap-3 text-lg hover:opacity-90 hover:scale-105 transition-all"
+            className="bg-foreground text-background font-medium px-10 py-4 rounded-lg inline-flex items-center gap-3 text-lg hover:opacity-90 transition-all"
           >
             <MessageCircle className="w-5 h-5" />
             {t('tier.ctaButton')}

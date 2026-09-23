@@ -2,7 +2,6 @@ import { ReactNode, lazy, Suspense } from 'react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { PromoBanner } from './PromoBanner';
-import { AuroraBackground } from './AuroraBackground';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useLenis } from '@/hooks/useLenis';
 
@@ -14,7 +13,6 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="relative isolate min-h-screen overflow-x-hidden">
-      <AuroraBackground />
       <div className="relative" style={{ zIndex: 1 }}>
         <Navbar />
         <PromoBanner />

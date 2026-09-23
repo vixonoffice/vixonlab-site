@@ -43,7 +43,7 @@ const Services = () => {
         <div className="max-w-3xl mx-auto">
           <Suspense fallback={
             <div className="space-y-4">
-              {[1,2,3].map(i => <div key={i} className="h-48 bg-white/5 rounded-3xl animate-pulse" />)}
+              {[1,2,3].map(i => <div key={i} className="h-48 bg-white/5 rounded-2xl animate-pulse" />)}
             </div>
           }>
             <ConfiguratorStepper />
@@ -77,8 +77,7 @@ const Services = () => {
             </ScrollReveal>
 
             <ScrollReveal className="lg:col-span-5 lg:pt-16">
-              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-sm p-8 md:p-10">
-                <div className="absolute -top-20 -right-20 w-56 h-56 rounded-full blur-3xl opacity-30 bg-gradient-to-br from-primary to-accent" />
+              <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-sm p-8 md:p-10">
                 <div className="relative">
                   <h3 className="font-heading font-bold text-2xl text-foreground mb-8">{t('sp.whatYouGet')}</h3>
                   <div className="space-y-4">
@@ -103,7 +102,7 @@ const Services = () => {
         <div className="mx-auto max-w-content">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <ScrollReveal>
-              <div className="h-full rounded-3xl border border-green-400/20 bg-green-400/[0.03] backdrop-blur-sm p-8">
+              <div className="h-full rounded-2xl border border-green-400/20 bg-green-400/[0.03] backdrop-blur-sm p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-green-400/20 flex items-center justify-center">
                     <Check className="w-5 h-5 text-green-400" />
@@ -127,7 +126,7 @@ const Services = () => {
             </ScrollReveal>
 
             <ScrollReveal delay={0.1}>
-              <div className="h-full rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm p-8">
+              <div className="h-full rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
                     <X className="w-5 h-5 text-muted-foreground" />

@@ -109,7 +109,7 @@ const AdminServices = () => {
             <Label>Ordine</Label>
             <Input type="number" value={editing.sort_order} onChange={(e) => setEditing({ ...editing, sort_order: parseInt(e.target.value) || 0 })} className="bg-white/5 border-white/10 w-24" />
           </div>
-          <Button onClick={handleSave} className="gradient-primary text-white border-0 rounded-2xl"><Save className="w-4 h-4 mr-2" /> Salvează</Button>
+          <Button onClick={handleSave} className="bg-foreground text-background border-0 rounded-2xl"><Save className="w-4 h-4 mr-2" /> Salvează</Button>
         </div>
       </div>
     );
@@ -119,7 +119,7 @@ const AdminServices = () => {
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <h1 className="font-heading font-bold text-xl sm:text-2xl text-foreground">Servicii</h1>
-        <Button onClick={newItem} size="sm" className="gradient-primary text-white border-0 rounded-2xl self-start"><Plus className="w-4 h-4 mr-2" /> Serviciu nou</Button>
+        <Button onClick={newItem} size="sm" className="bg-foreground text-background border-0 rounded-2xl self-start"><Plus className="w-4 h-4 mr-2" /> Serviciu nou</Button>
       </div>
       <div className="space-y-3">
         {items.map((s) => (

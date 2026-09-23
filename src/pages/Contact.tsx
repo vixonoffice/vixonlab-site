@@ -87,7 +87,7 @@ const Contact = () => {
             {/* Form */}
             <div className="lg:col-span-3">
               <ScrollReveal>
-                <div className="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-sm p-6 md:p-10">
+                <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-sm p-6 md:p-10">
                   <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-8">{t('contact.formTitle')}</h2>
 
                   {submitted ? (
@@ -159,7 +159,7 @@ const Contact = () => {
 
                       {isValid ? (
                         <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" onClick={handleSendWhatsApp}
-                          className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold py-4 rounded-2xl text-lg transition-all hover:scale-[1.02]">
+                          className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold py-4 rounded-2xl text-lg transition-all">
                           <MessageCircle className="w-5 h-5" />
                           {t('contact.submit')}
                           <ChevronRight className="w-5 h-5" />
@@ -180,8 +180,7 @@ const Contact = () => {
             {/* Info sidebar */}
             <div className="lg:col-span-2 space-y-5">
               <ScrollReveal delay={0.1}>
-                <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-sm p-7">
-                  <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full blur-3xl opacity-30 bg-gradient-to-br from-primary to-accent" />
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-sm p-7">
                   <div className="relative">
                     <h3 className="font-heading font-bold text-xl text-foreground mb-6">{t('contact.infoTitle')}</h3>
                     <div className="space-y-5">
@@ -212,7 +211,7 @@ const Contact = () => {
               </ScrollReveal>
 
               <ScrollReveal delay={0.2}>
-                <div className="rounded-3xl border border-green-400/20 bg-green-400/[0.03] backdrop-blur-sm p-7">
+                <div className="rounded-2xl border border-green-400/20 bg-green-400/[0.03] backdrop-blur-sm p-7">
                   <div className="flex items-center gap-3 mb-3">
                     <span className="dot-green" />
                     <h3 className="font-heading font-bold text-lg text-foreground">{t('contact.fastResponse')}</h3>

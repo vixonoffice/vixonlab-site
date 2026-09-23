@@ -5,7 +5,6 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
-import { VideoBackground } from '@/components/VideoBackground';
 import { Clock, Calendar, Eye, ArrowUpRight } from 'lucide-react';
 import { useBlogPosts, type BlogPostRow } from '@/hooks/useBlogData';
 
@@ -39,8 +38,8 @@ const Blog = () => {
               onClick={() => setFilter(cat)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all capitalize ${
                 filter === cat
-                  ? 'gradient-primary text-white scale-105'
-                  : 'bg-white/5 backdrop-blur-md text-muted-foreground hover:text-foreground border border-white/10 hover:border-primary/30'
+                  ? 'bg-foreground text-background'
+                  : 'bg-white/5 backdrop-blur-md text-muted-foreground hover:text-foreground border border-white/10 hover:border-white/20'
               }`}
             >
               {cat === 'all' ? t('blog.all') : cat}
@@ -92,16 +91,13 @@ const Blog = () => {
 
       {/* CTA full bleed */}
       <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10">
-        <VideoBackground src="/videos/purple-cloud.mp4" opacity={0.5} />
-        <div className="absolute inset-0 z-0"
-          style={{ background: 'radial-gradient(ellipse at center, rgba(10,4,24,0.55) 0%, rgba(10,4,24,0.95) 70%)' }} />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-10">
             <span className="text-foreground">{t('blog.ctaTitle')}</span>
           </h2>
           <Link to="/contact"
-            className="gradient-primary text-white font-medium px-10 py-4 rounded-full inline-flex items-center gap-2 text-lg hover:opacity-90 hover:scale-105 transition-all">
+            className="bg-foreground text-background font-medium px-10 py-4 rounded-lg inline-flex items-center gap-2 text-lg hover:opacity-90 transition-all">
             {t('blog.ctaButton')} <ArrowUpRight className="w-5 h-5" />
           </Link>
         </ScrollReveal>
@@ -116,7 +112,7 @@ function FeaturedCard({ post, isEn }: { post: BlogPostRow; isEn: boolean }) {
 
   return (
     <Link to={`/blog/${post.slug}`} className="block h-full">
-      <div className="relative h-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm group transition-all duration-500 hover:border-primary/40">
+      <div className="relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm group transition-all duration-500 hover:border-white/25">
         {post.cover_image && (
           <div className="relative aspect-[16/9] overflow-hidden">
             <img src={post.cover_image} alt={title} loading="lazy"
@@ -157,7 +153,7 @@ function PostCard({ post, isEn }: { post: BlogPostRow; isEn: boolean }) {
 
   return (
     <Link to={`/blog/${post.slug}`} className="block h-full">
-      <div className="relative h-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm group transition-all duration-500 hover:border-primary/40">
+      <div className="relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm group transition-all duration-500 hover:border-white/25">
         {post.cover_image && (
           <div className="relative aspect-[16/10] overflow-hidden">
             <img src={post.cover_image} alt={title} loading="lazy"

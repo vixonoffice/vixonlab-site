@@ -26,49 +26,49 @@ html {
 
 @layer base {
   :root {
-    --background: 243 40% 13%;
-    --background-secondary: 243 36% 18%;
-    --background-alt: 243 36% 16%;
-    --foreground: 240 33% 97%;
+    --background: 240 8% 5%;
+    --background-secondary: 240 7% 8%;
+    --background-alt: 240 7% 7%;
+    --foreground: 240 5% 96%;
 
-    --card: 248 38% 24%;
-    --card-foreground: 240 33% 97%;
-    --card-hover: 253 43% 29%;
+    --card: 240 6% 9%;
+    --card-foreground: 240 5% 96%;
+    --card-hover: 240 6% 12%;
 
-    --popover: 248 38% 24%;
-    --popover-foreground: 240 33% 97%;
+    --popover: 240 6% 9%;
+    --popover-foreground: 240 5% 96%;
 
-    --primary: 263 83% 58%;
+    --primary: 252 56% 57%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 263 80% 50%;
-    --primary-light: 258 75% 87%;
+    --primary-dark: 252 45% 50%;
+    --primary-light: 249 100% 84%;
 
-    --secondary: 243 36% 18%;
-    --secondary-foreground: 240 33% 97%;
+    --secondary: 240 7% 8%;
+    --secondary-foreground: 240 5% 96%;
 
-    --accent: 330 81% 60%;
+    --accent: 252 56% 57%;
     --accent-foreground: 0 0% 100%;
 
-    --muted: 243 36% 18%;
-    --muted-foreground: 240 15% 82%;
+    --muted: 240 7% 8%;
+    --muted-foreground: 240 6% 68%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 100% / 0.06;
-    --input: 0 0% 100% / 0.06;
-    --ring: 263 83% 58%;
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.1;
+    --ring: 252 56% 57%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 243 40% 13%;
-    --sidebar-foreground: 240 33% 97%;
-    --sidebar-primary: 263 83% 58%;
+    --sidebar-background: 240 8% 5%;
+    --sidebar-foreground: 240 5% 96%;
+    --sidebar-primary: 252 56% 57%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 243 36% 18%;
-    --sidebar-accent-foreground: 240 33% 97%;
-    --sidebar-border: 0 0% 100% / 0.06;
-    --sidebar-ring: 263 83% 58%;
+    --sidebar-accent: 240 7% 8%;
+    --sidebar-accent-foreground: 240 5% 96%;
+    --sidebar-border: 0 0% 100% / 0.08;
+    --sidebar-ring: 252 56% 57%;
   }
 }
 
@@ -87,47 +87,29 @@ html {
 }
 
 @layer utilities {
+  /* Kept as no-op for back-compat; the site no longer uses ambient color glows. */
   .ambient-glow::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 600px 500px at 100% -5%, hsl(263 83% 58% / 0.12) 0%, transparent 70%),
-      radial-gradient(ellipse 500px 400px at -10% 40%, hsl(330 81% 60% / 0.09) 0%, transparent 70%),
-      radial-gradient(ellipse 350px 300px at 75% 80%, hsl(263 83% 58% / 0.07) 0%, transparent 70%);
+    content: none;
   }
 
+  /* Former gradient headline accent — now a quiet two-tone (solid, fully legible). */
   .gradient-text {
-    /* color: primary-light keeps contrast ratio ~8:1 for Lighthouse/accessibility checks */
-    /* -webkit-text-fill-color: transparent overrides visual rendering to show gradient */
-    color: hsl(var(--primary-light));
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-image: linear-gradient(135deg, hsl(258 90% 76%), hsl(330 81% 60%));
+    color: hsl(240 5% 62%);
   }
 
   .gradient-primary {
-    background-image: linear-gradient(135deg, hsl(263 83% 58%), hsl(330 81% 60%));
+    background-color: hsl(var(--primary));
   }
 
   .glass-card {
-    background-color: rgb(25, 23, 52);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    @apply rounded-2xl transition-all duration-300;
+    background-color: hsl(var(--card));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    @apply rounded-xl transition-colors duration-200;
   }
 
   .glass-card:hover {
-    border-color: hsl(263 83% 58% / 0.4);
-    background-color: rgb(29, 27, 60);
-  }
-
-  @media (min-width: 769px) {
-    .glass-card:hover {
-      transform: translateY(-2px);
-    }
+    border-color: rgba(255, 255, 255, 0.16);
+    background-color: hsl(var(--card-hover));
   }
 
   .section-padding {
@@ -139,13 +121,7 @@ html {
   }
 
   .dot-green {
-    @apply w-2 h-2 rounded-full bg-green-400;
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.3); }
+    @apply w-2 h-2 rounded-full bg-emerald-400;
   }
 
   @keyframes scroll-indicator {

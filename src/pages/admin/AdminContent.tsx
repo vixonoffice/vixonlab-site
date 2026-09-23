@@ -77,7 +77,7 @@ const AdminContent = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <h1 className="font-heading font-bold text-xl sm:text-2xl text-foreground">Conținut site</h1>
         {Object.keys(edited).length > 0 && (
-          <Button onClick={handleSave} size="sm" className="gradient-primary text-white border-0 rounded-2xl self-start">
+          <Button onClick={handleSave} size="sm" className="bg-foreground text-background border-0 rounded-2xl self-start">
             <Save className="w-4 h-4 mr-2" /> Salvează ({Object.keys(edited).length})
           </Button>
         )}
@@ -89,7 +89,7 @@ const AdminContent = () => {
             key={s.id}
             onClick={() => setActiveSection(s.id)}
             className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-              activeSection === s.id ? 'gradient-primary text-white' : 'bg-white/5 text-muted-foreground hover:text-foreground border border-white/10'
+              activeSection === s.id ? 'bg-foreground text-background' : 'bg-white/5 text-muted-foreground hover:text-foreground border border-white/10'
             }`}
           >
             {s.label}

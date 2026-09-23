@@ -56,7 +56,7 @@ const AdminTech = () => {
           className="bg-white/5 border-white/10 max-w-xs"
           onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
         />
-        <Button onClick={handleAdd} className="gradient-primary text-white border-0 rounded-2xl">
+        <Button onClick={handleAdd} className="bg-foreground text-background border-0 rounded-2xl">
           <Plus className="w-4 h-4 mr-2" /> Adaugă
         </Button>
       </div>

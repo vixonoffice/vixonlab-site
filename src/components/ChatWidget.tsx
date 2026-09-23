@@ -149,7 +149,7 @@ export function ChatWidget() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 24 }}
             onClick={() => setOpen(true)}
-            className="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full gradient-primary text-white flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+            className="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full bg-foreground text-background flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
             style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
             aria-label="Deschide chat"
           >
@@ -218,7 +218,7 @@ export function ChatWidget() {
                       <div
                         className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                           msg.role === 'user'
-                            ? 'gradient-primary text-white rounded-br-sm'
+                            ? 'bg-foreground text-background rounded-br-sm'
                             : 'bg-white/10 text-foreground rounded-bl-sm'
                         }`}
                       >

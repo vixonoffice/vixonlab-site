@@ -234,12 +234,12 @@ const BlogPost = () => {
       <SectionWrapper>
         <ScrollReveal>
           <div className="glass-card p-10 md:p-16 text-center max-w-3xl mx-auto">
-            <h2 className="font-heading font-bold text-3xl md:text-4xl gradient-text mb-4">
+            <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4">
               {isEn ? 'Have a project in mind?' : 'Ai un proiect in minte?'}
             </h2>
             <Link
               to="/contact"
-              className="gradient-primary text-white font-medium px-8 py-3.5 rounded-2xl inline-block hover:opacity-90 transition-opacity"
+              className="bg-foreground text-background font-medium px-8 py-3.5 rounded-2xl inline-block hover:opacity-90 transition-opacity"
             >
               {isEn ? 'Contact Us' : 'Contacteaza-ne'}
             </Link>

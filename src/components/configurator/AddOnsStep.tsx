@@ -63,10 +63,10 @@ export function AddOnsStep({ addons, selectedSlugs, onToggle }: Props) {
                       isPromoActive() ? (
                         <span className="flex items-center gap-1.5 shrink-0">
                           <span className="text-xs text-muted-foreground line-through">{priceLabel}</span>
-                          <span className="text-sm font-bold gradient-text">{discountLabel(priceLabel)}</span>
+                          <span className="text-sm font-bold text-foreground">{discountLabel(priceLabel)}</span>
                         </span>
                       ) : (
-                        <span className="text-sm font-bold gradient-text shrink-0">{priceLabel}</span>
+                        <span className="text-sm font-bold text-foreground shrink-0">{priceLabel}</span>
                       )
                     )}
                   </div>

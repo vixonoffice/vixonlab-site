@@ -5,7 +5,6 @@ import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
 import { Marquee } from '@/components/Marquee';
-import { VideoBackground } from '@/components/VideoBackground';
 import { Ban, DollarSign, Cpu, HeadphonesIcon, ArrowUpRight } from 'lucide-react';
 import { useStats, useTechStack } from '@/hooks/useSupabaseData';
 
@@ -54,7 +53,7 @@ const About = () => {
                 {stats.map((stat, i) => (
                   <ScrollReveal key={stat.id} delay={i * 0.08}>
                     <div className="border-l-2 border-primary/40 pl-4">
-                      <div className="font-heading font-bold text-4xl md:text-5xl gradient-text mb-2 leading-none">
+                      <div className="font-heading font-bold text-4xl md:text-5xl text-foreground mb-2 leading-none">
                         {stat.value}
                       </div>
                       <div className="text-xs uppercase tracking-widest text-muted-foreground">
@@ -77,15 +76,14 @@ const About = () => {
               {t('about.principlesLabel')}
             </p>
             <h2 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl leading-[0.95] mb-16">
-              <span className="gradient-text italic">{t('about.principlesTitle')}</span>
+              <span className="gradient-text">{t('about.principlesTitle')}</span>
             </h2>
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
             {principles.map((p, i) => (
               <ScrollReveal key={p.title} delay={i * 0.1}>
-                <div className="relative h-full group overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.03] to-white/[0.01] backdrop-blur-sm p-8 hover:border-primary/40 transition-all duration-500">
-                  <div className="absolute -top-20 -right-20 w-56 h-56 rounded-full blur-3xl opacity-20 bg-gradient-to-br from-primary to-accent group-hover:opacity-50 transition-opacity duration-700" />
+                <div className="relative h-full group overflow-hidden rounded-2xl border border-white/10 bg-card p-8 hover:border-white/25 transition-all duration-500">
                   <div className="relative">
                     <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
                       <p.icon className="w-7 h-7 text-primary-light" />
@@ -124,16 +122,13 @@ const About = () => {
 
       {/* CTA full bleed */}
       <section className="relative section-padding py-32 md:py-44 overflow-hidden">
-        <VideoBackground src="/videos/purple-cloud.mp4" opacity={0.5} />
-        <div className="absolute inset-0 z-0"
-          style={{ background: 'radial-gradient(ellipse at center, rgba(10,4,24,0.55) 0%, rgba(10,4,24,0.95) 70%)' }} />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-10">
             <span className="text-foreground">{t('about.ctaTitle')}</span>
           </h2>
           <Link to="/contact"
-            className="gradient-primary text-white font-medium px-10 py-4 rounded-full inline-flex items-center gap-2 text-lg hover:opacity-90 hover:scale-105 transition-all">
+            className="bg-foreground text-background font-medium px-10 py-4 rounded-lg inline-flex items-center gap-2 text-lg hover:opacity-90 transition-all">
             {t('about.ctaButton')} <ArrowUpRight className="w-5 h-5" />
           </Link>
         </ScrollReveal>

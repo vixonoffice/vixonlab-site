@@ -72,7 +72,7 @@ const ResetPassword = () => {
         <div className="text-center mb-8">
           <h1 className="font-heading font-bold text-3xl text-foreground mb-2">
             <span>VIXON</span>
-            <span className="gradient-text">&nbsp;LAB</span>
+            <span className="text-primary-light">&nbsp;LAB</span>
           </h1>
           <p className="text-muted-foreground">Setează o parolă nouă</p>
         </div>
@@ -108,7 +108,7 @@ const ResetPassword = () => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full gradient-primary text-white border-0 rounded-2xl"
+              className="w-full bg-foreground text-background border-0 rounded-2xl"
             >
               {isLoading ? 'Se procesează...' : 'Schimbă parola'}
             </Button>

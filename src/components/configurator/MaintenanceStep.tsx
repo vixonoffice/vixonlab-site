@@ -50,7 +50,7 @@ export function MaintenanceStep({ plans, selectedId, onSelect }: Props) {
               >
                 {plan.is_popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="gradient-primary text-white text-xs font-medium px-4 py-1 rounded-full">
+                    <span className="bg-foreground text-background text-xs font-medium px-4 py-1 rounded-lg">
                       {t('sp.recommended')}
                     </span>
                   </div>
@@ -59,13 +59,13 @@ export function MaintenanceStep({ plans, selectedId, onSelect }: Props) {
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
                     {Icon && (
-                      <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+                      <div className={`w-9 h-9 rounded-lg bg-white/[0.05] border border-white/10 flex items-center justify-center`}>
                         <Icon className="w-4 h-4 text-white" />
                       </div>
                     )}
                     <div>
                       <h3 className="font-heading font-bold text-foreground">{name}</h3>
-                      <p className="font-heading font-bold text-lg gradient-text">{price}</p>
+                      <p className="font-heading font-bold text-lg text-foreground">{price}</p>
                     </div>
                   </div>
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all shrink-0 ${

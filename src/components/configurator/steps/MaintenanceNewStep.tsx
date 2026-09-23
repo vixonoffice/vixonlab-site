@@ -81,13 +81,13 @@ export function MaintenanceNewStep({ state, setField, lang, plans }: Props) {
                   {showPromo ? (
                     <div className="flex flex-col items-end gap-0.5">
                       <span className="text-xs text-muted-foreground line-through">{price}&euro;</span>
-                      <div className={`font-bold text-lg ${selected ? 'text-primary-light' : 'gradient-text'}`}>
+                      <div className={`font-bold text-lg ${selected ? 'text-primary-light' : 'text-foreground'}`}>
                         {promoPrice}&euro;
                       </div>
                       <span className="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full font-bold">-30%</span>
                     </div>
                   ) : (
-                    <div className={`font-bold text-lg ${selected ? 'text-primary-light' : 'gradient-text'}`}>
+                    <div className={`font-bold text-lg ${selected ? 'text-primary-light' : 'text-foreground'}`}>
                       {price === '0' ? (isRo ? 'Gratuit' : 'Free') : `${price}\u20AC`}
                     </div>
                   )}

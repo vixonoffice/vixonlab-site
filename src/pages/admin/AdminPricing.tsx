@@ -176,7 +176,7 @@ const AdminPricing = () => {
             <Label>{isPackage ? 'Marcat ca "Popular"' : editing.plan_type === 'maintenance' ? 'Marcat ca "Recomandat"' : 'Evidențiat'}</Label>
           </div>
           <div className="space-y-2"><Label>Ordine sortare</Label><Input type="number" value={editing.sort_order} onChange={(e) => setEditing({ ...editing, sort_order: parseInt(e.target.value) || 0 })} className="bg-white/5 border-white/10 w-24" /></div>
-          <Button onClick={handleSave} className="gradient-primary text-white border-0 rounded-2xl"><Save className="w-4 h-4 mr-2" /> Salvează</Button>
+          <Button onClick={handleSave} className="bg-foreground text-background border-0 rounded-2xl"><Save className="w-4 h-4 mr-2" /> Salvează</Button>
         </div>
       </div>
     );
@@ -187,7 +187,7 @@ const AdminPricing = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <h1 className="font-heading font-bold text-xl sm:text-2xl text-foreground">Configurator Prețuri</h1>
         <div className="flex gap-2 flex-wrap">
-          <Button onClick={() => newItem('package')} size="sm" className="gradient-primary text-white border-0 rounded-2xl">
+          <Button onClick={() => newItem('package')} size="sm" className="bg-foreground text-background border-0 rounded-2xl">
             <Package className="w-4 h-4 mr-1" /> Pachet nou
           </Button>
           <Button onClick={() => newItem('addon')} size="sm" variant="outline" className="rounded-2xl border-white/10">

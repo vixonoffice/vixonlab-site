@@ -50,7 +50,7 @@ export function Navbar() {
             <img src="/logo-nav.webp" alt="Vixon Lab" className="h-7 w-7 object-contain" width="28" height="28" />
             <span className="text-base font-bold font-heading tracking-tight">
               <span className="text-foreground">VIXON</span>
-              <span className="gradient-text">LAB</span>
+              <span className="text-primary-light">LAB</span>
             </span>
           </Link>
 
@@ -100,7 +100,7 @@ export function Navbar() {
 
             <Link
               to="/contact"
-              className="gradient-primary text-white text-sm font-medium pl-5 pr-2 py-2 rounded-full hover:opacity-90 hover:scale-105 transition-all inline-flex items-center gap-2"
+              className="bg-foreground text-background text-sm font-medium pl-5 pr-2 py-2 rounded-lg hover:opacity-90 transition-all inline-flex items-center gap-2"
             >
               {t('nav.contact')}
               <span className="bg-white/20 rounded-full p-1.5">
@@ -141,7 +141,7 @@ export function Navbar() {
             key={link.path}
             to={link.path}
             className={`text-4xl md:text-5xl font-heading font-bold transition-colors ${
-              location.pathname === link.path ? 'gradient-text italic' : 'text-foreground hover:text-primary-light'
+              location.pathname === link.path ? 'text-primary-light' : 'text-foreground hover:text-primary-light'
             }`}
             style={{ transitionDelay: `${i * 30}ms` }}
           >
@@ -150,7 +150,7 @@ export function Navbar() {
         ))}
         <Link
           to="/contact"
-          className="gradient-primary text-white text-lg font-medium px-8 py-3.5 rounded-full mt-4 inline-flex items-center gap-2"
+          className="bg-foreground text-background text-lg font-medium px-8 py-3.5 rounded-lg mt-4 inline-flex items-center gap-2"
         >
           {t('nav.contact')} <ArrowUpRight className="w-4 h-4" />
         </Link>

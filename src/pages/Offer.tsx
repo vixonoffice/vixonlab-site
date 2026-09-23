@@ -3,7 +3,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
-import { VideoBackground } from '@/components/VideoBackground';
 import {
   Check, MessageCircle, Sparkles, ArrowUpRight, ArrowRight,
   Wallet, Edit3, Code2, ShieldOff,
@@ -53,15 +52,12 @@ const Offer = () => {
     <PageTransition>
       {/* HERO */}
       <section className="relative pt-32 md:pt-44 pb-20 md:pb-32 overflow-hidden">
-        <VideoBackground src="/videos/purple-cloud.mp4" opacity={0.35} />
-        <div className="absolute inset-0 z-0"
-          style={{ background: 'radial-gradient(ellipse at top, rgba(124,58,237,0.15) 0%, rgba(10,4,24,0.0) 50%), linear-gradient(to bottom, rgba(10,4,24,0.0), rgba(10,4,24,0.85))' }} />
 
         <div className="relative z-10 section-padding">
           <div className="mx-auto max-w-content text-center">
             <ScrollReveal>
               <div className="inline-flex items-center gap-2 rounded-full bg-red-500/10 border border-red-500/30 px-5 py-2 mb-8">
-                <Sparkles className="w-4 h-4 text-red-300 animate-pulse" />
+                <Sparkles className="w-4 h-4 text-red-300" />
                 <span className="text-sm font-semibold text-red-300">{t('offer.badge')}</span>
               </div>
             </ScrollReveal>
@@ -70,7 +66,7 @@ const Offer = () => {
               <h1 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-6">
                 <span className="text-foreground">{t('offer.title1')}</span>
                 <br />
-                <span className="gradient-text italic">{t('offer.title2')}</span>
+                <span className="gradient-text">{t('offer.title2')}</span>
               </h1>
             </ScrollReveal>
 
@@ -85,7 +81,7 @@ const Offer = () => {
                 <a
                   href={mainWaUrl}
                   target="_blank" rel="noopener noreferrer"
-                  className="gradient-primary text-white font-semibold px-10 py-4 rounded-full inline-flex items-center gap-3 text-lg hover:opacity-90 hover:scale-105 transition-all shadow-[0_0_40px_-10px_rgba(124,58,237,0.6)]"
+                  className="bg-foreground text-background font-semibold px-10 py-4 rounded-lg inline-flex items-center gap-3 text-lg hover:opacity-90 transition-all"
                 >
                   <MessageCircle className="w-5 h-5" />
                   {t('offer.cta')}
@@ -93,7 +89,7 @@ const Offer = () => {
                 </a>
                 <Link
                   to="/pricing"
-                  className="border border-white/15 bg-white/5 backdrop-blur-md text-foreground font-medium px-8 py-4 rounded-full inline-flex items-center gap-2 hover:bg-white/10 hover:border-primary/40 transition-all"
+                  className="border border-white/15 bg-white/5 backdrop-blur-md text-foreground font-medium px-8 py-4 rounded-lg inline-flex items-center gap-2 hover:bg-white/10 hover:border-white/25 transition-all"
                 >
                   {t('offer.ctaSecondary')}
                   <ArrowRight className="w-4 h-4" />
@@ -123,20 +119,20 @@ const Offer = () => {
                   <a
                     href={buildTierWaUrl(tier.key, 'annual', language as 'ro' | 'en')}
                     target="_blank" rel="noopener noreferrer"
-                    className={`block rounded-2xl border p-5 transition-all hover:scale-[1.02] backdrop-blur-md ${
+                    className={`block rounded-2xl border p-5 transition-all backdrop-blur-md ${
                       tier.popular
-                        ? 'border-primary/50 bg-gradient-to-b from-primary/15 via-white/[0.05] to-white/[0.03] shadow-[0_0_30px_-10px_rgba(124,58,237,0.4)]'
-                        : 'border-white/15 bg-gradient-to-b from-white/[0.08] to-white/[0.03] hover:border-primary/40'
+                        ? 'border-primary-light/40 bg-card-hover'
+                        : 'border-white/15 bg-card hover:border-white/25'
                     }`}
                   >
                     {tier.popular && (
-                      <span className="inline-block mb-2 px-2 py-0.5 rounded-full gradient-primary text-white text-[10px] font-bold uppercase tracking-wider">
+                      <span className="inline-block mb-2 px-2 py-0.5 rounded-full bg-foreground text-background text-[10px] font-bold uppercase tracking-wider">
                         {t('tier.popular')}
                       </span>
                     )}
                     <div className="font-heading font-bold text-lg text-foreground mb-1">{name}</div>
                     <div className="flex items-baseline gap-1 mb-1">
-                      <span className="font-heading font-bold text-3xl gradient-text leading-none">{tier.monthlyEur}€</span>
+                      <span className="font-heading font-bold text-3xl text-foreground leading-none">{tier.monthlyEur}€</span>
                       <span className="text-xs text-muted-foreground">{t('tier.month')}</span>
                     </div>
                     <div className="text-[11px] text-green-400 mb-3">
@@ -167,7 +163,7 @@ const Offer = () => {
               const Icon = b.icon;
               return (
                 <ScrollReveal key={i} delay={(i % 2) * 0.08}>
-                  <div className="h-full rounded-3xl border border-white/15 bg-gradient-to-b from-white/[0.08] to-white/[0.03] backdrop-blur-md p-7 hover:border-primary/40 transition-colors">
+                  <div className="h-full rounded-2xl border border-white/15 bg-card p-7 hover:border-white/25 transition-colors">
                     <div className={`inline-flex w-12 h-12 rounded-2xl border items-center justify-center mb-5 ${b.color}`}>
                       <Icon className="w-6 h-6" />
                     </div>
@@ -195,8 +191,8 @@ const Offer = () => {
               const Icon = s.icon;
               return (
                 <ScrollReveal key={i} delay={i * 0.06}>
-                  <div className="h-full rounded-3xl border border-white/15 bg-gradient-to-b from-white/[0.08] to-white/[0.03] backdrop-blur-md p-7 text-center">
-                    <div className="inline-flex w-14 h-14 rounded-full gradient-primary items-center justify-center mb-5 mx-auto shadow-[0_0_30px_-5px_rgba(124,58,237,0.6)]">
+                  <div className="h-full rounded-2xl border border-white/15 bg-card p-7 text-center">
+                    <div className="inline-flex w-14 h-14 rounded-full gradient-primary items-center justify-center mb-5 mx-auto">
                       <Icon className="w-7 h-7 text-white" />
                     </div>
                     <h3 className="font-heading font-bold text-lg text-foreground mb-3">{s.title}</h3>
@@ -219,7 +215,7 @@ const Offer = () => {
             <p className="text-muted-foreground mb-8">{t('offer.proofSubtitle')}</p>
             <Link
               to="/portfolio"
-              className="inline-flex items-center gap-2 text-sm text-foreground border border-white/15 bg-white/5 backdrop-blur-md rounded-full px-6 py-3 hover:bg-primary/10 hover:border-primary/40 transition-all"
+              className="inline-flex items-center gap-2 text-sm text-foreground border border-white/15 bg-white/5 backdrop-blur-md rounded-lg px-6 py-3 hover:bg-primary/10 hover:border-white/25 transition-all"
             >
               {isRo ? 'Vezi portofoliul' : 'See portfolio'}
               <ArrowUpRight className="w-4 h-4" />
@@ -230,14 +226,11 @@ const Offer = () => {
 
       {/* FINAL CTA */}
       <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10">
-        <VideoBackground src="/videos/purple-cloud.mp4" opacity={0.5} />
-        <div className="absolute inset-0 z-0"
-          style={{ background: 'radial-gradient(ellipse at center, rgba(10,4,24,0.55) 0%, rgba(10,4,24,0.95) 70%)' }} />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-8">
             <span className="text-foreground">{t('offer.finalCtaTitle1')} </span>
-            <span className="gradient-text italic">{t('offer.finalCtaTitle2')}</span>
+            <span className="gradient-text">{t('offer.finalCtaTitle2')}</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
             {t('offer.finalCtaSubtitle')}
@@ -245,7 +238,7 @@ const Offer = () => {
           <a
             href={mainWaUrl}
             target="_blank" rel="noopener noreferrer"
-            className="gradient-primary text-white font-semibold px-10 py-4 rounded-full inline-flex items-center gap-3 text-lg hover:opacity-90 hover:scale-105 transition-all shadow-[0_0_40px_-10px_rgba(124,58,237,0.6)]"
+            className="bg-foreground text-background font-semibold px-10 py-4 rounded-lg inline-flex items-center gap-3 text-lg hover:opacity-90 transition-all"
           >
             <MessageCircle className="w-5 h-5" />
             {t('offer.finalCtaButton')}

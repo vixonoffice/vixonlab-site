@@ -366,7 +366,7 @@ const AdminBlog = () => {
 
           <Button
             onClick={handleSave}
-            className="gradient-primary text-white border-0 rounded-2xl"
+            className="bg-foreground text-background border-0 rounded-2xl"
           >
             <Save className="w-4 h-4 mr-2" /> Salveaza
           </Button>
@@ -383,7 +383,7 @@ const AdminBlog = () => {
         <Button
           onClick={newPost}
           size="sm"
-          className="gradient-primary text-white border-0 rounded-2xl self-start"
+          className="bg-foreground text-background border-0 rounded-2xl self-start"
         >
           <Plus className="w-4 h-4 mr-2" /> Articol nou
         </Button>

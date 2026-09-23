@@ -78,7 +78,7 @@ const AdminProcess = () => {
             <div className="space-y-2"><Label>Descriere (RO)</Label><Textarea value={editing.description_ro} onChange={(e) => setEditing({ ...editing, description_ro: e.target.value })} className="bg-white/5 border-white/10" /></div>
             <div className="space-y-2"><Label>Descriere (EN)</Label><Textarea value={editing.description_en} onChange={(e) => setEditing({ ...editing, description_en: e.target.value })} className="bg-white/5 border-white/10" /></div>
           </div>
-          <Button onClick={handleSave} className="gradient-primary text-white border-0 rounded-2xl"><Save className="w-4 h-4 mr-2" /> Salvează</Button>
+          <Button onClick={handleSave} className="bg-foreground text-background border-0 rounded-2xl"><Save className="w-4 h-4 mr-2" /> Salvează</Button>
         </div>
       </div>
     );
@@ -88,7 +88,7 @@ const AdminProcess = () => {
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <h1 className="font-heading font-bold text-xl sm:text-2xl text-foreground">Pași proces</h1>
-        <Button size="sm" onClick={() => setEditing({ id: `new-${Date.now()}`, sort_order: items.length, step_number: `0${items.length + 1}`, title_ro: '', title_en: '', description_ro: '', description_en: '' })} className="gradient-primary text-white border-0 rounded-2xl self-start"><Plus className="w-4 h-4 mr-2" /> Pas nou</Button>
+        <Button size="sm" onClick={() => setEditing({ id: `new-${Date.now()}`, sort_order: items.length, step_number: `0${items.length + 1}`, title_ro: '', title_en: '', description_ro: '', description_en: '' })} className="bg-foreground text-background border-0 rounded-2xl self-start"><Plus className="w-4 h-4 mr-2" /> Pas nou</Button>
       </div>
       <div className="space-y-3">
         {items.map((s) => (

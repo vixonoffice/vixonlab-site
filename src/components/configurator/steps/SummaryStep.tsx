@@ -216,7 +216,7 @@ export function SummaryStep({ state, setField, lang, whatsappUrl, budgetOptions,
         onClick={(e) => { if (!canSubmit) e.preventDefault(); }}
         className={`w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-bold text-lg transition-all ${
           canSubmit
-            ? 'bg-[#25D366] hover:bg-[#20BD5A] text-white hover:scale-[1.02] cursor-pointer'
+            ? 'bg-[#25D366] hover:bg-[#20BD5A] text-white cursor-pointer'
             : 'bg-white/10 text-muted-foreground cursor-not-allowed'
         }`}
       >

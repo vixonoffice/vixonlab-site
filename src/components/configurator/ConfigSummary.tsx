@@ -50,7 +50,7 @@ export function ConfigSummary({ summaryLines, totalPrice, monthlyPrice, whatsapp
           <span className="font-heading font-bold text-foreground">
             {language === 'ro' ? 'Total unic' : 'One-time total'}
           </span>
-          <span className="font-heading font-bold text-2xl gradient-text">{totalPrice}€</span>
+          <span className="font-heading font-bold text-2xl text-foreground">{totalPrice}€</span>
         </div>
         {monthlyPrice > 0 && (
           <div className="flex items-center justify-between mt-1">
@@ -68,7 +68,7 @@ export function ConfigSummary({ summaryLines, totalPrice, monthlyPrice, whatsapp
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold py-4 rounded-2xl text-lg transition-all hover:scale-[1.02]"
+        className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold py-4 rounded-2xl text-lg transition-all"
       >
         <MessageCircle className="w-5 h-5" />
         {t('sp.sendWhatsapp')}

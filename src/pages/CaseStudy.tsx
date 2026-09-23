@@ -64,7 +64,7 @@ const CaseStudy = () => {
           <div className="flex flex-wrap gap-4 mb-6">
             <div className="inline-flex items-center gap-2 glass-card px-4 py-2.5">
               <span className="text-sm text-muted-foreground">{isEn ? 'Value:' : 'Valoare:'}</span>
-              <span className="font-heading font-bold text-base gradient-text">{cs.price}</span>
+              <span className="font-heading font-bold text-base text-foreground">{cs.price}</span>
             </div>
             <div className="inline-flex items-center gap-2 glass-card px-4 py-2.5">
               <Clock className="w-4 h-4 text-muted-foreground" />
@@ -90,7 +90,7 @@ const CaseStudy = () => {
               href={project.live_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-6 gradient-primary text-white font-medium px-6 py-3 rounded-2xl hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 mt-6 bg-foreground text-background font-medium px-6 py-3 rounded-2xl hover:opacity-90 transition-opacity"
             >
               <ExternalLink className="w-4 h-4" />
               {isEn ? 'Visit Live Site' : 'Vezi Site-ul Live'}
@@ -144,7 +144,7 @@ const CaseStudy = () => {
       {/* Results */}
       <SectionWrapper>
         <ScrollReveal>
-          <h2 className="font-heading font-bold text-2xl md:text-3xl gradient-text text-center mb-10">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground text-center mb-10">
             {isEn ? 'Results' : 'Rezultate'}
           </h2>
         </ScrollReveal>
@@ -152,7 +152,7 @@ const CaseStudy = () => {
           {cs.results.map((r, i) => (
             <ScrollReveal key={i}>
               <div className="glass-card p-6 text-center">
-                <div className="font-heading font-bold text-3xl md:text-4xl gradient-text mb-2">{r.value}</div>
+                <div className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">{r.value}</div>
                 <div className="text-sm text-muted-foreground">{isEn ? r.labelEn : r.label}</div>
               </div>
             </ScrollReveal>
@@ -255,7 +255,7 @@ const CaseStudy = () => {
       <SectionWrapper>
         <ScrollReveal>
           <div className="glass-card p-10 md:p-16 text-center max-w-3xl mx-auto">
-            <h2 className="font-heading font-bold text-3xl md:text-4xl gradient-text mb-4">
+            <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4">
               {isEn ? 'Have a Similar Project?' : 'Ai un proiect similar?'}
             </h2>
             <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
@@ -265,7 +265,7 @@ const CaseStudy = () => {
             </p>
             <Link
               to="/contact"
-              className="gradient-primary text-white font-medium px-8 py-3.5 rounded-2xl inline-block hover:opacity-90 transition-opacity"
+              className="bg-foreground text-background font-medium px-8 py-3.5 rounded-2xl inline-block hover:opacity-90 transition-opacity"
             >
               {isEn ? 'Contact Us' : 'Contacteaza-ne'}
             </Link>

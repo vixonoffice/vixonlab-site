@@ -7,18 +7,13 @@ export function Footer() {
 
   return (
     <footer className="relative border-t border-white/10 mt-32 overflow-hidden">
-      {/* subtle gradient */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-50"
-        style={{ background: 'radial-gradient(ellipse 800px 400px at 50% 0%, hsl(263 83% 58% / 0.15) 0%, transparent 70%)' }}
-      />
 
       <div className="relative mx-auto max-w-content section-padding pt-20 md:pt-28 pb-10">
         {/* ─── Massive brand mark ─── */}
         <div className="mb-16">
           <h2 className="font-heading font-bold text-[15vw] md:text-[14vw] leading-[0.85] tracking-tight">
             <span className="text-foreground">VIXON</span>
-            <span className="gradient-text italic">LAB</span>
+            <span className="text-primary-light">LAB</span>
           </h2>
         </div>
 

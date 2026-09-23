@@ -6,7 +6,6 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { Marquee } from '@/components/Marquee';
-import { VideoBackground } from '@/components/VideoBackground';
 import {
   ChevronDown, Star, ArrowUpRight,
   Utensils, Scissors, HeartPulse, Dumbbell, ShoppingBag, Scale, Car, Home, Laptop, Camera,
@@ -47,13 +46,7 @@ const Index = () => {
     <PageTransition>
       {/* ────── HERO ────── */}
       <section className="relative min-h-screen flex items-end section-padding pb-24 md:pb-32 pt-32 overflow-hidden">
-        <VideoBackground src="/videos/purple-ink-slow.mp4" />
 
-        {/* Stronger dark overlay to guarantee text readability through any video frame */}
-        <div className="absolute inset-0 z-0"
-          style={{ background: 'linear-gradient(180deg, rgba(10,4,24,0.85) 0%, rgba(10,4,24,0.65) 40%, rgba(10,4,24,0.95) 100%)' }} />
-        <div className="absolute inset-0 z-0 md:hidden"
-          style={{ background: 'rgba(10,4,24,0.25)' }} />
 
         <div className="relative z-10 mx-auto max-w-content w-full">
           <motion.div
@@ -73,7 +66,7 @@ const Index = () => {
               className="font-heading font-bold text-5xl sm:text-6xl md:text-[8vw] leading-[0.9] tracking-tight mb-8 -ml-1"
             >
               <span className="block text-foreground">{t('hero.title1')}</span>
-              <span className="block gradient-text italic">{t('hero.title2')}</span>
+              <span className="block gradient-text">{t('hero.title2')}</span>
             </motion.h1>
 
             <motion.div
@@ -85,11 +78,11 @@ const Index = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 shrink-0">
                 <Link to="/services"
-                  className="gradient-primary text-white font-medium px-7 py-3.5 rounded-full text-center hover:opacity-90 hover:scale-105 transition-all inline-flex items-center justify-center gap-2">
+                  className="bg-foreground text-background font-medium px-7 py-3.5 rounded-lg text-center hover:opacity-90 transition-all inline-flex items-center justify-center gap-2">
                   {t('hero.cta1')} <ArrowUpRight className="w-4 h-4" />
                 </Link>
                 <Link to="/portfolio"
-                  className="backdrop-blur-md border border-white/15 bg-white/5 text-foreground font-medium px-7 py-3.5 rounded-full text-center hover:bg-white/10 hover:scale-105 transition-all">
+                  className="backdrop-blur-md border border-white/15 bg-white/5 text-foreground font-medium px-7 py-3.5 rounded-lg text-center hover:bg-white/10 transition-all">
                   {t('hero.cta2')}
                 </Link>
               </div>
@@ -122,7 +115,7 @@ const Index = () => {
             {stats.map((stat, i) => (
               <ScrollReveal key={stat.id} delay={i * 0.08}>
                 <div className="px-2 md:px-8 text-left">
-                  <div className="font-heading font-bold text-5xl md:text-6xl lg:text-7xl gradient-text mb-3 leading-none">
+                  <div className="font-heading font-bold text-5xl md:text-6xl lg:text-7xl text-foreground mb-3 leading-none">
                     {stat.value}
                   </div>
                   <div className="text-sm md:text-base text-muted-foreground uppercase tracking-widest">
@@ -164,13 +157,12 @@ const Index = () => {
                 <ScrollReveal key={service.id} delay={i * 0.1} className={layouts[i] || 'md:col-span-3'}>
                   <Link
                     to={`/services#${service.anchor || service.id}`}
-                    className="relative group h-full block overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.03] to-white/[0.01] backdrop-blur-sm p-8 hover:border-primary/40 transition-all duration-500"
+                    className="relative group h-full block overflow-hidden rounded-2xl border border-white/10 bg-card p-8 hover:border-white/25 transition-all duration-500"
                   >
-                    <div className={`absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-30 bg-gradient-to-br ${service.icon_gradient} group-hover:opacity-60 transition-opacity duration-700`} />
 
                     <div className="relative h-full flex flex-col justify-between">
-                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.icon_gradient} flex items-center justify-center mb-6`}>
-                        <Icon className="w-7 h-7 text-white" />
+                      <div className={`w-14 h-14 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center mb-6`}>
+                        <Icon className="w-6 h-6 text-primary-light" />
                       </div>
 
                       <div>
@@ -204,11 +196,11 @@ const Index = () => {
               <h2 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[1.05]">
                 <span className="text-foreground">{t('why.title')}.</span>
                 <br />
-                <span className="gradient-text italic">{t('why.fast.title')}.</span>
+                <span className="gradient-text">{t('why.fast.title')}.</span>
                 <br />
-                <span className="gradient-text italic">{t('why.clean.title')}.</span>
+                <span className="gradient-text">{t('why.clean.title')}.</span>
                 <br />
-                <span className="gradient-text italic">{t('why.support.title')}.</span>
+                <span className="gradient-text">{t('why.support.title')}.</span>
               </h2>
             </ScrollReveal>
 
@@ -245,9 +237,9 @@ const Index = () => {
           <div className="space-y-2">
             {steps.map((item, i) => (
               <ScrollReveal key={item.id} delay={i * 0.08}>
-                <div className="grid grid-cols-12 gap-6 items-baseline py-8 border-t border-white/10 group hover:border-primary/30 transition-colors">
+                <div className="grid grid-cols-12 gap-6 items-baseline py-8 border-t border-white/10 group hover:border-white/20 transition-colors">
                   <div className="col-span-12 md:col-span-2">
-                    <span className="font-heading font-bold text-7xl md:text-8xl gradient-text leading-none">
+                    <span className="font-heading font-bold text-7xl md:text-8xl text-foreground leading-none">
                       {String(item.step_number).padStart(2, '0')}
                     </span>
                   </div>
@@ -298,7 +290,7 @@ const Index = () => {
                       "{language === 'en' ? item.quote_en : item.quote_ro}"
                     </blockquote>
                     <div className="flex items-center justify-center gap-4">
-                      <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${item.avatar_gradient} flex items-center justify-center text-white font-heading font-bold text-lg`}>
+                      <div className={`w-14 h-14 rounded-full bg-white/[0.08] border border-white/10 flex items-center justify-center text-foreground font-heading font-bold text-lg`}>
                         {item.author_initial}
                       </div>
                       <div className="text-left">
@@ -329,9 +321,6 @@ const Index = () => {
 
       {/* ────── FINAL CTA — FULL BLEED VIDEO ────── */}
       <section className="relative section-padding py-32 md:py-48 overflow-hidden border-t border-white/10">
-        <VideoBackground src="/videos/purple-cloud.mp4" opacity={0.5} />
-        <div className="absolute inset-0 z-0"
-          style={{ background: 'radial-gradient(ellipse at center, rgba(10,4,24,0.55) 0%, rgba(10,4,24,0.95) 70%)' }} />
 
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-8">
@@ -341,7 +330,7 @@ const Index = () => {
             {t('cta.subtitle')}
           </p>
           <Link to="/contact"
-            className="gradient-primary text-white font-medium px-10 py-4 rounded-full inline-flex items-center gap-2 text-lg hover:opacity-90 hover:scale-105 transition-all">
+            className="bg-foreground text-background font-medium px-10 py-4 rounded-lg inline-flex items-center gap-2 text-lg hover:opacity-90 transition-all">
             {t('cta.button')} <ArrowUpRight className="w-5 h-5" />
           </Link>
         </ScrollReveal>

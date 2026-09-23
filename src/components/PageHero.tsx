@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { VideoBackground } from './VideoBackground';
 
 interface PageHeroProps {
   badge: string;
@@ -16,9 +15,6 @@ export function PageHero({ badge, title, titleAccent, subtitle, videoSrc, childr
     <section className="relative section-padding pt-36 md:pt-44 pb-16 md:pb-24 overflow-hidden">
       {videoSrc && (
         <>
-          <VideoBackground src={videoSrc} opacity={0.5} />
-          <div className="absolute inset-0 z-0"
-            style={{ background: 'linear-gradient(180deg, rgba(10,4,24,0.75) 0%, rgba(10,4,24,0.95) 100%)' }} />
         </>
       )}
 
@@ -44,7 +40,7 @@ export function PageHero({ badge, title, titleAccent, subtitle, videoSrc, childr
             {titleAccent && (
               <>
                 <br />
-                <span className="gradient-text italic">{titleAccent}</span>
+                <span className="gradient-text">{titleAccent}</span>
               </>
             )}
           </motion.h1>
