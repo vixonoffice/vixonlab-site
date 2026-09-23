@@ -72,14 +72,14 @@ const Pricing = () => {
           </button>
           <button
             onClick={() => setBilling('annual')}
-            className={`relative px-5 py-2 rounded-full text-sm font-medium transition-all ${
+            className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all ${
               billing === 'annual'
                 ? 'bg-foreground text-background shadow-lg'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             {t('tier.annual')}
-            <span className="absolute -top-2 -right-2 px-2 py-0.5 rounded-full bg-green-500 text-white text-[10px] font-bold whitespace-nowrap">
+            <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold whitespace-nowrap">
               {t('tier.annualBadge')}
             </span>
           </button>

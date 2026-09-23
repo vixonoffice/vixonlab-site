@@ -129,8 +129,8 @@ const Offer = () => {
                       </span>
                     )}
                     <div className="font-heading font-bold text-lg text-foreground mb-1">{name}</div>
+                    {tier.startingFrom && <div className="text-xs text-muted-foreground -mb-0.5">{t('tier.from')}</div>}
                     <div className="flex items-baseline gap-1 mb-1">
-                      {tier.startingFrom && <span className="text-xs text-muted-foreground">{t('tier.from')}</span>}
                       <span className="font-heading font-bold text-3xl text-foreground leading-none">{formatEur(tier.setupEur)}</span>
                     </div>
                     <div className="text-xs text-muted-foreground mb-3">
