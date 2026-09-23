@@ -16,6 +16,29 @@ type Lead = Database['public']['Tables']['leads']['Row'];
 
 const PAGE_SIZE = 50;
 const ALL = 'toate';
+const DAILY_TARGET = 20;
+const SENT_TODAY_KEY = 'vixonlab_leads_sent_today';
+
+function getSentToday(): number {
+  try {
+    const raw = localStorage.getItem(SENT_TODAY_KEY);
+    if (!raw) return 0;
+    const { date, count } = JSON.parse(raw);
+    return date === new Date().toDateString() ? count : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function bumpSentToday(): number {
+  const next = getSentToday() + 1;
+  try {
+    localStorage.setItem(SENT_TODAY_KEY, JSON.stringify({ date: new Date().toDateString(), count: next }));
+  } catch {
+    // localStorage indisponibil — doar afișarea nu va persista, restul funcționează
+  }
+  return next;
+}
 
 const JUDETE = [
   'Alba', 'Arad', 'Arges', 'Bacau', 'Bihor', 'Bistrita-Nasaud', 'Botosani', 'Braila',
@@ -58,11 +81,12 @@ const AdminLeads = () => {
   const queryClient = useQueryClient();
   const [judet, setJudet] = useState(ALL);
   const [categorie, setCategorie] = useState(ALL);
-  const [prioritate, setPrioritate] = useState(ALL);
+  const [prioritate, setPrioritate] = useState('Inalta');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [message, setMessage] = useState('');
+  const [sentToday, setSentToday] = useState(getSentToday);
 
   useEffect(() => {
     setPage(0);
@@ -116,7 +140,11 @@ const AdminLeads = () => {
       'noopener,noreferrer'
     );
     deleteMutation.mutate(lead.id, {
-      onSuccess: () => toast.success(`Mesaj deschis în WhatsApp — ${lead.business_name} șters din listă`),
+      onSuccess: () => {
+        const count = bumpSentToday();
+        setSentToday(count);
+        toast.success(`Mesaj deschis în WhatsApp — ${lead.business_name} șters din listă`);
+      },
     });
   };
 
@@ -128,10 +156,27 @@ const AdminLeads = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
         <h1 className="text-2xl font-heading font-bold text-foreground">Leaduri</h1>
-        <span className="text-sm text-muted-foreground">{total.toLocaleString('ro-RO')} în listă</span>
+        <div className="flex items-center gap-3">
+          <Badge
+            className={
+              sentToday >= DAILY_TARGET
+                ? 'bg-amber-500/20 text-amber-400'
+                : 'bg-emerald-500/20 text-emerald-400'
+            }
+          >
+            Trimise azi: {sentToday} / {DAILY_TARGET}
+          </Badge>
+          <span className="text-sm text-muted-foreground">{total.toLocaleString('ro-RO')} în listă</span>
+        </div>
       </div>
+      {sentToday >= DAILY_TARGET && (
+        <div className="glass-card p-3 mb-4 text-sm text-amber-400 border border-amber-500/30">
+          Ai trecut de {DAILY_TARGET} mesaje azi. Ca să nu riști contul de WhatsApp, cel mai bine e să
+          te oprești aici și să continui mâine — restul leadurilor rămân neatinse, nu dispar.
+        </div>
+      )}
 
       {/* Filtre */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
