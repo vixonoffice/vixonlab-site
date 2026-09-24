@@ -48,12 +48,27 @@ React, TypeScript, Vite, TailwindCSS, Supabase, Vercel, Framer Motion — stack 
 
 const WA_NUMBER = '40779383164';
 const ALLOWED_ORIGINS = ['https://vixonlab.ro', 'https://www.vixonlab.ro'];
+const GEMINI_TIMEOUT_MS = 15_000;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 10;
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
     headers: { 'Content-Type': 'application/json' },
   });
+}
+
+// In-memory per-instance limiter — resets on cold start and isn't shared across edge
+// regions, but it's enough to blunt basic spam/cost abuse for this traffic volume.
+const requestLog = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const timestamps = (requestLog.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+  timestamps.push(now);
+  requestLog.set(ip, timestamps);
+  return timestamps.length > RATE_LIMIT_MAX_REQUESTS;
 }
 
 export default async function handler(req: Request) {
@@ -66,6 +81,11 @@ export default async function handler(req: Request) {
 
   if (req.method !== 'POST') {
     return json({ error: 'Method not allowed' }, 405);
+  }
+
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown';
+  if (isRateLimited(ip)) {
+    return json({ error: 'Too many requests, please slow down' }, 429);
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -101,18 +121,32 @@ export default async function handler(req: Request) {
     { role: 'user', parts: [{ text: message }] },
   ];
 
-  const geminiRes = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-        contents,
-        generationConfig: { maxOutputTokens: 400, temperature: 0.7 },
-      }),
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+
+  let geminiRes: Response;
+  try {
+    geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+          contents,
+          generationConfig: { maxOutputTokens: 400, temperature: 0.7 },
+        }),
+        signal: controller.signal,
+      }
+    );
+  } catch (err) {
+    if (err instanceof Error && err.name === 'AbortError') {
+      return json({ error: 'AI service timeout' }, 504);
     }
-  );
+    return json({ error: 'AI service unavailable' }, 502);
+  } finally {
+    clearTimeout(timeout);
+  }
 
   if (!geminiRes.ok) {
     return json({ error: 'AI service unavailable' }, 502);
