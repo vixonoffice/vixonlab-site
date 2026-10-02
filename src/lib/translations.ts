@@ -53,7 +53,7 @@ export const translations = {
     // Why us
     'why.label': 'De ce noi',
     'why.title': 'De ce Vixon Lab?',
-    'why.fast.title': 'Gata în 3-7 zile',
+    'why.fast.title': 'Gata în 7-14 zile',
     'why.fast.desc': 'Nu aștepți luni de zile. Primești un site premium, funcțional, livrat rapid — fără compromisuri de calitate.',
     'why.clean.title': 'Cod Custom, nu WordPress',
     'why.clean.desc': 'Fiecare site e scris de la zero. De 3x mai rapid, mai sigur și mai ușor de indexat de Google decât un site WordPress.',
@@ -112,12 +112,12 @@ export const translations = {
     'sp.landing': 'LANDING PAGE',
     'sp.landingDesc': 'Prezență online rapidă, curată și profesională. Ideal dacă vrei să testezi sau ai nevoie urgent de un site.',
     'sp.landingPrice': '300€',
-    'sp.landingFeatures': 'O pagină completă (Hero + Servicii + Contact)|Design Modern & Responsive|Formular contact cu WhatsApp|SEO de bază|Google Analytics|Domeniu GRATUIT 1 an|Livrare în 2-3 zile',
+    'sp.landingFeatures': 'O pagină completă (Hero + Servicii + Contact)|Design Modern & Responsive|Formular contact cu WhatsApp|SEO de bază|Google Analytics|Domeniu GRATUIT 1 an|Livrare în 7-14 zile',
 
     'sp.essential': 'ESSENTIAL',
     'sp.essentialDesc': 'Website premium complet pentru afacerea ta. Prezență online profesională care atrage clienți.',
     'sp.essentialPrice': '700€ — 900€',
-    'sp.essentialFeatures': 'Website Premium Multi-Pagină|Design Modern & Responsive|Cod Custom (viteză maximă)|Optimizare SEO & Google|Google My Business Setup|Formular de Contact|Domeniu GRATUIT 1 an|Livrare în 3-7 zile',
+    'sp.essentialFeatures': 'Website Premium Multi-Pagină|Design Modern & Responsive|Cod Custom (viteză maximă)|Optimizare SEO & Google|Google My Business Setup|Formular de Contact|Domeniu GRATUIT 1 an|Livrare în 7-14 zile',
 
     'sp.business': 'BUSINESS',
     'sp.businessDesc': 'Tot ce include Essential, plus instrumente avansate ca să-ți gestionezi singur afacerea online.',
@@ -420,7 +420,7 @@ export const translations = {
 
     'why.label': 'Why us',
     'why.title': 'Why Vixon Lab?',
-    'why.fast.title': 'Ready in 3-7 days',
+    'why.fast.title': 'Ready in 7-14 days',
     'why.fast.desc': "No waiting for months. You get a premium, functional website delivered fast — without quality compromises.",
     'why.clean.title': 'Custom Code, not WordPress',
     'why.clean.desc': "Every site is written from scratch. 3x faster, more secure, and easier for Google to index than a WordPress site.",
@@ -476,12 +476,12 @@ export const translations = {
     'sp.landing': 'LANDING PAGE',
     'sp.landingDesc': 'Fast, clean and professional online presence. Ideal if you want to test the waters or need a site urgently.',
     'sp.landingPrice': '300€',
-    'sp.landingFeatures': 'One complete page (Hero + Services + Contact)|Modern & Responsive Design|Contact form with WhatsApp|Basic SEO|Google Analytics|FREE Domain for 1 year|Delivery in 2-3 days',
+    'sp.landingFeatures': 'One complete page (Hero + Services + Contact)|Modern & Responsive Design|Contact form with WhatsApp|Basic SEO|Google Analytics|FREE Domain for 1 year|Delivery in 7-14 days',
 
     'sp.essential': 'ESSENTIAL',
     'sp.essentialDesc': 'Complete premium website for your business. Professional online presence that attracts clients.',
     'sp.essentialPrice': '700€ — 900€',
-    'sp.essentialFeatures': 'Premium Multi-Page Website|Modern & Responsive Design|Custom Code (maximum speed)|SEO & Google Optimization|Google My Business Setup|Contact Form|FREE Domain for 1 year|Delivery in 3-7 days',
+    'sp.essentialFeatures': 'Premium Multi-Page Website|Modern & Responsive Design|Custom Code (maximum speed)|SEO & Google Optimization|Google My Business Setup|Contact Form|FREE Domain for 1 year|Delivery in 7-14 days',
 
     'sp.business': 'BUSINESS',
     'sp.businessDesc': 'Everything in Essential, plus advanced tools to manage your business online by yourself.',

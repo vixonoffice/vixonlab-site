@@ -1031,7 +1031,7 @@ export default function Preview() {
             Acesta este un <strong style={{ color: t.text }}>demo gratuit</strong> creat special pentru dvs. Site-ul real va include conținutul și fotografiile dvs. actuale, optimizat pentru Google.
           </p>
           <p style={{ color: t.textMuted, fontSize: 15, marginBottom: 40 }}>
-            Livrare în <strong style={{ color: t.accent }}>7-10 zile</strong> · Hosting inclus · Fără abonamente ascunse
+            Livrare în <strong style={{ color: t.accent }}>7-14 zile</strong> · Hosting inclus · Fără abonamente ascunse
           </p>
           <a href={waLink} target="_blank" rel="noopener noreferrer" className="wa-btn" style={{
             display: "inline-flex", alignItems: "center", gap: 12,
