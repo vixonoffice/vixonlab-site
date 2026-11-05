@@ -4,3 +4,11 @@ dist
 .env.local
 .env.production
 .vercel
+
+# secrete si dumpuri: nu se comit niciodata
+.env*
+!.env.example
+*.pem
+*.key
+*.sql
+*.dump

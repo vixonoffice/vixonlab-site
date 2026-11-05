@@ -37,7 +37,7 @@ Restaurante, săli de evenimente, saloane beauty, cabinete medicale, fitness & g
 - Livrare la timp sau discutăm compensație
 
 === TEHNOLOGII ===
-React, TypeScript, Vite, TailwindCSS, Supabase, Vercel, Framer Motion — stack modern, rapid, scalabil. Nu WordPress, nu Wix, nu page builders.
+React, TypeScript, Vite, TailwindCSS, Vercel, Framer Motion — stack modern, rapid, scalabil. Nu WordPress, nu Wix, nu page builders.
 
 === REGULI DE COMPORTAMENT ===
 - Răspunde în aceeași limbă ca utilizatorul (română sau engleză)
@@ -51,6 +51,43 @@ const ALLOWED_ORIGINS = ['https://vixonlab.ro', 'https://www.vixonlab.ro'];
 const GEMINI_TIMEOUT_MS = 15_000;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 10;
+
+// History sent by the browser is untrusted: bound its size and force valid roles before it reaches Gemini.
+const MAX_HISTORY_MESSAGES = 12;
+const MAX_HISTORY_MESSAGE_CHARS = 2000;
+const MAX_HISTORY_TOTAL_CHARS = 8000;
+const ALLOWED_ROLES = new Set(['user', 'model']);
+
+type HistoryItem = { role: 'user' | 'model'; parts: Array<{ text: string }> };
+
+/** Returns a cleaned history, or null if any entry has an invalid shape or role (-> 400). */
+function sanitizeHistory(raw: unknown): HistoryItem[] | null {
+  if (raw === undefined || raw === null) return [];
+  if (!Array.isArray(raw)) return null;
+
+  const items: HistoryItem[] = [];
+  for (const entry of raw.slice(-MAX_HISTORY_MESSAGES)) {
+    if (!entry || typeof entry !== 'object') return null;
+    const { role, parts } = entry as { role?: unknown; parts?: unknown };
+    if (typeof role !== 'string' || !ALLOWED_ROLES.has(role)) return null;
+    if (!Array.isArray(parts) || parts.length === 0) return null;
+    let text = '';
+    for (const part of parts) {
+      if (!part || typeof part !== 'object' || typeof (part as { text?: unknown }).text !== 'string') return null;
+      text += (part as { text: string }).text;
+    }
+    items.push({ role: role as 'user' | 'model', parts: [{ text: text.slice(0, MAX_HISTORY_MESSAGE_CHARS) }] });
+  }
+
+  // Keep the most recent messages that fit the total budget.
+  let total = 0;
+  let start = items.length;
+  while (start > 0 && total + items[start - 1].parts[0].text.length <= MAX_HISTORY_TOTAL_CHARS) {
+    total += items[start - 1].parts[0].text.length;
+    start--;
+  }
+  return items.slice(start);
+}
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -93,18 +130,18 @@ export default async function handler(req: Request) {
     return json({ error: 'Server configuration error' }, 500);
   }
 
-  let message: string;
-  let history: Array<{ role: string; parts: Array<{ text: string }> }> = [];
+  let message: unknown;
+  let rawHistory: unknown;
 
   try {
     const body = await req.json();
     message = body.message;
-    history = body.history || [];
+    rawHistory = body.history;
   } catch {
     return json({ error: 'Invalid request' }, 400);
   }
 
-  if (!message?.trim()) {
+  if (typeof message !== 'string' || !message.trim()) {
     return json({ error: 'Message required' }, 400);
   }
 
@@ -112,8 +149,9 @@ export default async function handler(req: Request) {
     return json({ error: 'Message too long' }, 400);
   }
 
-  if (history.length > 20) {
-    history = history.slice(-20);
+  const history = sanitizeHistory(rawHistory);
+  if (history === null) {
+    return json({ error: 'Invalid history' }, 400);
   }
 
   const contents = [
