@@ -70,9 +70,9 @@ export function Footer() {
                 className="inline-flex items-center gap-2 text-base text-foreground/80 hover:text-primary-light transition-colors">
                 <MessageCircle className="w-5 h-5 shrink-0" /> WhatsApp
               </a>
-              <a href="mailto:contact@vixonlab.ro"
+              <a href="mailto:vixonoffice@gmail.com"
                 className="inline-flex items-center gap-2 text-base text-foreground/80 hover:text-primary-light transition-colors">
-                <Mail className="w-5 h-5 shrink-0" /> contact@vixonlab.ro
+                <Mail className="w-5 h-5 shrink-0" /> vixonoffice@gmail.com
               </a>
               <span className="inline-flex items-center gap-2 text-base text-foreground/80">
                 <MapPin className="w-5 h-5 shrink-0" /> România
