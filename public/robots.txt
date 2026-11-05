@@ -12,6 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
-Disallow: /admin/
 
 Sitemap: https://vixonlab.ro/sitemap.xml

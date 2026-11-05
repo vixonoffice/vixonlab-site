@@ -6,7 +6,8 @@ import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
 import { ExternalLink, ArrowUpRight } from 'lucide-react';
-import { usePortfolioProjects, type PortfolioProjectRow } from '@/hooks/useSupabaseData';
+import { PORTFOLIO_PROJECTS } from '@/data/portfolio';
+import type { PortfolioProjectRow } from '@/data/types';
 
 type Category = 'all' | 'webdev' | 'ecommerce' | 'design';
 
@@ -14,9 +15,7 @@ const Portfolio = () => {
   const { t, language } = useLanguage();
   usePageSEO({ title: t('portfolio.badge'), description: t('portfolio.subtitle') });
   const [filter, setFilter] = useState<Category>('all');
-  const { data: projects, loading } = usePortfolioProjects();
-
-  const filtered = filter === 'all' ? projects : projects.filter((p) => p.category === filter);
+  const filtered = filter === 'all' ? PORTFOLIO_PROJECTS : PORTFOLIO_PROJECTS.filter((p) => p.category === filter);
 
   const tabs: { key: Category; label: string }[] = [
     { key: 'all',       label: t('portfolio.all') },
@@ -52,28 +51,22 @@ const Portfolio = () => {
       {/* Grid */}
       <section className="section-padding pb-24">
         <div className="mx-auto max-w-content">
-          {loading ? (
-            <div className="text-center text-muted-foreground py-12">
-              {language === 'ro' ? 'Se încarcă...' : 'Loading...'}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-              {filtered.map((project, i) => (
-                <ScrollReveal key={project.id} delay={(i % 6) * 0.06}
-                  className={i === 0 ? 'md:col-span-2 md:row-span-2' : ''}>
-                  {project.case_study && project.slug ? (
-                    <Link to={`/portfolio/${project.slug}`} className="block h-full">
-                      <ProjectCard project={project} language={language} featured={i === 0} />
-                    </Link>
-                  ) : (
-                    <div className="h-full">
-                      <ProjectCard project={project} language={language} featured={i === 0} />
-                    </div>
-                  )}
-                </ScrollReveal>
-              ))}
-            </div>
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+            {filtered.map((project, i) => (
+              <ScrollReveal key={project.id} delay={(i % 6) * 0.06}
+                className={i === 0 ? 'md:col-span-2 md:row-span-2' : ''}>
+                {project.case_study && project.slug ? (
+                  <Link to={`/portfolio/${project.slug}`} className="block h-full">
+                    <ProjectCard project={project} language={language} featured={i === 0} />
+                  </Link>
+                ) : (
+                  <div className="h-full">
+                    <ProjectCard project={project} language={language} featured={i === 0} />
+                  </div>
+                )}
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
       </section>
 

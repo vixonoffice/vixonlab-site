@@ -6,14 +6,11 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
 import { Marquee } from '@/components/Marquee';
 import { Ban, DollarSign, Cpu, HeadphonesIcon, ArrowUpRight } from 'lucide-react';
-import { useStats, useTechStack } from '@/hooks/useSupabaseData';
+import { STATS, TECH_STACK } from '@/data/about';
 
 const About = () => {
   const { t, language } = useLanguage();
   usePageSEO({ title: t('about.badge'), description: t('about.subtitle') });
-
-  const { data: stats } = useStats();
-  const { data: techStack } = useTechStack();
 
   const principles = [
     { icon: Ban,            title: t('about.p1.title'), desc: t('about.p1.desc') },
@@ -50,7 +47,7 @@ const About = () => {
 
             <div className="lg:col-span-5 lg:pt-12">
               <div className="grid grid-cols-2 gap-x-6 gap-y-10">
-                {stats.map((stat, i) => (
+                {STATS.map((stat, i) => (
                   <ScrollReveal key={stat.id} delay={i * 0.08}>
                     <div className="border-l-2 border-primary/40 pl-4">
                       <div className="font-heading font-bold text-4xl md:text-5xl text-foreground mb-2 leading-none">
@@ -111,7 +108,7 @@ const About = () => {
           </ScrollReveal>
         </div>
         <Marquee speed={40}>
-          {techStack.map((tech) => (
+          {TECH_STACK.map((tech) => (
             <span key={tech.id}
               className="px-6 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-base md:text-lg font-medium text-foreground">
               {tech.name}

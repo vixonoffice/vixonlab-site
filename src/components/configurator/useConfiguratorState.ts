@@ -157,7 +157,7 @@ export function useConfiguratorState() {
 
   const reset = () => dispatch({ type: 'RESET' });
 
-  // Build WhatsApp message — accepts dynamic options from Supabase
+  // Build WhatsApp message from the configurator options
   const buildWhatsAppUrl = (lang: Language, opts?: AllOptions): string => {
     const lines: string[] = [];
     const s = state;

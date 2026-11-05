@@ -1,27 +1,24 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
-import { Clock, Calendar, Eye, ArrowUpRight } from 'lucide-react';
-import { useBlogPosts, type BlogPostRow } from '@/hooks/useBlogData';
+import { Clock, Calendar, ArrowUpRight } from 'lucide-react';
+import { BLOG_POSTS as posts } from '@/data/blog';
+import type { BlogPostRow } from '@/data/types';
+
+const categories = ['all', ...Array.from(new Set(posts.map((p) => p.category)))];
+const featured = posts.filter((p) => p.featured);
 
 const Blog = () => {
   const { t, language } = useLanguage();
   usePageSEO({ title: t('blog.badge'), description: t('blog.subtitle') });
   const [filter, setFilter] = useState('all');
-  const { data: posts, loading } = useBlogPosts();
 
   const isEn = language === 'en';
 
-  const categories = useMemo(() => {
-    const cats = new Set(posts.map((p) => p.category));
-    return ['all', ...Array.from(cats)];
-  }, [posts]);
-
-  const featured = useMemo(() => posts.filter((p) => p.featured), [posts]);
   const filtered = filter === 'all' ? posts : posts.filter((p) => p.category === filter);
 
   return (
@@ -71,11 +68,7 @@ const Blog = () => {
       {/* All posts */}
       <section className="section-padding pb-24">
         <div className="mx-auto max-w-content">
-          {loading ? (
-            <div className="text-center text-muted-foreground py-16">
-              {isEn ? 'Loading...' : 'Se încarcă...'}
-            </div>
-          ) : filtered.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="text-center text-muted-foreground py-16">{t('blog.noPosts')}</div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
@@ -128,7 +121,6 @@ function FeaturedCard({ post, isEn }: { post: BlogPostRow; isEn: boolean }) {
             <span>{post.category}</span>
             <span className="w-1 h-1 rounded-full bg-muted-foreground" />
             <span className="flex items-center gap-1.5"><Clock className="w-3 h-3" />{post.read_time_minutes} min</span>
-            <span className="flex items-center gap-1.5"><Eye className="w-3 h-3" />{post.views}</span>
           </div>
           <h3 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-3 leading-tight group-hover:text-primary-light transition-colors">
             {title}
@@ -176,9 +168,8 @@ function PostCard({ post, isEn }: { post: BlogPostRow; isEn: boolean }) {
             {title}
           </h3>
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-2">{excerpt}</p>
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="flex items-center text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5"><Clock className="w-3 h-3" />{post.read_time_minutes} min</span>
-            <span className="flex items-center gap-1.5"><Eye className="w-3 h-3" />{post.views}</span>
           </div>
         </div>
       </div>

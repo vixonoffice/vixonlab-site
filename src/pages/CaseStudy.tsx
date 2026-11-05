@@ -5,30 +5,18 @@ import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { ArrowLeft, Check, Clock, Calendar, Quote, ExternalLink } from 'lucide-react';
-import { usePortfolioProjects } from '@/hooks/useSupabaseData';
+import { PORTFOLIO_PROJECTS } from '@/data/portfolio';
 
 const CaseStudy = () => {
   const { slug } = useParams<{ slug: string }>();
   const { language } = useLanguage();
-  const { data: projects, loading } = usePortfolioProjects();
-
-  const project = projects.find((p) => p.slug === slug);
+  const project = PORTFOLIO_PROJECTS.find((p) => p.slug === slug);
   const cs = project?.case_study;
 
   usePageSEO({
     title: project ? project.title : 'Case Study',
     description: project ? (language === 'en' ? project.description_en : project.description_ro) : '',
   });
-
-  if (loading) {
-    return (
-      <PageTransition>
-        <div className="min-h-screen flex items-center justify-center">
-          <p className="text-muted-foreground">Se incarca...</p>
-        </div>
-      </PageTransition>
-    );
-  }
 
   if (!project || !cs) return <Navigate to="/portfolio" replace />;
 

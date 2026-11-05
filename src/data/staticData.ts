@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
 import { Code, ShoppingCart, Palette, BarChart3, CalendarCheck } from 'lucide-react';
-import type { StatRow, ServiceRow, ProcessStepRow, TestimonialRow } from '@/hooks/useSupabaseData';
+import type { StatRow, ServiceRow, ProcessStepRow, TestimonialRow } from './types';
 
 const iconMap: Record<string, LucideIcon> = {
   code: Code,

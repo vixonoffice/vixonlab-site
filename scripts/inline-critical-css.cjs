@@ -4,6 +4,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const distDir = path.resolve(__dirname, '../dist');
 const htmlPath = path.join(distDir, 'index.html');
@@ -45,19 +46,37 @@ body{margin:0;line-height:inherit;background-color:hsl(243 40% 13%);color:hsl(24
 #root{min-height:100vh}
 `.trim().replace(/\n/g, '');
 
+// Switches the preloaded stylesheet to rel="stylesheet" once it has been fetched (non-blocking CSS).
+// This is an inline <script>, not an onload="" attribute, so the CSP can allow it with a sha256 hash
+// instead of 'unsafe-inline'. If you change this string, update the hash in vercel.json (the build
+// fails below and prints the new value).
+const ASYNC_CSS_LOADER =
+  "(function(){var l=document.getElementById('async-css');" +
+  "function a(){l.rel='stylesheet'}" +
+  "if(l.relList&&l.relList.supports&&l.relList.supports('preload')){l.addEventListener('load',a)}else{a()}})()";
+
+const loaderHash = 'sha256-' + crypto.createHash('sha256').update(ASYNC_CSS_LOADER, 'utf8').digest('base64');
+const vercelJson = fs.readFileSync(path.resolve(__dirname, '../vercel.json'), 'utf-8');
+if (!vercelJson.includes(`'${loaderHash}'`)) {
+  console.error(`✗ vercel.json Content-Security-Policy (script-src) is missing '${loaderHash}'.`);
+  console.error('  Add it, otherwise the async stylesheet loader is blocked and the site renders unstyled.');
+  process.exit(1);
+}
+
 // Replace the blocking <link> with:
 // 1. Inlined critical CSS
-// 2. Async-loaded full CSS via media trick
+// 2. Async-loaded full CSS (preload + hashed inline loader)
 const replacement = `<style>${criticalCSS}</style>
-<link rel="preload" href="${cssHref}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link id="async-css" rel="preload" href="${cssHref}" as="style">
+<script>${ASYNC_CSS_LOADER}</script>
 <noscript><link rel="stylesheet" href="${cssHref}"></noscript>`;
 
 html = html.replace(cssLinkMatch[0], replacement);
 
-// Remove modulepreload for non-critical vendor chunks (query, ui)
+// Remove modulepreload for non-critical vendor chunks (ui)
 // They'll still load when needed via dynamic import
 const preloadsBefore = (html.match(/modulepreload/g) || []).length;
-html = html.replace(/\s*<link rel="modulepreload" crossorigin href="\/assets\/vendor-(?:query|ui)[^"]*\.js">\n?/g, '');
+html = html.replace(/\s*<link rel="modulepreload" crossorigin href="\/assets\/vendor-ui[^"]*\.js">\n?/g, '');
 const preloadsAfter = (html.match(/modulepreload/g) || []).length;
 
 fs.writeFileSync(htmlPath, html);

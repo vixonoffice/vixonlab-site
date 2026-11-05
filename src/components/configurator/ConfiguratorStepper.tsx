@@ -2,8 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useConfiguratorState } from './useConfiguratorState';
-import { useConfiguratorOptions } from '@/hooks/useConfiguratorOptions';
-import { STEP_LABELS, STEP_ORDER, label } from './configuratorConfig';
+import { STEP_LABELS, STEP_ORDER, label, CONFIGURATOR_OPTIONS as options } from './configuratorConfig';
 import type { StepId } from './configuratorConfig';
 import { ProjectStep } from './steps/ProjectStep';
 import { PagesStep } from './steps/PagesStep';
@@ -49,7 +48,6 @@ const STEP_TITLES: Record<StepId, { ro: string; en: string }> = {
 
 export function ConfiguratorStepper() {
   const { language } = useLanguage();
-  const { options, loading: optionsLoading } = useConfiguratorOptions();
   const {
     state, setField, toggleArray, addCustomPage, removeCustomPage,
     buildWhatsAppUrl, canProceed,
@@ -86,14 +84,6 @@ export function ConfiguratorStepper() {
   }, [currentIdx, goTo]);
 
   const isRo = language === 'ro';
-
-  if (optionsLoading) {
-    return (
-      <div className="space-y-4">
-        {[1, 2, 3].map(i => <div key={i} className="h-32 bg-white/5 rounded-2xl animate-pulse" />)}
-      </div>
-    );
-  }
 
   return (
     <div ref={containerRef} className="scroll-mt-28">

@@ -1,69 +1,18 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { ArrowLeft, Clock, Calendar, Eye, Tag } from 'lucide-react';
-import { useBlogPost, useBlogPosts, incrementBlogViews } from '@/hooks/useBlogData';
-
-// Simple markdown-to-HTML renderer (no external packages)
-function renderMarkdown(md: string): string {
-  let html = md
-    // Code blocks (``` ... ```)
-    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre class="bg-white/5 border border-white/10 rounded-xl p-4 overflow-x-auto my-4 text-sm"><code>$2</code></pre>')
-    // Inline code
-    .replace(/`([^`]+)`/g, '<code class="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-sm text-primary-light">$1</code>')
-    // Images
-    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="rounded-xl my-4 max-w-full" loading="lazy" />')
-    // Links — sanitize: only allow http/https/relative URLs
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
-      const safe = /^(https?:\/\/|\/)/i.test(url) ? url : '#';
-      return `<a href="${safe}" target="_blank" rel="noopener noreferrer" class="text-primary-light underline hover:opacity-80">${text}</a>`;
-    })
-    // Bold
-    .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-foreground font-semibold">$1</strong>')
-    // Italic
-    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-    // H3
-    .replace(/^### (.+)$/gm, '<h3 class="font-heading font-semibold text-xl text-foreground mt-8 mb-3">$1</h3>')
-    // H2
-    .replace(/^## (.+)$/gm, '<h2 class="font-heading font-bold text-2xl text-foreground mt-10 mb-4">$1</h2>')
-    // H1
-    .replace(/^# (.+)$/gm, '<h1 class="font-heading font-bold text-3xl text-foreground mt-10 mb-4">$1</h1>')
-    // Horizontal rule
-    .replace(/^---$/gm, '<hr class="border-white/10 my-8" />')
-    // Unordered lists
-    .replace(/^- (.+)$/gm, '<li class="ml-4 text-muted-foreground list-disc">$1</li>')
-    // Ordered lists
-    .replace(/^\d+\. (.+)$/gm, '<li class="ml-4 text-muted-foreground list-decimal">$1</li>')
-    // Blockquote
-    .replace(/^> (.+)$/gm, '<blockquote class="border-l-2 border-primary/40 pl-4 italic text-muted-foreground my-4">$1</blockquote>');
-
-  // Wrap consecutive <li> in <ul>
-  html = html.replace(/((<li class="ml-4 text-muted-foreground list-disc">.*<\/li>\n?)+)/g, '<ul class="space-y-1.5 my-4">$1</ul>');
-  html = html.replace(/((<li class="ml-4 text-muted-foreground list-decimal">.*<\/li>\n?)+)/g, '<ol class="space-y-1.5 my-4">$1</ol>');
-
-  // Paragraphs: wrap remaining lines that aren't already tags
-  html = html
-    .split('\n')
-    .map((line) => {
-      const trimmed = line.trim();
-      if (!trimmed) return '';
-      if (trimmed.startsWith('<')) return line;
-      return `<p class="text-muted-foreground leading-relaxed mb-4">${trimmed}</p>`;
-    })
-    .join('\n');
-
-  return html;
-}
+import { ArrowLeft, Clock, Calendar, Tag } from 'lucide-react';
+import { BLOG_POSTS, getBlogPost } from '@/data/blog';
+import { renderMarkdown } from '@/lib/markdown';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { language } = useLanguage();
-  const { data: post, loading } = useBlogPost(slug);
-  const { data: allPosts } = useBlogPosts();
+  const post = getBlogPost(slug);
 
   const isEn = language === 'en';
 
@@ -72,30 +21,13 @@ const BlogPost = () => {
     description: post ? (isEn ? post.excerpt_en : post.excerpt_ro) : '',
   });
 
-  // Increment views once
-  useEffect(() => {
-    if (post?.id) {
-      incrementBlogViews(post.id);
-    }
-  }, [post?.id]);
-
   // Related posts: same category, excluding current
   const related = useMemo(() => {
     if (!post) return [];
-    return allPosts
+    return BLOG_POSTS
       .filter((p) => p.id !== post.id && p.category === post.category)
       .slice(0, 3);
-  }, [post, allPosts]);
-
-  if (loading) {
-    return (
-      <PageTransition>
-        <div className="min-h-screen flex items-center justify-center">
-          <p className="text-muted-foreground">Se incarca...</p>
-        </div>
-      </PageTransition>
-    );
-  }
+  }, [post]);
 
   if (!post) return <Navigate to="/blog" replace />;
 
@@ -136,10 +68,6 @@ const BlogPost = () => {
             <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <Clock className="w-3.5 h-3.5" />
               {post.read_time_minutes} min {isEn ? 'read' : 'lectura'}
-            </span>
-            <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <Eye className="w-3.5 h-3.5" />
-              {post.views} {isEn ? 'views' : 'vizualizari'}
             </span>
           </div>
 
