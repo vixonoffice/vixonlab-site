@@ -1,26 +1,26 @@
-import { useParams, Link, Navigate } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { ArrowLeft, Check, Clock, Calendar, Quote, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Check, ExternalLink } from 'lucide-react';
 import { PORTFOLIO_PROJECTS } from '@/data/portfolio';
 
 const CaseStudy = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { language } = useLanguage();
+  const { language, t, lp } = useLanguage();
+  const isEn = language === 'en';
   const project = PORTFOLIO_PROJECTS.find((p) => p.slug === slug);
   const cs = project?.case_study;
 
   usePageSEO({
-    title: project ? project.title : 'Case Study',
-    description: project ? (language === 'en' ? project.description_en : project.description_ro) : '',
+    title: project ? project.title : 'Case study',
+    description: project ? (isEn ? project.description_en : project.description_ro) : '',
   });
 
-  if (!project || !cs) return <Navigate to="/portfolio" replace />;
-
-  const isEn = language === 'en';
+  if (!project || !cs) return <Navigate to={lp('/portfolio')} replace />;
 
   return (
     <PageTransition>
@@ -32,11 +32,14 @@ const CaseStudy = () => {
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
           >
             <ArrowLeft className="w-4 h-4" />
-            {isEn ? 'Back to Portfolio' : 'Inapoi la Portofoliu'}
+            {isEn ? 'Back to portfolio' : 'Înapoi la portofoliu'}
           </Link>
 
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/5 border border-white/10 px-4 py-1.5 mb-4">
-            <span className="text-sm text-primary-light">
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <span className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-white">
+              {t('portfolio.clientBadge')}
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/5 border border-white/10 px-4 py-1.5 text-sm text-primary-light">
               {isEn ? project.subtitle_en : project.subtitle_ro}
             </span>
           </div>
@@ -47,23 +50,6 @@ const CaseStudy = () => {
           <p className="text-lg text-muted-foreground max-w-3xl mb-8">
             {isEn ? project.description_en : project.description_ro}
           </p>
-
-          {/* Meta info */}
-          <div className="flex flex-wrap gap-4 mb-6">
-            <div className="inline-flex items-center gap-2 glass-card px-4 py-2.5">
-              <span className="text-sm text-muted-foreground">{isEn ? 'Value:' : 'Valoare:'}</span>
-              <span className="font-heading font-bold text-base text-foreground">{cs.price}</span>
-            </div>
-            <div className="inline-flex items-center gap-2 glass-card px-4 py-2.5">
-              <Clock className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">{isEn ? 'Duration:' : 'Durata:'}</span>
-              <span className="text-sm font-medium text-foreground">{isEn ? cs.durationEn : cs.duration}</span>
-            </div>
-            <div className="inline-flex items-center gap-2 glass-card px-4 py-2.5">
-              <Calendar className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm text-foreground">{cs.year}</span>
-            </div>
-          </div>
 
           <div className="flex flex-wrap gap-2">
             {project.tags.map((tag) => (
@@ -81,129 +67,83 @@ const CaseStudy = () => {
               className="inline-flex items-center gap-2 mt-6 btn-primary font-medium px-6 py-3 rounded-2xl hover:opacity-90 transition-opacity"
             >
               <ExternalLink className="w-4 h-4" />
-              {isEn ? 'Visit Live Site' : 'Vezi Site-ul Live'}
+              {t('portfolio.viewLive')}
             </a>
           )}
         </div>
       </section>
 
-      {/* Hero Image */}
+      {/* Hero image */}
       {project.image_url && (
         <SectionWrapper className="!pt-8 !pb-8">
           <ScrollReveal>
             <div className="rounded-2xl overflow-hidden border border-white/10">
-              <img src={project.image_url} alt={project.title} className="w-full h-auto object-cover" loading="eager" />
+              <img
+                src={project.image_url}
+                alt={project.title}
+                width={1200}
+                height={750}
+                className="w-full h-auto object-cover"
+                loading="eager"
+              />
             </div>
           </ScrollReveal>
         </SectionWrapper>
       )}
 
-      {/* Challenge & Solution */}
+      {/* Brief & approach */}
       <SectionWrapper>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <ScrollReveal>
             <div className="glass-card p-8 h-full">
               <div className="inline-flex items-center gap-2 rounded-full bg-accent/10 border border-accent/20 px-3 py-1 mb-5">
-                <span className="text-xs font-medium text-accent">
-                  {isEn ? 'The Challenge' : 'Provocarea'}
-                </span>
+                <span className="text-xs font-medium text-accent">{isEn ? 'The brief' : 'Cererea'}</span>
               </div>
-              <div className="text-muted-foreground leading-relaxed whitespace-pre-line text-[15px]">
-                {isEn ? cs.challengeEn : cs.challenge}
-              </div>
+              <p className="text-muted-foreground leading-relaxed text-[15px]">{isEn ? cs.brief_en : cs.brief_ro}</p>
             </div>
           </ScrollReveal>
 
           <ScrollReveal>
             <div className="glass-card p-8 h-full">
               <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 mb-5">
-                <span className="text-xs font-medium text-primary">
-                  {isEn ? 'Our Solution' : 'Ce am facut'}
-                </span>
+                <span className="text-xs font-medium text-primary">{isEn ? 'What we did' : 'Ce am făcut'}</span>
               </div>
-              <div className="text-muted-foreground leading-relaxed whitespace-pre-line text-[15px]">
-                {isEn ? cs.solutionEn : cs.solution}
+              <div className="space-y-4 text-muted-foreground leading-relaxed text-[15px]">
+                {(isEn ? cs.approach_en : cs.approach_ro).split('\n\n').map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
               </div>
             </div>
           </ScrollReveal>
         </div>
       </SectionWrapper>
 
-      {/* Results */}
-      <SectionWrapper>
-        <ScrollReveal>
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground text-center mb-10">
-            {isEn ? 'Results' : 'Rezultate'}
-          </h2>
-        </ScrollReveal>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {cs.results.map((r, i) => (
-            <ScrollReveal key={i}>
-              <div className="glass-card p-6 text-center">
-                <div className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">{r.value}</div>
-                <div className="text-sm text-muted-foreground">{isEn ? r.labelEn : r.label}</div>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </SectionWrapper>
-
-      {/* What We Delivered */}
-      <SectionWrapper>
-        <ScrollReveal>
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground text-center mb-3">
-            {isEn ? 'What We Delivered' : 'Ce am livrat concret'}
-          </h2>
-          <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto">
-            {isEn ? 'Everything included in this project:' : 'Tot ce a inclus acest proiect:'}
-          </p>
-        </ScrollReveal>
-        <div className="glass-card p-8 max-w-3xl mx-auto">
-          <div className="space-y-3.5">
-            {(isEn ? cs.deliverablesEn : cs.deliverables).map((d, i) => (
-              <ScrollReveal key={i}>
-                <div className="flex items-start gap-3">
-                  <div className="mt-1 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                    <Check className="w-3 h-3 text-primary" />
-                  </div>
-                  <span className="text-muted-foreground text-[15px]">{d}</span>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </SectionWrapper>
-
-      {/* Process */}
-      <SectionWrapper>
-        <ScrollReveal>
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground text-center mb-3">
-            {isEn ? 'How We Worked' : 'Cum am lucrat'}
-          </h2>
-          <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto">
-            {isEn ? 'Step by step, from idea to launch:' : 'Pas cu pas, de la idee la lansare:'}
-          </p>
-        </ScrollReveal>
-        <ScrollReveal>
-          <div className="glass-card p-8 max-w-3xl mx-auto">
-            <div className="text-muted-foreground leading-relaxed whitespace-pre-line text-[15px]">
-              {isEn ? cs.processEn : cs.process}
+      {/* Measured result (only when a real number exists) */}
+      {cs.result && (
+        <SectionWrapper>
+          <ScrollReveal>
+            <div className="glass-card p-8 md:p-12 max-w-3xl mx-auto text-center">
+              <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-4">
+                {isEn ? 'Measured result' : 'Rezultat măsurat'}
+              </p>
+              <p className="font-heading font-bold text-6xl md:text-8xl gradient-text leading-none mb-5">{cs.result.value}</p>
+              <p className="text-muted-foreground">{isEn ? cs.result.label_en : cs.result.label_ro}</p>
             </div>
-          </div>
-        </ScrollReveal>
-      </SectionWrapper>
+          </ScrollReveal>
+        </SectionWrapper>
+      )}
 
-      {/* Features */}
+      {/* What's inside */}
       <SectionWrapper>
         <ScrollReveal>
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground text-center mb-10">
-            {isEn ? 'Key Features' : 'Functionalitati'}
+            {isEn ? 'What is inside' : 'Ce cuprinde'}
           </h2>
         </ScrollReveal>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
-          {(isEn ? cs.featuresEn : cs.features).map((f, i) => (
+          {(isEn ? cs.highlights_en : cs.highlights_ro).map((f, i) => (
             <ScrollReveal key={i}>
-              <div className="glass-card p-5 flex items-start gap-3">
+              <div className="glass-card p-5 flex items-start gap-3 h-full">
                 <div className="mt-0.5 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
                   <Check className="w-3 h-3 text-primary" />
                 </div>
@@ -214,48 +154,23 @@ const CaseStudy = () => {
         </div>
       </SectionWrapper>
 
-      {/* Testimonial */}
-      {cs.testimonial && (
-        <SectionWrapper>
-          <ScrollReveal>
-            <div className="glass-card p-8 md:p-12 max-w-3xl mx-auto relative">
-              <Quote className="w-10 h-10 text-primary/20 absolute top-6 left-6" />
-              <div className="pl-8 md:pl-12">
-                <p className="text-foreground text-lg md:text-xl leading-relaxed italic mb-6">
-                  &bdquo;{isEn ? cs.testimonial.quoteEn : cs.testimonial.quote}&rdquo;
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-white font-bold text-sm">
-                    {cs.testimonial.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-heading font-semibold text-foreground">{cs.testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">{cs.testimonial.role}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
-        </SectionWrapper>
-      )}
-
       {/* CTA */}
       <SectionWrapper>
         <ScrollReveal>
           <div className="glass-card p-10 md:p-16 text-center max-w-3xl mx-auto">
             <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4">
-              {isEn ? 'Have a Similar Project?' : 'Ai un proiect similar?'}
+              {isEn ? 'Have a similar project?' : 'Ai un proiect similar?'}
             </h2>
             <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
               {isEn
-                ? "Let's talk about your idea. We'll tell you honestly what we can do, how long it takes, and how much it costs. No surprises."
-                : 'Hai sa vorbim despre ideea ta. Iti spunem sincer ce putem face, cat dureaza, si cat costa. Fara surprize.'}
+                ? 'Tell us about it. We will say honestly what we can do, how long it takes and what it costs.'
+                : 'Spune-ne despre el. Îți spunem sincer ce putem face, cât durează și cât costă.'}
             </p>
             <Link
               to="/contact"
               className="btn-primary font-medium px-8 py-3.5 rounded-full inline-block hover:opacity-90 transition-opacity"
             >
-              {isEn ? 'Contact Us' : 'Contacteaza-ne'}
+              {isEn ? 'Contact us' : 'Contactează-ne'}
             </Link>
           </div>
         </ScrollReveal>

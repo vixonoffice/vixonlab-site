@@ -17,7 +17,7 @@ describe('configurator pricing follows src/lib/tiers.ts', () => {
   it('labels site and maintenance prices per tier', () => {
     expect(siteTypePriceLabel('business', 'ro')).toBe('650€');
     expect(siteTypePriceLabel('custom', 'ro')).toBe('de la 2.000€');
-    expect(siteTypePriceLabel('custom', 'en')).toBe('from 2.000€');
+    expect(siteTypePriceLabel('custom', 'en')).toBe('from 2,000€');
     expect(maintenancePriceLabel('monthly', 'business', 'ro')).toBe('25€/lună');
     expect(maintenancePriceLabel('annual', 'business', 'ro')).toBe('250€/an');
     expect(maintenancePriceLabel('annual', 'custom', 'en')).toBe('from 600€/year');

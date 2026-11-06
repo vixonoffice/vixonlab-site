@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
@@ -99,12 +99,21 @@ const Blog = () => {
   );
 };
 
+/** Eticheta de pe paginile EN: articolele sunt scrise doar in romana. */
+function RomanianTag() {
+  return (
+    <span className="inline-flex items-center rounded-full border border-white/15 bg-background/80 px-2.5 py-1 text-xs font-medium text-foreground">
+      Romanian
+    </span>
+  );
+}
+
 function FeaturedCard({ post, isEn }: { post: BlogPostRow; isEn: boolean }) {
-  const title = isEn ? post.title_en : post.title_ro;
-  const excerpt = isEn ? post.excerpt_en : post.excerpt_ro;
+  const title = post.title_ro;
+  const excerpt = post.excerpt_ro;
 
   return (
-    <Link to={`/blog/${post.slug}`} className="block h-full">
+    <Link to={`/blog/${post.slug}`} locale="ro" hrefLang="ro" className="block h-full">
       <div className="relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm group transition-all duration-500 hover:border-white/25">
         {post.cover_image && (
           <div className="relative aspect-[16/9] overflow-hidden">
@@ -121,13 +130,14 @@ function FeaturedCard({ post, isEn }: { post: BlogPostRow; isEn: boolean }) {
             <span>{post.category}</span>
             <span className="w-1 h-1 rounded-full bg-muted-foreground" />
             <span className="flex items-center gap-1.5"><Clock className="w-3 h-3" />{post.read_time_minutes} min</span>
+            {isEn && <RomanianTag />}
           </div>
           <h3 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-3 leading-tight group-hover:text-primary-light transition-colors">
             {title}
           </h3>
           <p className="text-muted-foreground leading-relaxed mb-5 line-clamp-2">{excerpt}</p>
           <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary-light">
-            {isEn ? 'Read more' : 'Citește mai mult'}
+            {isEn ? 'Read (in Romanian)' : 'Citește mai mult'}
             <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </span>
         </div>
@@ -137,14 +147,14 @@ function FeaturedCard({ post, isEn }: { post: BlogPostRow; isEn: boolean }) {
 }
 
 function PostCard({ post, isEn }: { post: BlogPostRow; isEn: boolean }) {
-  const title = isEn ? post.title_en : post.title_ro;
-  const excerpt = isEn ? post.excerpt_en : post.excerpt_ro;
+  const title = post.title_ro;
+  const excerpt = post.excerpt_ro;
   const date = post.published_at
     ? new Date(post.published_at).toLocaleDateString(isEn ? 'en-US' : 'ro-RO', { year: 'numeric', month: 'short', day: 'numeric' })
     : '';
 
   return (
-    <Link to={`/blog/${post.slug}`} className="block h-full">
+    <Link to={`/blog/${post.slug}`} locale="ro" hrefLang="ro" className="block h-full">
       <div className="relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm group transition-all duration-500 hover:border-white/25">
         {post.cover_image && (
           <div className="relative aspect-[16/10] overflow-hidden">
@@ -158,6 +168,7 @@ function PostCard({ post, isEn }: { post: BlogPostRow; isEn: boolean }) {
             <span className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-muted-foreground capitalize">
               {post.category}
             </span>
+            {isEn && <RomanianTag />}
             {date && (
               <span className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Calendar className="w-3 h-3" />{date}

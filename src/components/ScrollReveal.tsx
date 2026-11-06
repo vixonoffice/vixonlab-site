@@ -24,7 +24,7 @@ export function ScrollReveal({ children, className = '', delay = 0, direction = 
     opacity: 1,
     y: 0,
     x: 0,
-    transition: { duration: 0.65, ease: [0.21, 0.47, 0.32, 0.98], delay },
+    transition: { duration: 0.65, ease: [0.21, 0.47, 0.32, 0.98] as [number, number, number, number], delay },
   };
 
   return (

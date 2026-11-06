@@ -1,11 +1,12 @@
 // Tipurile datelor statice ale site-ului (fostele randuri din baza de date).
 
-export interface StatRow {
+/** Un fapt real afisat ca "cifra mare". Nu pune aici statistici care nu pot fi dovedite. */
+export interface FactRow {
   id: string;
-  value: string;
+  value_ro: string;
+  value_en: string;
   label_ro: string;
   label_en: string;
-  sort_order: number;
 }
 
 export interface ServiceRow {
@@ -19,20 +20,7 @@ export interface ServiceRow {
   description_en: string;
   features_ro: string[];
   features_en: string[];
-  price_label_ro: string | null;
-  price_label_en: string | null;
   anchor: string | null;
-}
-
-export interface TestimonialRow {
-  id: string;
-  sort_order: number;
-  quote_ro: string;
-  quote_en: string;
-  author_name: string;
-  author_role: string;
-  author_initial: string;
-  avatar_gradient: string;
 }
 
 export interface ProcessStepRow {
@@ -47,33 +35,35 @@ export interface ProcessStepRow {
 
 export interface TechRow {
   id: string;
-  name: string;
+  name_ro: string;
+  name_en: string;
   sort_order: number;
 }
 
+/** Studiu de caz cu fapte verificabile. Nu pune aici cifre sau citate care nu sunt reale. */
 export interface CaseStudyData {
-  price: string;
-  duration: string;
-  durationEn: string;
-  year: string;
-  challenge: string;
-  challengeEn: string;
-  solution: string;
-  solutionEn: string;
-  process: string;
-  processEn: string;
-  results: { value: string; label: string; labelEn: string }[];
-  deliverables: string[];
-  deliverablesEn: string[];
-  features: string[];
-  featuresEn: string[];
-  testimonial: { quote: string; quoteEn: string; name: string; role: string };
+  brief_ro: string;
+  brief_en: string;
+  /** Paragrafe separate prin linie goala. */
+  approach_ro: string;
+  approach_en: string;
+  highlights_ro: string[];
+  highlights_en: string[];
+  /** Rezultat masurat (doar daca exista o cifra reala). */
+  result?: {
+    value: string;
+    label_ro: string;
+    label_en: string;
+  };
 }
+
+export type ProjectKind = 'client' | 'demo';
 
 export interface PortfolioProjectRow {
   id: string;
   sort_order: number;
-  category: string;
+  /** "client" = site livrat unui client real; "demo" = concept facut de noi, marcat "Concept / demo". */
+  kind: ProjectKind;
   title: string;
   subtitle_ro: string;
   subtitle_en: string;
@@ -86,15 +76,24 @@ export interface PortfolioProjectRow {
   case_study: CaseStudyData | null;
 }
 
+/** Proiect din sectiunea "Open-source & lab". href "#" = link inca necompletat. */
+export interface LabProjectRow {
+  id: string;
+  title: string;
+  kind_ro: string;
+  kind_en: string;
+  description_ro: string;
+  description_en: string;
+  href: string;
+}
+
+/** Articolele de blog sunt doar in romana (pe /en/blog apar marcate "Romanian"). */
 export interface BlogPostRow {
   id: string;
   slug: string;
   title_ro: string;
-  title_en: string;
   excerpt_ro: string;
-  excerpt_en: string;
   content_ro: string;
-  content_en: string;
   cover_image: string | null;
   category: string;
   tags: string[];

@@ -44,8 +44,8 @@ const SITE_TYPE_TEXT: Record<Tier['key'], Pick<Option, 'ro' | 'en' | 'desc_ro' |
   },
 };
 
-function eurNumber(n: number): string {
-  return n >= 1000 ? n.toLocaleString('ro-RO') : String(n);
+function eurNumber(n: number, lang: Lang = 'ro'): string {
+  return n >= 1000 ? n.toLocaleString(lang === 'en' ? 'en-US' : 'ro-RO') : String(n);
 }
 
 export const SITE_TYPES: Option[] = TIERS.map((t) => ({
@@ -63,7 +63,7 @@ export function siteTypePriceLabel(siteType: string, lang: Lang): string {
   const t = tierForSiteType(siteType);
   if (!t) return '';
   const from = t.startingFrom ? (lang === 'ro' ? 'de la ' : 'from ') : '';
-  return `${from}${eurNumber(t.setupEur)}€`;
+  return `${from}${eurNumber(t.setupEur, lang)}€`;
 }
 
 // Step 6 — Maintenance

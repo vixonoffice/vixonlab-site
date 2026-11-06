@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { alternatePath, stripLang, type Language } from '@/lib/i18n';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 
 const navLinks = [
@@ -10,13 +12,47 @@ const navLinks = [
   { key: 'nav.portfolio' as const, path: '/portfolio' },
   { key: 'nav.blog' as const,      path: '/blog' },
   { key: 'nav.about' as const,     path: '/about' },
+  { key: 'nav.agencies' as const,  path: '/agencies', onlyEn: true },
 ];
 
+/** Selector RO / EN: linkuri reale (crawlabile) catre pagina echivalenta, care retin alegerea. */
+function LanguageSwitch({ size }: { size: 'md' | 'sm' }) {
+  const { language, setLanguage } = useLanguage();
+  const { pathname } = useLocation();
+  const pad = size === 'md' ? 'px-3' : 'px-2.5';
+  return (
+    <>
+      {(['ro', 'en'] as Language[]).map((lang) => (
+        <a
+          key={lang}
+          href={alternatePath(pathname, lang)}
+          hrefLang={lang}
+          lang={lang}
+          aria-current={language === lang ? 'true' : undefined}
+          aria-label={lang === 'ro' ? 'Română' : 'English'}
+          onClick={(e) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+            e.preventDefault();
+            setLanguage(lang);
+          }}
+          className={`${pad} py-1 rounded-full text-xs font-medium transition-all ${
+            language === lang ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          {lang.toUpperCase()}
+        </a>
+      ))}
+    </>
+  );
+}
+
 export function Navbar() {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const currentPath = stripLang(location.pathname);
+  const links = navLinks.filter((l) => !l.onlyEn || language === 'en');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -39,7 +75,7 @@ export function Navbar() {
             to="/"
             onClick={() => {
               setMobileOpen(false);
-              if (location.pathname === '/') window.scrollTo({ top: 0, behavior: 'instant' });
+              if (currentPath === '/') window.scrollTo({ top: 0, behavior: 'instant' });
             }}
             className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all relative z-50 ${
               scrolled
@@ -60,8 +96,8 @@ export function Navbar() {
               ? 'bg-background/80 backdrop-blur-xl border-white/10'
               : 'bg-white/5 backdrop-blur-md border-white/10'
           }`}>
-            {navLinks.map((link) => {
-              const active = location.pathname === link.path;
+            {links.map((link) => {
+              const active = currentPath === link.path;
               return (
                 <Link
                   key={link.path}
@@ -84,18 +120,7 @@ export function Navbar() {
             <div className={`flex items-center rounded-full border p-1 transition-all ${
               scrolled ? 'bg-background/80 backdrop-blur-xl border-white/10' : 'bg-white/5 backdrop-blur-md border-white/10'
             }`}>
-              <button
-                onClick={() => setLanguage('ro')}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                  language === 'ro' ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >RO</button>
-              <button
-                onClick={() => setLanguage('en')}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                  language === 'en' ? 'bg-primary text-white' : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >EN</button>
+              <LanguageSwitch size="md" />
             </div>
 
             <Link
@@ -112,14 +137,7 @@ export function Navbar() {
           {/* Mobile right */}
           <div className="flex lg:hidden items-center gap-2 relative z-50">
             <div className="flex items-center rounded-full bg-white/5 backdrop-blur-md border border-white/10 p-1">
-              <button onClick={() => setLanguage('ro')}
-                className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
-                  language === 'ro' ? 'bg-primary text-white' : 'text-muted-foreground'
-                }`}>RO</button>
-              <button onClick={() => setLanguage('en')}
-                className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
-                  language === 'en' ? 'bg-primary text-white' : 'text-muted-foreground'
-                }`}>EN</button>
+              <LanguageSwitch size="sm" />
             </div>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -136,12 +154,12 @@ export function Navbar() {
       <div className={`fixed inset-0 z-40 bg-background/98 backdrop-blur-xl flex flex-col items-center justify-center gap-7 lg:hidden overflow-hidden touch-none transition-opacity duration-300 ${
         mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}>
-        {navLinks.map((link, i) => (
+        {links.map((link, i) => (
           <Link
             key={link.path}
             to={link.path}
             className={`text-4xl md:text-5xl font-heading font-bold transition-colors ${
-              location.pathname === link.path ? 'text-primary-light' : 'text-foreground hover:text-primary-light'
+              currentPath === link.path ? 'text-primary-light' : 'text-foreground hover:text-primary-light'
             }`}
             style={{ transitionDelay: `${i * 30}ms` }}
           >

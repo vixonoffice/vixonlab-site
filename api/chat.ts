@@ -14,6 +14,11 @@ Contact: vixonoffice@gmail.com | Tel/WhatsApp: 0779 383 164 | Site: vixonlab.ro
 - CUSTOM: de la 2.000€ + de la 60€/lună — rezervări online, calendar real de disponibilitate, panou de administrare, multilingv. Preț stabilit după discuție.
 Nu facem magazine online (e-commerce).
 
+=== AGENȚII ȘI CLIENȚI DIN AFARA ROMÂNIEI (pagina /en) ===
+Producție white-label pentru agenții: designul lor (Figma) devine site rapid, sub brandul lor, fără logo sau credit Vixon Lab. Preț fix per proiect, nu pe oră. NDA la cerere. Program CET+1.
+Prețuri de la: site de prezentare 350€, landing page (după un design gata) 300€, chatbot AI 500€. Proba plătită recomandată: un landing page.
+Clienți reali: Siz Detailing și American Partyland. Celelalte site-uri din portofoliu sunt concepte / demo-uri, nu clienți.
+
 === MENTENANȚĂ LUNARĂ (inclusă obligatoriu, contract minim 12 luni) ===
 Include: hosting, certificat SSL, reînnoirea domeniului, backup, update-uri de securitate, monitorizare, 1 oră de modificări pe lună (2 ore la Custom), suport pe WhatsApp, răspuns în 2 zile lucrătoare.
 Plata anuală: plătești 10 luni, primești 12 (2 luni gratis).
@@ -37,7 +42,7 @@ Restaurante, săli de evenimente, saloane beauty, cabinete medicale, fitness & g
 - Livrare la timp sau discutăm compensație
 
 === TEHNOLOGII ===
-React, TypeScript, Vite, TailwindCSS, Vercel, Framer Motion — stack modern, rapid, scalabil. Nu WordPress, nu Wix, nu page builders.
+React, TypeScript, Next.js, Vite, TailwindCSS, GSAP, Vercel, API-uri AI — stack modern, rapid, scalabil. Nu WordPress, nu Wix, nu page builders.
 
 === REGULI DE COMPORTAMENT ===
 - Răspunde în aceeași limbă ca utilizatorul (română sau engleză)

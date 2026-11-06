@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
 import { Code, ShoppingCart, Palette, BarChart3, CalendarCheck } from 'lucide-react';
-import type { StatRow, ServiceRow, ProcessStepRow, TestimonialRow } from './types';
+import type { FactRow, ServiceRow, ProcessStepRow } from './types';
 
 const iconMap: Record<string, LucideIcon> = {
   code: Code,
@@ -14,11 +14,39 @@ export function resolveIcon(name: string): LucideIcon {
   return iconMap[name] || Code;
 }
 
-export const STATIC_STATS: StatRow[] = [
-  { id: '1', sort_order: 1, value: '50+', label_ro: 'Proiecte livrate', label_en: 'Projects delivered' },
-  { id: '2', sort_order: 2, value: '99%', label_ro: 'Clienți mulțumiți', label_en: 'Happy clients' },
-  { id: '3', sort_order: 3, value: '3+', label_ro: 'Ani experiență', label_en: 'Years experience' },
-  { id: '4', sort_order: 4, value: '48h', label_ro: 'Timp de răspuns', label_en: 'Response time' },
+/**
+ * Cifre reale, verificabile. Nu adauga aici numar de proiecte, procente de clienti multumiti sau ani de experienta
+ * pana nu avem dovada pentru ele (vezi STANDARD.md: daca nu avem cifra reala, nu punem cifra).
+ */
+export const FACTS: FactRow[] = [
+  {
+    id: 'perf',
+    value_ro: '58 → 90',
+    value_en: '58 → 90',
+    label_ro: 'Scor performanță mobil pe sizdetailing.ro',
+    label_en: 'Mobile performance score on sizdetailing.ro',
+  },
+  {
+    id: 'price',
+    value_ro: '350€',
+    value_en: '€350',
+    label_ro: 'Preț de la, plătit o singură dată',
+    label_en: 'Starting price, paid once',
+  },
+  {
+    id: 'delivery',
+    value_ro: '7–14',
+    value_en: '7–14',
+    label_ro: 'Zile de livrare, la Prezentare și Business',
+    label_en: 'Days to deliver a Presentation or Business site',
+  },
+  {
+    id: 'reply',
+    value_ro: '24h',
+    value_en: '24h',
+    label_ro: 'Răspuns la mesaje',
+    label_en: 'Reply to messages',
+  },
 ];
 
 export const STATIC_SERVICES: ServiceRow[] = [
@@ -33,8 +61,6 @@ export const STATIC_SERVICES: ServiceRow[] = [
     description_en: 'Presentation websites that load fast and look great on any screen. Google-optimized from the start.',
     features_ro: ['Site-uri de prezentare moderne', 'Landing pages optimizate', 'Aplicații web complexe', 'SEO avansat', 'Optimizare performanță', 'Design responsive', 'Mentenanță post-lansare'],
     features_en: ['Modern presentation websites', 'Optimized landing pages', 'Complex web applications', 'Advanced SEO', 'Performance optimization', 'Responsive design', 'Post-launch maintenance'],
-    price_label_ro: 'De la 350€',
-    price_label_en: 'From 350€',
     anchor: 'web-development',
   },
   {
@@ -48,8 +74,6 @@ export const STATIC_SERVICES: ServiceRow[] = [
     description_en: 'Clients check availability, pick their options and see the price instantly. You get the finished request on WhatsApp.',
     features_ro: ['Calendar de disponibilitate', 'Configurator pas cu pas', 'Estimare de preț live', 'Trimitere pe WhatsApp', 'Panou de administrare', 'Design adaptat pe mobil'],
     features_en: ['Availability calendar', 'Step-by-step configurator', 'Live price estimate', 'WhatsApp hand-off', 'Admin panel', 'Mobile-first design'],
-    price_label_ro: 'De la 1.200€',
-    price_label_en: 'From 1,200€',
     anchor: 'interactive',
   },
   {
@@ -63,8 +87,6 @@ export const STATIC_SERVICES: ServiceRow[] = [
     description_en: 'Logo, social media materials, flyers, menus — everything visible. A complete brand kit to look professional everywhere.',
     features_ro: ['Logo profesional', 'Brand guidelines', 'Grafică social media', 'Materiale print', 'UI/UX Design', 'Business cards', 'Brand kit complet'],
     features_en: ['Professional logo', 'Brand guidelines', 'Social media graphics', 'Print materials', 'UI/UX Design', 'Business cards', 'Complete brand kit'],
-    price_label_ro: 'De la 500 RON',
-    price_label_en: 'From 500 RON',
     anchor: 'design',
   },
   {
@@ -78,8 +100,6 @@ export const STATIC_SERVICES: ServiceRow[] = [
     description_en: 'Landing pages that convert, ad creatives for Facebook and Google, and content that brings measurable results.',
     features_ro: ['Landing pages optimizate', 'Ad creatives Facebook/Google', 'Template-uri email', 'Conținut social media', 'Copywriting', 'A/B testing', 'Optimizare conversie'],
     features_en: ['Optimized landing pages', 'Facebook/Google ad creatives', 'Email templates', 'Social media content', 'Copywriting', 'A/B testing', 'Conversion optimization'],
-    price_label_ro: 'De la 800 RON',
-    price_label_en: 'From 800 RON',
     anchor: 'marketing',
   },
 ];
@@ -120,38 +140,5 @@ export const STATIC_PROCESS_STEPS: ProcessStepRow[] = [
     title_en: 'Launch',
     description_ro: 'Deploy, configurare domeniu, Google Analytics. Primești documentație și training scurt ca să poți gestiona singur conținutul.',
     description_en: 'Deploy, domain setup, Google Analytics. You get documentation and a short training so you can manage the content yourself.',
-  },
-];
-
-export const STATIC_TESTIMONIALS: TestimonialRow[] = [
-  {
-    id: '1',
-    sort_order: 1,
-    quote_ro: 'Am venit fără un brief clar și în 5 zile aveam site-ul live. Se încarcă instant, arată profesionist și deja am primit primele solicitări prin formularul de contact.',
-    quote_en: 'I came without a clear brief and in 5 days the site was live. It loads instantly, looks professional, and I already received the first inquiries through the contact form.',
-    author_name: 'Maria P.',
-    author_role: 'TechStart SRL',
-    author_initial: 'M',
-    avatar_gradient: 'from-purple-600 to-violet-500',
-  },
-  {
-    id: '2',
-    sort_order: 2,
-    quote_ro: 'Magazinul online gata în 2 săptămâni. Am fost sceptic, dar în prima lună am procesat comenzi fără nicio problemă. Suportul după lansare m-a surprins cel mai mult — răspund în ore, nu în zile.',
-    quote_en: 'Online store ready in 2 weeks. I was skeptical, but in the first month I processed orders without any issues. Post-launch support surprised me the most — they respond in hours, not days.',
-    author_name: 'Andrei I.',
-    author_role: 'ShopLocal',
-    author_initial: 'A',
-    avatar_gradient: 'from-pink-600 to-rose-500',
-  },
-  {
-    id: '3',
-    sort_order: 3,
-    quote_ro: 'Am lucrat cu 2 agenții înainte și de fiecare dată a fost frustrare. Cu Vixon Lab a fost altceva — comunicare clară, livrare la timp, și nu mi-au vândut servicii de care nu aveam nevoie.',
-    quote_en: "I worked with 2 agencies before and it was frustrating each time. With Vixon Lab it was different — clear communication, on-time delivery, and they didn't sell me services I didn't need.",
-    author_name: 'Elena D.',
-    author_role: 'Bella Boutique',
-    author_initial: 'E',
-    avatar_gradient: 'from-blue-600 to-cyan-500',
   },
 ];

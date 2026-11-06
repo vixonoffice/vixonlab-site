@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
@@ -6,7 +6,8 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
 import { Marquee } from '@/components/Marquee';
 import { Ban, DollarSign, Cpu, HeadphonesIcon, ArrowUpRight } from 'lucide-react';
-import { STATS, TECH_STACK } from '@/data/about';
+import { FactsStrip } from '@/components/FactsStrip';
+import { TECH_STACK } from '@/data/about';
 
 const About = () => {
   const { t, language } = useLanguage();
@@ -46,20 +47,7 @@ const About = () => {
             </ScrollReveal>
 
             <div className="lg:col-span-5 lg:pt-12">
-              <div className="grid grid-cols-2 gap-x-6 gap-y-10">
-                {STATS.map((stat, i) => (
-                  <ScrollReveal key={stat.id} delay={i * 0.08}>
-                    <div className="border-l-2 border-primary/40 pl-4">
-                      <div className="font-heading font-bold text-4xl md:text-5xl text-foreground mb-2 leading-none">
-                        {stat.value}
-                      </div>
-                      <div className="text-xs uppercase tracking-widest text-muted-foreground">
-                        {language === 'en' ? stat.label_en : stat.label_ro}
-                      </div>
-                    </div>
-                  </ScrollReveal>
-                ))}
-              </div>
+              <FactsStrip variant="compact" />
             </div>
           </div>
         </div>
@@ -111,7 +99,7 @@ const About = () => {
           {TECH_STACK.map((tech) => (
             <span key={tech.id}
               className="px-6 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-base md:text-lg font-medium text-foreground">
-              {tech.name}
+              {language === 'en' ? tech.name_en : tech.name_ro}
             </span>
           ))}
         </Marquee>

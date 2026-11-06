@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
 import { PriceFinder } from '@/components/PriceFinder';
+import { FixedPrice } from '@/components/en/FixedPrice';
 import { Check, MessageCircle, Shield, Sparkles, ArrowUpRight, Zap, Briefcase, Wand2, Wrench, type LucideIcon } from 'lucide-react';
 import {
   TIERS,
@@ -30,10 +31,10 @@ const Pricing = () => {
   const [billing, setBilling] = useState<BillingPeriod>('annual');
 
   usePageSEO({
-    title: isRo ? 'Prețuri · Site-uri de la 350€ + mentenanță' : 'Pricing · Websites from 350€ + maintenance',
+    title: isRo ? 'Prețuri · Site-uri de la 350€ + mentenanță' : 'Pricing · Fixed price per project, from 350 EUR',
     description: isRo
       ? 'Site profesional de la 350€, plătit o singură dată, plus mentenanță de la 15€/lună: hosting, SSL, domeniu, backup și modificări incluse.'
-      : 'Professional website from 350€, paid once, plus maintenance from 15€/month: hosting, SSL, domain, backups and edits included.',
+      : 'Fixed price per project: websites from 350 EUR, landing pages from 300 EUR, AI chatbots from 500 EUR. No hourly billing. Hosting and care plans from 15 EUR/month.',
   });
 
   const commonItems = [
@@ -93,6 +94,26 @@ const Pricing = () => {
         )}
       </PageHero>
 
+      {/* English pages: fixed price per project (agencies and clients outside Romania) */}
+      {!isRo && (
+        <section className="section-padding pb-20">
+          <div className="mx-auto max-w-content">
+            <ScrollReveal>
+              <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3">Fixed price per project</p>
+              <h2 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl leading-[0.95] mb-4">
+                <span className="text-foreground">No hourly rate. </span>
+                <span className="gradient-text">One price, agreed upfront.</span>
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mb-10 leading-relaxed">
+                Builds are quoted as one fixed price per project in euros, so you know the total before work starts.
+                Bigger projects are quoted the same way. The packages further down show what a full site with maintenance looks like.
+              </p>
+            </ScrollReveal>
+            <FixedPrice />
+          </div>
+        </section>
+      )}
+
       {/* Interactive package picker */}
       <section className="section-padding pb-20">
         <div className="mx-auto max-w-content">
@@ -150,7 +171,7 @@ const Pricing = () => {
                           <span className="text-sm text-muted-foreground">{t('tier.from')}</span>
                         )}
                         <span className="font-heading font-bold text-5xl text-foreground leading-none">
-                          {formatEur(tier.setupEur)}
+                          {formatEur(tier.setupEur, language)}
                         </span>
                       </div>
                       <span className="text-xs text-muted-foreground mt-2 mb-4">{t('tier.setupFree')}</span>

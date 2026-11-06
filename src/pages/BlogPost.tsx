@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { useParams, Link, Navigate } from 'react-router-dom';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useParams, Navigate } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
@@ -11,14 +11,11 @@ import { renderMarkdown } from '@/lib/markdown';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { language } = useLanguage();
   const post = getBlogPost(slug);
 
-  const isEn = language === 'en';
-
   usePageSEO({
-    title: post ? (isEn ? post.title_en : post.title_ro) : 'Blog',
-    description: post ? (isEn ? post.excerpt_en : post.excerpt_ro) : '',
+    title: post ? post.title_ro : 'Blog',
+    description: post ? post.excerpt_ro : '',
   });
 
   // Related posts: same category, excluding current
@@ -31,11 +28,11 @@ const BlogPost = () => {
 
   if (!post) return <Navigate to="/blog" replace />;
 
-  const title = isEn ? post.title_en : post.title_ro;
-  const content = isEn ? post.content_en : post.content_ro;
-  const excerpt = isEn ? post.excerpt_en : post.excerpt_ro;
+  const title = post.title_ro;
+  const content = post.content_ro;
+  const excerpt = post.excerpt_ro;
   const date = post.published_at
-    ? new Date(post.published_at).toLocaleDateString(isEn ? 'en-US' : 'ro-RO', {
+    ? new Date(post.published_at).toLocaleDateString('ro-RO', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -52,7 +49,7 @@ const BlogPost = () => {
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
           >
             <ArrowLeft className="w-4 h-4" />
-            {isEn ? 'Back to Blog' : 'Inapoi la Blog'}
+            Înapoi la blog
           </Link>
 
           <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -67,7 +64,7 @@ const BlogPost = () => {
             )}
             <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <Clock className="w-3.5 h-3.5" />
-              {post.read_time_minutes} min {isEn ? 'read' : 'lectura'}
+              {post.read_time_minutes} min lectură
             </span>
           </div>
 
@@ -123,7 +120,7 @@ const BlogPost = () => {
         <SectionWrapper>
           <ScrollReveal>
             <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground text-center mb-10">
-              {isEn ? 'Related Articles' : 'Articole similare'}
+              Articole similare
             </h2>
           </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -135,7 +132,7 @@ const BlogPost = () => {
                       <div className="relative aspect-[16/10] overflow-hidden">
                         <img
                           src={rp.cover_image}
-                          alt={isEn ? rp.title_en : rp.title_ro}
+                          alt={rp.title_ro}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
                         />
@@ -144,10 +141,10 @@ const BlogPost = () => {
                     )}
                     <div className="p-5">
                       <h3 className="font-heading font-semibold text-base text-foreground mb-2 group-hover:text-primary-light transition-colors line-clamp-2">
-                        {isEn ? rp.title_en : rp.title_ro}
+                        {rp.title_ro}
                       </h3>
                       <p className="text-sm text-muted-foreground line-clamp-2">
-                        {isEn ? rp.excerpt_en : rp.excerpt_ro}
+                        {rp.excerpt_ro}
                       </p>
                     </div>
                   </div>
@@ -163,13 +160,13 @@ const BlogPost = () => {
         <ScrollReveal>
           <div className="glass-card p-10 md:p-16 text-center max-w-3xl mx-auto">
             <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4">
-              {isEn ? 'Have a project in mind?' : 'Ai un proiect in minte?'}
+              Ai un proiect în minte?
             </h2>
             <Link
               to="/contact"
               className="btn-primary font-medium px-8 py-3.5 rounded-full inline-block hover:opacity-90 transition-opacity"
             >
-              {isEn ? 'Contact Us' : 'Contacteaza-ne'}
+              Contactează-ne
             </Link>
           </div>
         </ScrollReveal>

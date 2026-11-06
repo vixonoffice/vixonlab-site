@@ -1,8 +1,8 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, type ReactElement } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, useParams, useRoutes, type RouteObject } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { Layout } from "@/components/Layout";
 
@@ -20,35 +20,61 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Offer = lazy(() => import("./pages/Offer"));
+const Agencies = lazy(() => import("./pages/Agencies"));
+
+/** Articolele de blog exista doar in romana: /en/blog/:slug duce la varianta RO. */
+function BlogPostRedirect() {
+  const { slug } = useParams();
+  return <Navigate to={`/blog/${slug}`} replace />;
+}
+
+const page = (element: ReactElement) => <Layout>{element}</Layout>;
+
+// Paginile publice care exista in ambele limbi. RO fara prefix ("/services"), EN sub "/en" ("/en/services").
+const bilingualPages: { path: string; element: ReactElement }[] = [
+  { path: "", element: <Index /> },
+  { path: "services", element: <Services /> },
+  { path: "portfolio", element: <Portfolio /> },
+  { path: "portfolio/:slug", element: <CaseStudy /> },
+  { path: "about", element: <About /> },
+  { path: "pricing", element: <Pricing /> },
+  { path: "contact", element: <Contact /> },
+  { path: "blog", element: <Blog /> },
+  { path: "privacy", element: <Privacy /> },
+  { path: "terms", element: <Terms /> },
+];
+
+const routes: RouteObject[] = [
+  ...bilingualPages.map((p) => ({ path: `/${p.path}`, element: page(p.element) })),
+  ...bilingualPages.map((p) => ({ path: p.path ? `/en/${p.path}` : "/en", element: page(p.element) })),
+
+  // Doar romana
+  { path: "/oferta", element: page(<Offer />) },
+  { path: "/offer", element: <Navigate to="/oferta" replace /> },
+  { path: "/blog/:slug", element: page(<BlogPost />) },
+
+  // Doar engleza
+  { path: "/en/agencies", element: page(<Agencies />) },
+  { path: "/en/blog/:slug", element: <BlogPostRedirect /> },
+  { path: "/en/oferta", element: <Navigate to="/en/pricing" replace /> },
+  { path: "/en/offer", element: <Navigate to="/en/pricing" replace /> },
+
+  { path: "*", element: page(<NotFound />) },
+];
+
+function AppRoutes() {
+  return <Suspense fallback={null}>{useRoutes(routes)}</Suspense>;
+}
 
 const App = () => (
   <TooltipProvider>
-    <LanguageProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Suspense fallback={null}>
-          <Routes>
-            {/* Public pages */}
-            <Route path="/" element={<Layout><Index /></Layout>} />
-            <Route path="/services" element={<Layout><Services /></Layout>} />
-            <Route path="/portfolio" element={<Layout><Portfolio /></Layout>} />
-            <Route path="/portfolio/:slug" element={<Layout><CaseStudy /></Layout>} />
-            <Route path="/about" element={<Layout><About /></Layout>} />
-            <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
-            <Route path="/oferta" element={<Layout><Offer /></Layout>} />
-            <Route path="/offer" element={<Layout><Offer /></Layout>} />
-            <Route path="/contact" element={<Layout><Contact /></Layout>} />
-            <Route path="/blog" element={<Layout><Blog /></Layout>} />
-            <Route path="/blog/:slug" element={<Layout><BlogPost /></Layout>} />
-            <Route path="/privacy" element={<Layout><Privacy /></Layout>} />
-            <Route path="/terms" element={<Layout><Terms /></Layout>} />
-
-            <Route path="*" element={<Layout><NotFound /></Layout>} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </LanguageProvider>
+    <BrowserRouter>
+      <LanguageProvider>
+        <Toaster />
+        <Sonner />
+        <AppRoutes />
+      </LanguageProvider>
+    </BrowserRouter>
   </TooltipProvider>
 );
 

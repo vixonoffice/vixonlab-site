@@ -7,6 +7,7 @@ import { PageHero } from '@/components/PageHero';
 import { Mail, Phone, Clock, MessageCircle, ChevronRight } from 'lucide-react';
 import { z } from 'zod';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { TIERS, tierOptionLabel } from '@/lib/tiers';
 
 const WHATSAPP_NUMBER = '40779383164';
 const CONTACT_EMAIL = 'vixonoffice@gmail.com';
@@ -71,7 +72,8 @@ const Contact = () => {
 
   const handleSend = () => setSubmitted(true);
 
-  const projectTypes = t('contact.projectTypes').split('|');
+  // Preturile vin din src/lib/tiers.ts (aceeasi sursa ca pagina de preturi).
+  const projectTypes = [...TIERS.map((tier) => tierOptionLabel(tier, language)), t('contact.notSure')];
   const budgets = t('contact.budgets').split('|');
 
   const inputClass = "w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:bg-white/[0.07] transition-all";

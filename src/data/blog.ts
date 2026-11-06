@@ -7,9 +7,7 @@ export const BLOG_POSTS: BlogPostRow[] = [
     id: '62972650-62a8-4d4a-a1c7-8c19223d6d3d',
     slug: 'cat-costa-un-site-web-in-romania-2026',
     title_ro: 'Cât costă un site web în România în 2026? Ghid complet',
-    title_en: 'How Much Does a Website Cost in Romania in 2026? Complete Guide',
     excerpt_ro: 'Prețuri reale pentru site-uri web în România: de la 200€ la 10.000€+. Află ce primești la fiecare nivel de preț și cum alegi corect.',
-    excerpt_en: 'Real prices for websites in Romania: from €200 to €10,000+. Learn what you get at each price level and how to choose correctly.',
     content_ro: `## Cât costă un site web în România?
 
 Este întrebarea pe care o pune orice antreprenor. Și răspunsul variază enorm.
@@ -29,12 +27,12 @@ Este întrebarea pe care o pune orice antreprenor. Și răspunsul variază enorm
 - SEO de bază
 - **Verdict**: OK pentru hobby, nu pentru afaceri serioase
 
-#### 3. Site profesional (700 - 2.000€) ⭐
+#### 3. Site profesional (350 - 2.000€) ⭐
 - Design custom, unic
 - Cod optimizat pentru viteză
 - SEO avansat
 - Responsive pe toate device-urile
-- Admin panel pentru editare conținut
+- Conținut ușor de actualizat
 - **Verdict**: Alegerea ideală pentru IMM-uri
 
 #### 4. Site enterprise (3.000 - 10.000€+)
@@ -44,16 +42,15 @@ Este întrebarea pe care o pune orice antreprenor. Și răspunsul variază enorm
 - Multi-limbă avansat
 - **Verdict**: Pentru companii mari cu nevoi specifice
 
-### Ce include un pachet de 700-900€ la Vixon Lab?
+### Ce primești la Vixon Lab?
 
-- ✅ Website premium multi-pagină
-- ✅ Design modern & responsive
-- ✅ Cod custom (viteză maximă)
-- ✅ Optimizare SEO & Google
-- ✅ Google My Business setup
-- ✅ Formular de contact
-- ✅ Domeniu GRATUIT 1 an
-- ✅ Livrare în 3-7 zile
+Pachetele pornesc de la 350€ (site plătit o singură dată) plus mentenanță de la 15€/lună. Ai în ele:
+
+- ✅ Cod custom, rapid pe telefon
+- ✅ Design adaptat pe mobil
+- ✅ SEO de bază
+- ✅ Buton WhatsApp și formular de contact
+- ✅ Livrare în 7-14 zile
 
 ### Sfaturi pentru alegerea corectă
 
@@ -65,31 +62,9 @@ Este întrebarea pe care o pune orice antreprenor. Și răspunsul variază enorm
 
 ## Concluzie
 
-Un site web bun este o investiție, nu un cost. La **Vixon Lab**, oferim raport calitate-preț imbatabil: site-uri premium de la 700€, livrate în 3-7 zile.
+Un site web bun este o investiție, nu un cost. La **Vixon Lab** prețul e clar de la început: site-uri de la 350€, plătite o singură dată, plus mentenanță de la 15€/lună.
 
 [Vezi pachetele noastre →](/services)`,
-    content_en: `## How Much Does a Website Cost in Romania?
-
-This is the question every entrepreneur asks. And the answer varies enormously.
-
-### Price Categories
-
-1. **Free or nearly free (€0-100)** — Unprofessional, not recommended
-2. **Budget (€200-500)** — WordPress with premium theme, generic design
-3. **Professional (€700-2,000)** — Custom design, optimized code, advanced SEO ⭐
-4. **Enterprise (€3,000-10,000+)** — Complex functionality, API integrations
-
-### What does a €700-900 package at Vixon Lab include?
-
-- Premium multi-page website
-- Modern & responsive design
-- Custom code (maximum speed)
-- SEO & Google optimization
-- Delivery in 3-7 days
-
-A good website is an investment, not a cost.
-
-[See our packages →](/services)`,
     cover_image: null,
     category: 'business',
     tags: ['preturi', 'cost site web', 'romania', 'buget'],
@@ -101,9 +76,7 @@ A good website is an investment, not a cost.
     id: '37b58f0c-76c8-4e30-8b1d-f4607e898a45',
     slug: 'de-ce-ai-nevoie-de-un-site-web-profesional',
     title_ro: 'De ce ai nevoie de un site web profesional în 2026',
-    title_en: 'Why You Need a Professional Website in 2026',
     excerpt_ro: 'Un site web profesional nu mai este un lux — este o necesitate. Află de ce afacerea ta pierde clienți fără o prezență online solidă.',
-    excerpt_en: 'A professional website is no longer a luxury — it is a necessity. Learn why your business is losing clients without a solid online presence.',
     content_ro: `## De ce contează un site web profesional?
 
 În 2026, peste **85% din consumatori** caută online înainte de a lua o decizie de cumpărare. Dacă afacerea ta nu are un site web profesional, pierzi clienți în fiecare zi.
@@ -144,56 +117,17 @@ Cu Google Analytics și alte instrumente, poți vedea exact:
 
 ## Cât costă un site web profesional?
 
-Prețurile variază enorm. Un site de prezentare profesional pornește de la **700€** și poate ajunge la câteva mii de euro pentru funcționalități complexe.
+Prețurile variază enorm. Un site de prezentare profesional pornește de la **350€** și poate ajunge la câteva mii de euro pentru funcționalități complexe.
 
 La **Vixon Lab**, oferim pachete complete care includ:
 - Design modern, custom
 - Cod scris de la zero (fără WordPress)
 - Optimizare SEO din start
-- Livrare în 3-7 zile
+- Livrare în 7-14 zile
 
 ## Concluzie
 
 Nu mai amâna. Fiecare zi fără un site profesional este o zi în care pierzi clienți. [Contactează-ne](/contact) pentru o consultație gratuită.`,
-    content_en: `## Why Does a Professional Website Matter?
-
-In 2026, over **85% of consumers** search online before making a purchase decision. If your business does not have a professional website, you are losing clients every day.
-
-### 1. First Impressions Matter
-
-Your website is your digital business card. An outdated design or a slow site sends the wrong message: that your business is not keeping up with trends.
-
-### 2. Google Visibility
-
-Without an SEO-optimized site, you do not exist for Google. This means potential clients find your competition, not you.
-
-### 3. Credibility and Trust
-
-A professional site with:
-- **Modern** and responsive design
-- **Testimonials** from real clients
-- **Portfolio** with previous projects
-- **SSL certificate** (HTTPS)
-
-...builds trust instantly.
-
-### 4. 24/7 Availability
-
-Unlike a physical store, your website works for you non-stop.
-
-### 5. Measurable ROI
-
-With Google Analytics, you can see exactly how many visitors you get and how many convert.
-
-## How Much Does a Professional Website Cost?
-
-Prices vary. A professional presentation site starts from **€700**.
-
-At **Vixon Lab**, we offer complete packages including custom design, clean code, SEO optimization, and delivery in 3-7 days.
-
-## Conclusion
-
-Do not delay. Every day without a professional site is a day you lose clients. [Contact us](/contact) for a free consultation.`,
     cover_image: null,
     category: 'business',
     tags: ['site web', 'web development', 'afaceri', 'SEO'],
@@ -205,9 +139,7 @@ Do not delay. Every day without a professional site is a day you lose clients. [
     id: 'dbff550d-b4c4-4e80-8551-8bdeb4544517',
     slug: 'wordpress-vs-cod-custom-ce-alegi',
     title_ro: 'WordPress vs Cod Custom: Ce alegi pentru afacerea ta?',
-    title_en: 'WordPress vs Custom Code: What to Choose for Your Business?',
     excerpt_ro: 'WordPress sau cod custom? Analizăm avantajele și dezavantajele fiecărei opțiuni ca să faci alegerea corectă pentru afacerea ta.',
-    excerpt_en: 'WordPress or custom code? We analyze the pros and cons of each option so you can make the right choice for your business.',
     content_ro: `## WordPress vs Cod Custom
 
 Este una dintre cele mai frecvente întrebări pe care le primim: **"Să-mi fac site pe WordPress sau cu cod custom?"**
@@ -240,7 +172,7 @@ Răspunsul scurt: depinde de nevoile tale. Dar hai să analizăm obiectiv.
 ### Cod Custom — Dezavantaje
 
 - **Cost inițial mai mare** — necesită un developer
-- **Editare conținut** — necesită un admin panel custom (pe care noi îl includem)
+- **Editare conținut** — modificările le face un developer (la noi, în mentenanța lunară) sau un panou de administrare, la pachetul Custom
 
 ## Comparație directă
 
@@ -257,41 +189,9 @@ Răspunsul scurt: depinde de nevoile tale. Dar hai să analizăm obiectiv.
 
 Pentru afaceri mici și medii care vor **performanță, securitate și unicitate**, codul custom este alegerea clară.
 
-La **Vixon Lab**, fiecare site e scris de la zero cu React — de 3x mai rapid decât WordPress, fără vulnerabilități și cu design unic.
+La **Vixon Lab**, fiecare site e scris de la zero cu React — mai rapid decât un WordPress încărcat cu plugin-uri, fără plugin-uri vulnerabile și cu design unic.
 
 [Cere o ofertă personalizată →](/contact)`,
-    content_en: `## WordPress vs Custom Code
-
-This is one of the most common questions we receive: **"Should I build my site on WordPress or with custom code?"**
-
-Short answer: it depends on your needs. But let us analyze objectively.
-
-### WordPress — Pros
-- Easy to use
-- Thousands of plugins
-- Large community
-- Low initial cost
-
-### WordPress — Cons
-- Slow (3-6 seconds load time)
-- Weak security (43% of compromised sites are WordPress)
-- Plugin bloat
-- Constant maintenance
-
-### Custom Code — Pros
-- Maximum speed (under 1 second)
-- Excellent security
-- Superior SEO
-- Unique design
-- Zero maintenance
-
-### Custom Code — Cons
-- Higher initial cost
-- Requires a developer
-
-At **Vixon Lab**, every site is written from scratch with React — 3x faster than WordPress.
-
-[Get a custom quote →](/contact)`,
     cover_image: null,
     category: 'tech',
     tags: ['wordpress', 'cod custom', 'comparatie', 'web development'],
@@ -303,9 +203,7 @@ At **Vixon Lab**, every site is written from scratch with React — 3x faster th
     id: '7bdbdf81-016e-4d26-bdf1-394780e6a6a3',
     slug: 'cum-sa-alegi-o-agentie-web-development',
     title_ro: 'Cum să alegi o agenție de web development: 7 criterii esențiale',
-    title_en: 'How to Choose a Web Development Agency: 7 Essential Criteria',
     excerpt_ro: 'Nu toate agențiile web sunt la fel. Iată 7 criterii pe care trebuie să le verifici înainte de a alege pe cineva să-ți facă site-ul.',
-    excerpt_en: 'Not all web agencies are the same. Here are 7 criteria you must check before choosing someone to build your website.',
     content_ro: `## Cum alegi o agenție web?
 
 Ai decis că ai nevoie de un site profesional. Dar cum alegi agenția potrivită? Sunt sute de opțiuni, de la freelanceri la agenții mari.
@@ -344,7 +242,7 @@ Un site frumos care nu apare pe Google e inutil. Verifică dacă agenția oferă
 - Optimizare meta tags
 - Sitemap XML
 - Schema markup
-- Core Web Vitals optime
+- Core Web Vitals urmărite și măsurați
 
 ### 6. Comunicare
 
@@ -356,33 +254,17 @@ Caută recenzii pe Google, Facebook sau direct pe site-ul lor. Testimoniale real
 
 ## De ce Vixon Lab?
 
-Bifăm toate cele 7 criterii:
-- ✅ Portofoliu live cu site-uri funcționale
+Cum stăm față de criteriile de mai sus:
+- ✅ Portofoliu live: sizdetailing.ro și americanpartyland.ro
 - ✅ React + cod custom, zero WordPress
-- ✅ Livrare în 3-7 zile
-- ✅ Totul inclus: design, SEO, domeniu
-- ✅ Core Web Vitals 95+ pe toate site-urile
-- ✅ Răspundem în sub 2 ore
-- ✅ Clienți mulțumiți cu recenzii reale
+- ✅ Livrare în 7-14 zile
+- ✅ Prețuri clare, cu mentenanța spusă de la început
+- ✅ Performanță măsurată: la sizdetailing.ro scorul pe mobil a urcat de la 58 la 90
+- ✅ Răspundem în 24h
+
+La recenzii suntem la început și nu avem zeci de recenzii. Îți arătăm în schimb site-urile live și cifra măsurată.
 
 [Hai să vorbim →](/contact)`,
-    content_en: `## How to Choose a Web Agency?
-
-You have decided you need a professional website. But how do you choose the right agency?
-
-### 7 Essential Criteria
-
-1. **Real portfolio** with live links
-2. **Modern technology** (React, not just WordPress)
-3. **Fast delivery** (1-2 weeks, not months)
-4. **Transparent pricing** (what is included?)
-5. **SEO and performance** (Google visibility)
-6. **Good communication** (responsive, clear)
-7. **Real reviews** and testimonials
-
-At **Vixon Lab**, we check all 7 criteria. Custom code, 3-7 day delivery, everything included.
-
-[Let us talk →](/contact)`,
     cover_image: null,
     category: 'tips',
     tags: ['agentie web', 'sfaturi', 'alegere', 'web development'],
@@ -394,9 +276,7 @@ At **Vixon Lab**, we check all 7 criteria. Custom code, 3-7 day delivery, everyt
     id: '2cbe340b-2595-43da-9492-8bfec4b24bce',
     slug: 'seo-pentru-incepatori-ghid-complet',
     title_ro: 'SEO pentru începători: Ghid complet pentru afacerea ta',
-    title_en: 'SEO for Beginners: Complete Guide for Your Business',
     excerpt_ro: 'Ce este SEO, de ce contează și cum poți face ca site-ul tău să apară pe prima pagină Google. Ghid pas cu pas.',
-    excerpt_en: 'What is SEO, why it matters, and how you can make your website appear on Google first page. Step by step guide.',
     content_ro: `## Ce este SEO?
 
 **SEO (Search Engine Optimization)** = optimizarea site-ului tău pentru a apărea mai sus în rezultatele Google.
@@ -460,28 +340,9 @@ Fiecare site pe care îl livrăm vine cu:
 - Schema markup
 - Sitemap XML
 - Google Search Console configurat
-- Core Web Vitals 95+
+- Performanță măsurată pe mobil (Core Web Vitals)
 
 [Vrei un site optimizat SEO? →](/contact)`,
-    content_en: `## What is SEO?
-
-**SEO (Search Engine Optimization)** means optimizing your website to appear higher in Google results.
-
-## Why Does SEO Matter?
-
-- 75% of users never go past page 1
-- Free organic traffic
-- More trust than paid ads
-
-## The 3 Pillars of SEO
-
-1. **Technical SEO** — speed, mobile-friendly, HTTPS, sitemap
-2. **On-Page SEO** — titles, descriptions, headings, keywords, quality content
-3. **Off-Page SEO** — backlinks, Google Business, social media
-
-At Vixon Lab, SEO is included in every website we deliver.
-
-[Want an SEO-optimized site? →](/contact)`,
     cover_image: null,
     category: 'seo',
     tags: ['SEO', 'Google', 'optimizare', 'ghid'],
@@ -493,9 +354,7 @@ At Vixon Lab, SEO is included in every website we deliver.
     id: '977de541-7a3b-495f-b117-d5f309209296',
     slug: 'de-ce-site-ul-tau-trebuie-sa-fie-rapid',
     title_ro: 'De ce site-ul tău trebuie să se încarce în sub 2 secunde',
-    title_en: 'Why Your Website Must Load in Under 2 Seconds',
     excerpt_ro: 'Viteza site-ului afectează direct vânzările. Fiecare secundă de încărcare în plus scade conversiile cu 7%. Află cum să optimizezi.',
-    excerpt_en: 'Website speed directly affects sales. Each additional second of loading decreases conversions by 7%. Learn how to optimize.',
     content_ro: `## Viteza contează mai mult decât crezi
 
 **53% din vizitatori** abandonează un site care se încarcă în mai mult de 3 secunde. Asta înseamnă că jumătate din potențialii tăi clienți pleacă înainte să vadă ce oferi.
@@ -534,27 +393,9 @@ Google folosește 3 metrici principale:
 - **Vercel hosting** — CDN global, edge caching
 - **Zero plugin-uri** — cod curat, scris manual
 
-Rezultat: **Core Web Vitals 95-100** pe toate site-urile noastre.
+Rezultat: la sizdetailing.ro scorul de performanță pe mobil a urcat de la 58 la 90.
 
 [Testează viteza site-ului tău actual →](/contact)`,
-    content_en: `## Speed Matters More Than You Think
-
-**53% of visitors** abandon a site that takes more than 3 seconds to load.
-
-### Speed Impact on Business
-- 1 second delay = -7% conversions
-- 2 seconds delay = -15% conversions
-- 3+ seconds = 53% bounce rate
-
-### How We Build Fast Sites at Vixon Lab
-- React + Vite — optimized builds
-- Self-hosted fonts — zero external requests
-- WebP images — 3x smaller than JPEG
-- Vercel hosting — global CDN
-
-Result: **Core Web Vitals 95-100** on all our sites.
-
-[Test your current site speed →](/contact)`,
     cover_image: null,
     category: 'tech',
     tags: ['viteza', 'performanta', 'Core Web Vitals', 'optimizare'],
@@ -566,9 +407,7 @@ Result: **Core Web Vitals 95-100** on all our sites.
     id: '7072d692-bee6-4edd-b2df-11450059a619',
     slug: 'tendinte-web-design-2026',
     title_ro: 'Tendinte Web Design 2026 — Ce site-uri vor domina internetul',
-    title_en: 'Web Design Trends 2026 — What Sites Will Dominate',
     excerpt_ro: 'Descopera cele mai importante tendinte in web design pentru 2026: AI personalizat, dark mode avansat, micro-animatii si design minimalist. Ce trebuie sa stie orice afacere din Romania.',
-    excerpt_en: 'Discover the most important web design trends for 2026: AI-personalized interfaces, advanced dark mode, micro-animations and minimalist design.',
     content_ro: `# Tendinte Web Design 2026 — Ce site-uri vor domina internetul
 
 Anul 2026 aduce schimbari majore in modul in care sunt construite si percepute site-urile web. Daca ai o afacere in Romania si vrei sa ramii relevant online, trebuie sa cunosti aceste tendinte.
@@ -604,11 +443,6 @@ Majoritatea utilizatorilor prefera dark mode seara. Site-urile moderne se adapte
 Web design-ul in 2026 e despre **viteza, claritate si personalizare**. Daca site-ul tau a fost creat acum 3-4 ani, probabil ca nu mai respecta standardele actuale — si asta costa clienti reali in fiecare zi.
 
 La Vixon Lab construim site-uri care respecta toate aceste standarde, optimizate pentru conversii si cautari Google. [Contacteaza-ne](/contact) pentru o consultatie gratuita.`,
-    content_en: `# Web Design Trends 2026 — What Sites Will Dominate
-
-2026 brings major changes to how websites are built. Key trends: AI-personalized interfaces, minimalist design with big visual impact, micro-animations, absolute mobile-first, Core Web Vitals performance, and adaptive dark mode.
-
-At Vixon Lab we build sites that respect all 2026 standards, optimized for conversions and Google search.`,
     cover_image: null,
     category: 'Web Design',
     tags: ['web design', 'tendinte 2026', 'UI/UX', 'mobile-first', 'performanta'],
@@ -620,9 +454,7 @@ At Vixon Lab we build sites that respect all 2026 standards, optimized for conve
     id: '2cee9d80-27f0-44d8-8aa0-adbfe1bd98ca',
     slug: 'ai-web-development-2026',
     title_ro: 'Cum schimba AI web development-ul in 2026 — Ce trebuie sa stii',
-    title_en: 'How AI is Changing Web Development in 2026 — What You Need to Know',
     excerpt_ro: 'Inteligenta artificiala transforma web development-ul in 2026. De la generarea de cod la design automat — cum folosim AI la Vixon Lab pentru a livra site-uri mai bune mai repede.',
-    excerpt_en: 'AI is transforming web development in 2026. From code generation to automatic design — how AI helps deliver better sites faster.',
     content_ro: `# Cum schimba AI web development-ul in 2026
 
 Daca in 2023 AI in web development era o curiozitate, in 2026 e o realitate de zi cu zi. Iata ce s-a schimbat cu adevarat si ce inseamna asta pentru afacerea ta.
@@ -666,13 +498,6 @@ Rezultat: livram mai repede fara sa sacrificam calitatea sau personalizarea.
 AI in 2026 face site-urile mai bune si mai accesibile — dar nu elimina nevoia de expertiza umana. Cel mai bun rezultat vine din combinatia dintre AI ca unealta si oameni care inteleg business-ul tau.
 
 Vrei un site care foloseste tot ce are mai bun 2026-ul? [Vorbim.](/contact)`,
-    content_en: `# How AI is Changing Web Development in 2026
-
-AI tools accelerate code writing by 40-60%. Design drafts in hours. AI-assisted content. Faster QA.
-
-But AI cannot understand your business, replace strategy, or guarantee uniqueness.
-
-At Vixon Lab we use AI as a tool to deliver faster without sacrificing quality or personalization.`,
     cover_image: null,
     category: 'Tehnologie',
     tags: ['AI web development', 'inteligenta artificiala', 'web design 2026', 'tehnologie'],
@@ -684,9 +509,7 @@ At Vixon Lab we use AI as a tool to deliver faster without sacrificing quality o
     id: '1fe6be82-bd46-46c6-91ce-3521718ab423',
     slug: 'magazin-online-vs-site-prezentare-2026',
     title_ro: 'Magazin online vs site de prezentare — Ce sa alegi in 2026',
-    title_en: 'E-commerce vs Presentation Site — What to Choose in 2026',
     excerpt_ro: 'Nu stii daca ai nevoie de magazin online sau de un site de prezentare? Ghidul complet pentru a lua decizia corecta in 2026, cu exemple reale din piata romana.',
-    excerpt_en: 'Not sure if you need an e-commerce store or a presentation site? Complete guide to make the right decision in 2026.',
     content_ro: `# Magazin online vs site de prezentare — Ce sa alegi in 2026
 
 Una dintre primele decizii cand vrei sa faci un site e: am nevoie sa vand online sau doar sa prezint afacerea? Raspunsul nu e intotdeauna evident. Iata ghidul complet.
@@ -726,18 +549,9 @@ O categorie intermediara populara in 2026: site de prezentare cu formular de com
 
 ## Cum te ajutam la Vixon Lab
 
-Analizam gratuit afacerea ta si iti recomandam solutia potrivita — nu cea mai scumpa. Avem pachete pentru ambele directii, livrate in 3-14 zile.
+Iti spunem sincer ce ti se potriveste — nu solutia cea mai scumpa. Nu facem magazine online: ne ocupam de site-uri de prezentare, rezervari si configuratoare.
 
 [Vorbim despre proiectul tau](/contact)`,
-    content_en: `# E-commerce vs Presentation Site — What to Choose in 2026
-
-Presentation site (700-1,500 EUR): ideal for local services, freelancers, B2B. Delivery 5-10 days.
-
-E-commerce (1,500-5,000 EUR+): ideal for physical/digital products, fixed-price services.
-
-Middle ground: presentation site with booking or order form (1,000-1,800 EUR).
-
-At Vixon Lab we analyze your business for free and recommend the right solution.`,
     cover_image: null,
     category: 'Ghiduri',
     tags: ['magazin online', 'ecommerce romania', 'site prezentare', 'web development', 'alegere site'],

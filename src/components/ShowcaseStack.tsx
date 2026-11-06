@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+// Doi clienti reali, apoi doua concepte marcate clar "Concept / demo" (vezi src/data/portfolio.ts).
 const PROJECTS = [
-  { name: 'Nuța Events', img: '/portfolio/nuta-screen.webp', ro: 'Sală de evenimente', en: 'Event venue' },
-  { name: 'La Piazza', img: '/portfolio/lapiazza.webp', ro: 'Restaurant', en: 'Restaurant' },
-  { name: 'DentPro Clinic', img: '/portfolio/dentpro-screen.webp', ro: 'Clinică stomatologică', en: 'Dental clinic' },
-  { name: 'SIZ Detailing', img: '/portfolio/sizdetailing.webp', ro: 'Detailing auto', en: 'Car detailing' },
+  { name: 'SIZ Detailing', img: '/portfolio/sizdetailing.webp', ro: 'Client real · detailing auto', en: 'Real client · car detailing' },
+  { name: 'American Partyland', img: '/portfolio/americanpartyland.webp', ro: 'Client real · loc de joacă', en: 'Real client · kids playground' },
+  { name: 'La Piazza', img: '/portfolio/lapiazza.webp', ro: 'Concept / demo', en: 'Concept / demo' },
+  { name: 'DentPro Clinic', img: '/portfolio/dentpro-screen.webp', ro: 'Concept / demo', en: 'Concept / demo' },
 ];
 
 // Depth slots: 0 = front card, higher = further back.
@@ -19,7 +20,7 @@ const SLOTS = [
   { x: '14%', y: '-22%', scale: 0.8, opacity: 0, z: 10 },
 ];
 
-/** Stack of real client sites in browser frames; cycles on a timer and tilts toward the pointer. */
+/** Stack of project sites in browser frames; cycles on a timer and tilts toward the pointer. */
 export function ShowcaseStack() {
   const { language } = useLanguage();
   const reduce = useReducedMotion();

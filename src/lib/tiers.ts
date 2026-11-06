@@ -81,7 +81,9 @@ export function getAnnualSavings(monthlyEur: number): number {
   return monthlyEur * (12 - ANNUAL_PAID_MONTHS);
 }
 
-export function formatEur(n: number): string {
+/** RO: "1.200€". EN: "€1,200" (in engleza "1.200" s-ar citi 1,2). */
+export function formatEur(n: number, lang: 'ro' | 'en' = 'ro'): string {
+  if (lang === 'en') return '€' + (n >= 1000 ? n.toLocaleString('en-US') : n);
   return n >= 1000 ? n.toLocaleString('ro-RO') + '€' : n + '€';
 }
 
@@ -104,7 +106,23 @@ export function buildTierWaUrl(tierKey: Tier['key'], billing: BillingPeriod, lan
 
   const msg = lang === 'ro'
     ? `Bună! Mă interesează pachetul ${name} (site ${from}${formatEur(tier.setupEur)} + mentenanță ${maint}). Putem discuta?`
-    : `Hi! I'm interested in the ${name} package (site ${from}${formatEur(tier.setupEur)} + maintenance ${maint}). Can we talk?`;
+    : `Hi! I'm interested in the ${name} package (site ${from}${formatEur(tier.setupEur, 'en')} + maintenance ${maint}). Can we talk?`;
 
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
+
+/** Eticheta unui pachet in formularul de contact, construita din aceleasi preturi ca restul site-ului. */
+export function tierOptionLabel(tier: Tier, lang: 'ro' | 'en'): string {
+  const name = TIER_NAMES[tier.key][lang];
+  const from = tier.startingFrom ? (lang === 'ro' ? 'de la ' : 'from ') : '';
+  const maint = lang === 'ro' ? `${from}${tier.monthlyEur}€/lună` : `${from}${tier.monthlyEur}€/month`;
+  const plus = lang === 'ro' ? 'mentenanță' : 'maintenance';
+  return `${name} — ${from}${formatEur(tier.setupEur, lang)} + ${plus} ${maint}`;
+}
+
+// Preturi pentru piata din afara (pagina /en): pret fix per proiect, nu tarif orar.
+// Site de prezentare = TIERS[0].setupEur (350€). Celelalte doua sunt aici, intr-un singur loc.
+/** Landing page facut dupa un design gata (Figma): proba platita pentru agentii. */
+export const LANDING_FROM_EUR = 300;
+/** Chatbot AI pe site. */
+export const CHATBOT_FROM_EUR = 500;

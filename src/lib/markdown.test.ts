@@ -91,7 +91,7 @@ describe('renderMarkdown formatting', () => {
   it('renders every published article without leaking markdown markers or raw tags', () => {
     expect(BLOG_POSTS.length).toBeGreaterThan(0);
     for (const post of BLOG_POSTS) {
-      for (const md of [post.content_ro, post.content_en]) {
+      for (const md of [post.content_ro]) {
         const html = renderMarkdown(md);
         const doc = parse(html);
         expect(doc.body.textContent).not.toMatch(/\*\*|^#{1,4} /m);

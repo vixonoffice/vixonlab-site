@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, Check, MessageCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -80,7 +80,7 @@ export function PriceFinder({ showAllLink = true }: { showAllLink?: boolean }) {
 
               <div className="mb-1 flex flex-wrap items-baseline gap-x-2">
                 {tier.startingFrom && <span className="text-sm text-muted-foreground">{t('tier.from')}</span>}
-                <span className="font-heading text-5xl font-bold leading-none text-foreground md:text-6xl">{formatEur(tier.setupEur)}</span>
+                <span className="font-heading text-5xl font-bold leading-none text-foreground md:text-6xl">{formatEur(tier.setupEur, language)}</span>
                 <span className="text-sm text-muted-foreground">{t('tier.setupFree')}</span>
               </div>
               <p className="mb-6 text-foreground/90">

@@ -3,25 +3,30 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { PageTransition } from '@/components/PageTransition';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { PageHero } from '@/components/PageHero';
+import { WhatWeBuild } from '@/components/en/WhatWeBuild';
 import { lazy, Suspense } from 'react';
 const ConfiguratorStepper = lazy(() => import('@/components/configurator/ConfiguratorStepper').then(m => ({ default: m.ConfiguratorStepper })));
 import { Check, Clock, Code, Zap, X } from 'lucide-react';
 
 const Services = () => {
   const { t, language } = useLanguage();
-  usePageSEO({ title: t('sp.badge'), description: t('sp.subtitle') });
-
   const isRo = language === 'ro';
+  usePageSEO({
+    title: isRo ? t('sp.badge') : 'Services: websites, white-label, AI chatbots',
+    description: isRo
+      ? t('sp.subtitle')
+      : 'Custom websites from 350 EUR, landing pages from 300 EUR, white-label production, GSAP motion and AI chatbots from 500 EUR. Fixed price per project.',
+  });
 
   return (
     <PageTransition>
       <PageHero
-        badge={isRo ? 'Configurator de proiect' : 'Project Configurator'}
-        title={isRo ? 'Configurează-ți' : 'Configure your'}
-        titleAccent={isRo ? 'site-ul ideal' : 'ideal website'}
+        badge={isRo ? 'Configurator de proiect' : 'Services'}
+        title={isRo ? 'Configurează-ți' : 'What we build,'}
+        titleAccent={isRo ? 'site-ul ideal' : 'at a fixed price'}
         subtitle={isRo
-          ? 'Alege pachetul, spune-ne ce îți trebuie și trimite totul pe WhatsApp. Îți răspundem cu oferta în maxim 2 zile lucrătoare.'
-          : 'Pick a package, tell us what you need and send it on WhatsApp. We reply with an offer within 2 business days.'}
+          ? 'Alege pachetul, spune-ne ce îți trebuie și trimite totul pe WhatsApp. Îți răspundem cu oferta în maxim 24 de ore.'
+          : 'Websites, landing pages, white-label production, motion and AI chatbots. One fixed price per project, and a reply within 24 hours.'}
       >
         <div className="flex flex-wrap gap-3">
           {[
@@ -38,9 +43,24 @@ const Services = () => {
         </div>
       </PageHero>
 
+      {!isRo && (
+        <section className="section-padding pb-20">
+          <div className="mx-auto max-w-content">
+            <WhatWeBuild />
+          </div>
+        </section>
+      )}
+
       {/* Configurator */}
       <section className="section-padding pb-24">
         <div className="max-w-3xl mx-auto">
+          {!isRo && (
+            <div className="mb-10 text-center">
+              <p className="text-primary-light text-sm font-medium uppercase tracking-widest mb-3">Project configurator</p>
+              <h2 className="font-heading font-bold text-3xl md:text-5xl text-foreground leading-tight">Build your brief in a minute</h2>
+              <p className="mt-3 text-muted-foreground">Pick a package and what you need. We turn it into a message you send us on WhatsApp.</p>
+            </div>
+          )}
           <Suspense fallback={
             <div className="space-y-4">
               {[1,2,3].map(i => <div key={i} className="h-48 bg-white/5 rounded-2xl animate-pulse" />)}

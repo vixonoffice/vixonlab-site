@@ -1,9 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { MessageCircle, Mail, MapPin, ArrowUpRight } from 'lucide-react';
+import { GITHUB_URL, LINKEDIN_URL } from '@/data/lab';
+import { MessageCircle, Mail, MapPin, ArrowUpRight, Github, Linkedin } from 'lucide-react';
 
 export function Footer() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isEn = language === 'en';
 
   return (
     <footer className="relative border-t border-white/10 mt-32 overflow-hidden">
@@ -42,6 +44,7 @@ export function Footer() {
                 { label: t('nav.portfolio'), path: '/portfolio' },
                 { label: t('nav.about'),     path: '/about' },
                 { label: t('nav.blog'),      path: '/blog' },
+                ...(isEn ? [{ label: t('nav.agencies'), path: '/agencies' }] : []),
               ].map((l) => (
                 <Link key={l.path} to={l.path} className="text-base text-foreground/80 hover:text-primary-light transition-colors">
                   {l.label}
@@ -54,7 +57,7 @@ export function Footer() {
           <div>
             <p className="text-sm uppercase tracking-widest text-primary-light mb-4">{t('footer.services')}</p>
             <div className="flex flex-col gap-3">
-              {['Essential', 'Business', 'Ecosistem', 'Vixon Care', t('nav.pricing')].map((label) => (
+              {[t('tier.presentation.name'), t('tier.business.name'), t('tier.experience.name'), t('tier.custom.name'), t('nav.pricing')].map((label) => (
                 <Link key={label} to="/pricing" className="text-base text-foreground/80 hover:text-primary-light transition-colors">
                   {label}
                 </Link>
@@ -74,8 +77,16 @@ export function Footer() {
                 className="inline-flex items-center gap-2 text-base text-foreground/80 hover:text-primary-light transition-colors">
                 <Mail className="w-5 h-5 shrink-0" /> vixonoffice@gmail.com
               </a>
+              <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-base text-foreground/80 hover:text-primary-light transition-colors">
+                <Github className="w-5 h-5 shrink-0" /> GitHub
+              </a>
+              <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-base text-foreground/80 hover:text-primary-light transition-colors">
+                <Linkedin className="w-5 h-5 shrink-0" /> LinkedIn
+              </a>
               <span className="inline-flex items-center gap-2 text-base text-foreground/80">
-                <MapPin className="w-5 h-5 shrink-0" /> România
+                <MapPin className="w-5 h-5 shrink-0" /> {isEn ? 'Romania (EU)' : 'România'}
               </span>
             </div>
 
@@ -95,7 +106,7 @@ export function Footer() {
         <div className="border-t border-white/10 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-xs text-muted-foreground">{t('footer.copyright')}</p>
           <p className="text-xs text-muted-foreground italic">
-            Crafted with care in Romania
+            {isEn ? 'Built in Romania, for clients across Europe' : 'Făcut cu grijă în România'}
           </p>
         </div>
       </div>
