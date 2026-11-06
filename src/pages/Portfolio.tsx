@@ -78,7 +78,7 @@ const Portfolio = () => {
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-            {LAB_PROJECTS.map((lab, i) => {
+            {LAB_PROJECTS.filter((l) => l.href !== '#').map((lab, i) => {
               const external = lab.href.startsWith('http');
               return (
                 <ScrollReveal key={lab.id} delay={(i % 3) * 0.06}>

@@ -10,7 +10,7 @@ Contact: vixonoffice@gmail.com | Tel/WhatsApp: 0779 383 164 | Site: vixonlab.ro
 === PACHETE (site plătit o singură dată + mentenanță lunară obligatorie) ===
 - PREZENTARE: 350€ + 15€/lună — site de o pagină (landing), contact, buton WhatsApp, Google Maps, SEO de bază. Livrare în aproximativ 1 săptămână. Pentru meseriași, evenimente, afaceri la început.
 - BUSINESS: 650€ + 25€/lună — site de 4-6 pagini, SEO local, configurare Google Business Profile, formular de contact, Google Analytics. Livrare în 1-2 săptămâni. Cel mai ales: restaurante, saloane, cabinete, firme de servicii.
-- EXPERIENȚĂ: 1.200€ + 35€/lună — design 100% custom, animații, secțiuni interactive (ex. configurator sau estimare de preț), optimizat pe mobil. Livrare în 2-3 săptămâni. Pentru săli de evenimente, hoteluri, branduri care vor să iasă în evidență. Exemplu real: site-ul sălii de evenimente Nuța Events.
+- EXPERIENȚĂ: 1.200€ + 35€/lună — design 100% custom, animații, secțiuni interactive (ex. configurator sau estimare de preț), optimizat pe mobil. Livrare în 2-3 săptămâni. Pentru săli de evenimente, hoteluri, branduri care vor să iasă în evidență.
 - CUSTOM: de la 2.000€ + de la 60€/lună — rezervări online, calendar real de disponibilitate, panou de administrare, multilingv. Preț stabilit după discuție.
 Nu facem magazine online (e-commerce).
 

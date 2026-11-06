@@ -47,8 +47,8 @@ export const LAB_PROJECTS: LabProjectRow[] = [
     title: 'Frontul de Fier',
     kind_ro: 'Joc în browser',
     kind_en: 'Browser game',
-    description_ro: 'Joc de strategie în timp real, în browser, în spiritul Red Alert. Făcut cu Three.js și TypeScript.',
-    description_en: 'A real-time strategy game in the browser, in the spirit of Red Alert. Built with Three.js and TypeScript.',
+    description_ro: 'Joc de strategie în timp real, în browser, în spiritul clasicelor RTS. Făcut cu Three.js și TypeScript.',
+    description_en: 'A real-time strategy game in the browser, in the spirit of classic RTS games. Built with Three.js and TypeScript.',
     href: 'https://frontul-de-fier.vercel.app',
   },
   {
@@ -58,6 +58,6 @@ export const LAB_PROJECTS: LabProjectRow[] = [
     kind_en: 'Open source',
     description_ro: 'Șabloane de automatizare: lead din formular, în CRM, răspuns AI, notificare.',
     description_en: 'Automation templates: lead from a form to a CRM, an AI reply, a notification.',
-    href: '#',
+    href: 'https://github.com/vixonoffice/n8n-automation-templates',
   },
 ];
