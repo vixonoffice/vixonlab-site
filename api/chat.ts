@@ -12,7 +12,7 @@ Contact: vixonoffice@gmail.com | Tel/WhatsApp: 0779 383 164 | Site: vixonlab.ro
 - BUSINESS: 650€ + 25€/lună — site de 4-6 pagini, SEO local, configurare Google Business Profile, formular de contact, Google Analytics. Livrare în 1-2 săptămâni. Cel mai ales: restaurante, saloane, cabinete, firme de servicii.
 - EXPERIENȚĂ: 1.200€ + 35€/lună — design 100% custom, animații, secțiuni interactive (ex. configurator sau estimare de preț), optimizat pe mobil. Livrare în 2-3 săptămâni. Pentru săli de evenimente, hoteluri, branduri care vor să iasă în evidență.
 - CUSTOM: de la 2.000€ + de la 60€/lună — rezervări online, calendar real de disponibilitate, panou de administrare, multilingv. Preț stabilit după discuție.
-Nu facem magazine online (e-commerce).
+Facem si magazine online: de obicei pe Shopify (clientul il administreaza usor), la nevoie WooCommerce sau Next.js cu plata prin Stripe. Pretul depinde de numarul de produse si de integrari (plati, curier, facturare), deci e la cerere: clientul descrie ce vinde si primeste o oferta fixa.
 
 === AGENȚII ȘI CLIENȚI DIN AFARA ROMÂNIEI (pagina /en) ===
 Producție white-label pentru agenții: orice aduce clientul lor (design, brief, site vechi sau doar o idee) devine site rapid, sub brandul lor, fără logo sau credit Vixon Lab. Preț fix per proiect, nu pe oră. NDA la cerere. Program CET+1.
