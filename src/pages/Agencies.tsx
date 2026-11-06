@@ -13,8 +13,8 @@ const CONTACT_EMAIL = 'vixonoffice@gmail.com';
 
 const STEPS = [
   {
-    title: 'Send the design',
-    text: 'Share the Figma file and a short brief by email or WhatsApp. If you need it, we sign your NDA first.',
+    title: 'Send what you have',
+    text: 'Share a design file, a brief, a sketch or just the idea by email or WhatsApp. If you need it, we sign your NDA first.',
   },
   {
     title: 'Get a fixed quote',
@@ -44,24 +44,24 @@ const siz = PORTFOLIO_PROJECTS.find((p) => p.id === 'siz-detailing');
 const Agencies = () => {
   usePageSEO({
     title: 'White-label web development for agencies',
-    description: `EU-based white-label web studio for agencies. Your Figma design built as a fast, animated site. Fixed price, NDA, no credit. Paid trial: a landing page from ${LANDING_FROM_EUR} EUR.`,
+    description: `EU-based white-label web studio for agencies. Any brief, design or idea, built fast. Fixed price, NDA, no credit. Paid trial: a landing page from ${LANDING_FROM_EUR} EUR.`,
   });
 
-  const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('White-label project: design attached')}`;
-  const wa = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi! We are an agency and would like to send you a design to build.')}`;
+  const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('White-label project enquiry')}`;
+  const wa = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi! We are an agency and have a project we would like you to build.')}`;
 
   return (
     <PageTransition>
       <PageHero
         badge="For agencies · White-label"
-        title="Your design."
+        title="Your project."
         titleAccent="Our code. Your name."
-        subtitle="We turn your Figma designs into fast, animated, production-ready websites under your brand. Fixed price per project, from the EU."
+        subtitle="Whatever your client brings, a design, a brief or just an idea, we build it under your brand. Fixed price per project, from the EU."
       >
         <div className="flex flex-col sm:flex-row gap-3">
           <a href={mailto}
             className="btn-primary font-medium px-7 py-3.5 rounded-full inline-flex items-center justify-center gap-2">
-            <Mail className="w-4 h-4" /> Send us the design
+            <Mail className="w-4 h-4" /> Send us your project
           </a>
           <a href={wa} target="_blank" rel="noopener noreferrer"
             className="border border-white/15 bg-white/5 backdrop-blur-md text-foreground font-medium px-7 py-3.5 rounded-full inline-flex items-center justify-center gap-2 hover:bg-white/10 hover:border-white/30 transition-all">
@@ -192,15 +192,15 @@ const Agencies = () => {
       <section className="relative section-padding py-32 md:py-44 overflow-hidden border-t border-white/10 cta-glow">
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-8">
-            <span className="text-foreground">Send us the design.</span>
+            <span className="text-foreground">Send us your project.</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
-            Email the Figma link or message us on WhatsApp. You get a fixed quote within 24 hours.
+            Email whatever you have, a design, a brief or an idea, or message us on WhatsApp. You get a fixed quote within 24 hours.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a href={mailto}
               className="btn-primary font-medium px-8 py-4 rounded-full inline-flex items-center justify-center gap-2 text-lg hover:opacity-90 transition-all">
-              <Mail className="w-5 h-5" /> Email the design
+              <Mail className="w-5 h-5" /> Email your project
             </a>
             <a href={wa} target="_blank" rel="noopener noreferrer"
               className="border border-white/15 bg-white/5 backdrop-blur-md text-foreground font-medium px-8 py-4 rounded-full inline-flex items-center justify-center gap-2 text-lg hover:bg-white/10 hover:border-white/30 transition-all">

@@ -15,7 +15,7 @@ import { WHATSAPP_NUMBER } from '@/lib/tiers';
 const CONTACT_EMAIL = 'vixonoffice@gmail.com';
 
 const MARQUEE = [
-  'Figma to code', 'React and Next.js', 'GSAP animation', 'AI chatbots', 'n8n automation',
+  'Websites and web apps', 'React and Next.js', 'GSAP animation', 'AI chatbots', 'n8n automation',
   'Landing pages', 'Performance tuning', 'White-label',
 ];
 
@@ -29,8 +29,8 @@ const WHY = [
 ];
 
 const STEPS = [
-  { title: 'Brief', text: 'Send the design or a short description. We reply within 24 hours with a fixed quote.' },
-  { title: 'Design', text: 'Working from your Figma file? We skip this step. If not, we design it and you approve it before any code.' },
+  { title: 'Brief', text: 'Send a design, a brief or just the idea. We reply within 24 hours with a fixed quote.' },
+  { title: 'Design', text: 'Already have a design? We skip this step. If not, we design it and you approve it before any code.' },
   { title: 'Build', text: 'We build, test on real devices and tune speed. You get a preview link along the way.' },
   { title: 'Launch', text: 'We deploy, set up the domain and analytics, and hand over the code. 30 days of bug fixes after launch.' },
 ];
@@ -214,10 +214,10 @@ const HomeEn = () => {
       <section className="relative section-padding py-32 md:py-48 overflow-hidden border-t border-white/10 cta-glow">
         <ScrollReveal className="relative z-10 max-w-4xl mx-auto text-center">
           <h2 className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl leading-[0.95] mb-8">
-            <span className="text-foreground">Got a design or a brief?</span>
+            <span className="text-foreground">Got a project in mind?</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
-            Send it by email or WhatsApp. We reply within 24 hours with a fixed price.
+            Send whatever you have by email or WhatsApp. We reply within 24 hours with a fixed price.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a href={mailto}

@@ -280,7 +280,7 @@ export const translations = {
     'hero.badge': 'Taking on new projects',
     'hero.title1': 'Custom websites and AI chatbots,',
     'hero.title2': 'built in the EU at a fixed price.',
-    'hero.subtitle': 'A small web studio in Romania (CET+1). We build for businesses and, white-label, for agencies: your design in, fast production-ready code out. No hourly billing, no account managers in between.',
+    'hero.subtitle': 'A small web studio in Romania (CET+1). Whatever you bring, a design, a brief or just an idea, we build it: for businesses and, white-label, for agencies. No hourly billing, no account managers in between.',
     'hero.cta2': 'See our work',
 
     'services.label': 'What we do',

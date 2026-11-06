@@ -15,7 +15,7 @@ Contact: vixonoffice@gmail.com | Tel/WhatsApp: 0779 383 164 | Site: vixonlab.ro
 Nu facem magazine online (e-commerce).
 
 === AGENȚII ȘI CLIENȚI DIN AFARA ROMÂNIEI (pagina /en) ===
-Producție white-label pentru agenții: designul lor (Figma) devine site rapid, sub brandul lor, fără logo sau credit Vixon Lab. Preț fix per proiect, nu pe oră. NDA la cerere. Program CET+1.
+Producție white-label pentru agenții: orice aduce clientul lor (design, brief, site vechi sau doar o idee) devine site rapid, sub brandul lor, fără logo sau credit Vixon Lab. Preț fix per proiect, nu pe oră. NDA la cerere. Program CET+1.
 Prețuri de la: site de prezentare 350€, landing page (după un design gata) 300€, chatbot AI 500€. Proba plătită recomandată: un landing page.
 Clienți reali: Siz Detailing și American Partyland. Celelalte site-uri din portofoliu sunt concepte / demo-uri, nu clienți.
 

@@ -27,7 +27,7 @@ const ITEMS: Item[] = [
   {
     icon: Layers,
     title: 'White-label production',
-    text: 'Figma to code for agencies. Your brand and your client; we do the build under NDA, with no credit and no logo.',
+    text: 'Your tech team for agencies. Your brand, your client; we build whatever they bring, under NDA, no credit, no logo.',
     price: 'Fixed price per project',
     to: '/agencies',
     span: 'md:col-span-2',

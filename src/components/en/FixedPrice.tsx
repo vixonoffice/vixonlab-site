@@ -8,8 +8,8 @@ const CARDS = [
   {
     name: 'Landing page',
     price: LANDING_FROM_EUR,
-    text: 'One page built from your finished design. The usual first project with an agency, and a low-risk way to see how we work.',
-    points: ['From your Figma file', 'Responsive and fast on mobile', 'Basic SEO and analytics set-up'],
+    text: 'One page built from your design or brief. The usual first project with an agency, and a low-risk way to see how we work.',
+    points: ['From your design or brief', 'Responsive and fast on mobile', 'Basic SEO and analytics set-up'],
   },
   {
     name: 'Presentation site',
